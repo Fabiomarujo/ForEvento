@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Equipe - ForEvento</title>
+    <!-- Reaproveita a matriz visual unificada e as fontes da aplicação -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Biblioteca estável para varreduras de QR Code via câmera client-side -->
+    <script src="https://cloudflare.com" integrity="sha512-r6rDA7W6ZeQhvl8S7TyHK0wmo5hMnqWBczAXWn046FFTOiGn5Z2rEOaqjVX9pOkCo7WqW56Thx76ZScljDTEQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+/* Compatibilidade google.script.run -> FastAPI.
+   Preserva success/failure handlers e chamadas diretas do Apps Script. */
+(function(){
+  function makeRun(state){
+    state=state||{ok:null,fail:null};
+    return new Proxy({}, {get:function(_t,prop){
+      if(prop==="withSuccessHandler") return function(fn){return makeRun({ok:fn,fail:state.fail});};
+      if(prop==="withFailureHandler") return function(fn){return makeRun({ok:state.ok,fail:fn});};
+      if(prop==="withUserObject") return function(){return makeRun(state);};
+      return function(){
+        var args=[].slice.call(arguments), ok=state.ok, fail=state.fail;
+        fetch("/api/call/"+encodeURIComponent(String(prop)),{
+          method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({args:args})
+        }).then(async function(resp){
+          var data=await resp.json();
+          if(!resp.ok||data.__error) throw new Error(data.__error||("HTTP "+resp.status));
+          if(ok) ok(data.result);
+        }).catch(function(err){if(fail) fail(err); else console.error("ForEvento:",prop,err);});
+      };
+    }});
+  }
+  window.google=window.google||{}; google.script=google.script||{};
+  Object.defineProperty(google.script,"run",{configurable:true,get:function(){return makeRun();}});
+})();
+</script>
+
+</head>
+<body class="painel-aberto">
+
+    <!-- Barra de Navegação Superior Operacional -->
+    <nav class="navbar" style="border-top: 6px solid #1a73e8;">
+        <div style="position: relative; display: inline-block;" id="menuDropdownEquipe">
+            <button style="background: #111827; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer;">
+                ☰ Menu de Operações
+            </button>
+            <div style="display: none; position: absolute; left: 0; top: 100%; background-color: white; min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.15); border-radius: 6px; z-index: 999; margin-top: 5px; border: 1px solid #e2e8f0;" id="dropdownEquipeConteudo">
+                <a href="#" onclick="alternarAbaEquipe('presenca')" style="color: #1a73e8; padding: 12px 16px; text-decoration: none; display: block; font-size: 14px; font-weight: 700; background: #f0f6ff; border-bottom: 1px solid #f1f5f9;">📊 Diário de Frequências</a>
+                <a href="#" onclick="abrirManualAjudaPopup()" style="color: #7c3aed; padding: 12px 16px; text-decoration: none; display: block; font-size: 14px; font-weight: 600; border-bottom: 1px solid #f1f5f9;">📑 Manual de Operação</a>
+                <a href="#" onclick="fazerLogoutCompleto()" style="color: #dc2626; padding: 12px 16px; text-decoration: none; display: block; font-size: 14px; font-weight: 600;">🚪 Sair da Portaria</a>
+            </div>
+        </div>
+        <span id="boasVindasEquipe" style="font-size: 15px; font-weight: bold; color: #111827;">Carregando credenciais...</span>
+        <button onclick="abrirManualAjudaPopup()" style="background: #e2e8f0; color: #334155; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer;">Ajuda</button>
+    </nav>
+
+    <!-- CONTAINER CENTRAL DE TRABALHO -->
+    <div style="width: 100%; max-width: 1200px; margin: 25px auto; padding: 0 20px;">
+        
+        <!-- MÓDULO CENTRAL: CONTROLE DE FREQUÊNCIA EM GAVETA -->
+        <div id="aba-equipe-presenca" class="secao-equipe-aba">
+            <div class="vitrine-container" style="text-align: left; padding:30px;">
+                <h2>📊 Diário de Presença Digital</h2>
+                <p class="welcome-msg" style="margin-bottom:20px;">Gerencie chamadas em classe, execute varreduras por câmera de QR Code ou extraia relatórios consolidados.</p>
+
+                <!-- Filtros Dinâmicos em Cascata Sincronizados -->
+                <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <label style="font-weight: 600; font-size: 13px;">1. Selecione o Evento Pai:</label>
+                        <select id="selectEventoPresenca" onchange="carregarAtividadesDoCronograma()" style="width: 100%; padding: 11px; margin-top: 5px; border-radius: 6px; border: 1px solid #d1d5db; background: white; font-size: 14px;"></select>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <label style="font-weight: 600; font-size: 13px;">2. Selecione a Disciplina / Atividade Alvo:</label>
+                        <select id="selectAtividadePresenca" onchange="abrirPainelOperacoesPresenca()" style="width: 100%; padding: 11px; margin-top: 5px; border-radius: 6px; border: 1px solid #d1d5db; background: white; font-size: 14px;">
+                            <option value="">-- Selecione o curso acima primeiro --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- PAINEL DE COMANDOS SELECIONADO -->
+                <div id="painelOperacoesChamada" style="display: none; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                    <div style="display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap;">
+                        <button onclick="exibirListaChamadaManual()" class="btn-primary" style="background:#1a73e8; margin-top:0; width:auto; padding:10px 20px;">📋 Ver Lista de Chamada</button>
+                        <button onclick="exportarListaPresencaPDF()" class="btn-primary" style="background:#374151; margin-top:0; width:auto; padding:10px 20px;">📄 Exportar Lista PDF</button>
+                        <button onclick="ativarScannerCameraQRCode()" class="btn-primary" style="background:#10b981; margin-top:0; width:auto; padding:10px 20px;">📷 Varredura QR Code (Câmera)</button>
+                    </div>
+
+                    <!-- Lente de Captura Síncrona do Hardware Móvel -->
+                    <div id="containerScannerCamera" style="display: none; max-width: 450px; margin: 0 auto 25px auto; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; text-align: center;">
+                        <h4 style="margin-bottom: 10px; color:#10b981;">Aponte a câmera para o voucher do aluno</h4>
+                        <div id="leitorVideoCamera" style="width: 100%; max-width: 400px; background: black; border-radius: 6px; overflow: hidden; margin: 0 auto;"></div>
+                        <button onclick="desativarScannerCamera()" class="btn-primary" style="background:#ef4444; margin-top:15px; width:auto; padding:8px 16px;">Desligar Câmera</button>
+                    </div>
+
+                    <!-- Tabela de Chamada Manual Blindada -->
+                    <div id="containerTabelaChamadaManual" style="display: none; overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; border: 1px solid #e5e7eb;">
+                            <thead>
+                                <tr style="background: #f1f5f9; color: #374151; border-bottom: 2px solid #e2e8f0;">
+                                    <th style="padding: 12px; width:130px;">Código Voucher</th>
+                                    <th style="padding: 12px;">Participante</th>
+                                    <th style="padding: 12px;">E-mail</th>
+                                    <th style="padding: 12px; text-align: center; width: 120px;">Frequência</th>
+                                </tr>
+                            </thead>
+                            <tbody id="linhasAlunosInscritosChamada"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP MANUAL DE ORIENTAÇÃO DA EQUIPE DE PORTARIA -->
+    <div id="modalManualAjuda" class="modal-cronograma-overlay" style="display: none;">
+        <div class="modal-cronograma-box" style="max-width: 700px; overflow:hidden;">
+            <div style="background: #f5f3ff; border-bottom: 1px solid #ddd6fe; padding:20px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h3 style="color: #7c3aed; font-size: 18px; margin:0;">📑 Guia de Operação e Funcionalidades</h3>
+                    <span style="font-size: 11px; color: #6b7280; font-weight: bold; text-transform:uppercase;">ForEvento — Portaria e Credenciamento</span>
+                </div>
+                <button onclick="fecharManualAjudaPopup()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #6b7280; font-weight:bold;">✕</button>
+            </div>
+            <div style="padding: 25px; max-height:65vh; overflow-y:auto; text-align:left;">
+                <p style="margin-bottom: 15px; color:#4b5563;">Instruções técnicas para gerenciamento de fluxo em campo:</p>
+                <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 12px; border-radius: 4px; margin-bottom: 15px; font-size: 13px; color:#166534;">
+                    <strong>📸 Credenciamento via QR Code:</strong> O scanner aciona a lente traseira em tempo real. Ao decodificar o voucher master do participante, o sistema interrompe a captura automaticamente para poupar bateria do dispositivo.
+                </div>
+                <div style="background: #f8fafc; border-left: 4px solid #334155; padding: 12px; border-radius: 4px; font-size: 13px; color:#1e293b;">
+                    <strong>📊 Matriz de Contingência de Frequência:</strong> Se o organizador master não configurou sub-atividades, o sistema monta automaticamente a <em>Frequência Geral Unificada</em> para viabilizar as chamadas.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTROLADORES OPERACIONAIS CLIENT-SIDE -->
+    <script>
+        var html5QrcodeScanner = null;
+
+        // Injeta suporte dinâmico por hover para isolar as rotas
+        var dStyle = document.createElement('style');
+        dStyle.innerHTML = `#menuDropdownEquipe:hover #dropdownEquipeConteudo { display: block !important; } #dropdownEquipeConteudo a:hover { background-color: #f0f6ff; color: #1a73e8 !important; }`;
+        document.head.appendChild(dStyle);
+
+        window.addEventListener('load', function() {
+            var nomeMembro = localStorage.getItem('forEvento_alunoNome') || "Membro da Equipe";
+            var funMembro = localStorage.getItem('forEvento_loginTipo') || "Equipe";
+            document.getElementById('selectEventoPresenca').addEventListener('change', carregarAtividadesDoCronograma);
+            document.getElementById('selectAtividadePresenca').addEventListener('change', abrirPainelOperacoesPresenca);
+            
+            carregarEventosNoSeletor();
+        });
+
+        function carregarEventosNoSeletor() {
+            var select = document.getElementById('selectEventoPresenca');
+            select.innerHTML = "<option>Buscando registros...</option>";
+            
+            google.script.run.withSuccessHandler(function(eventos) {
+                select.innerHTML = "<option value=''>-- Escolha o curso --</option>";
+                if (eventos && eventos.length > 0) {
+                    eventos.forEach(function(evt) {
+                        select.innerHTML += `<option value="${evt.id}">${evt.nome} (${evt.id})</option>`;
+                    });
+                } else {
+                    select.innerHTML = "<option value=''>Nenhum curso localizado</option>";
+                }
+            }).listarEventos();
+        }
+
+        function carregarAtividadesDoCronograma() {
+            var idEvento = document.getElementById('selectEventoPresenca').value;
+            var selectAtv = document.getElementById('selectAtividadePresenca');
+            if(!idEvento) {
+                selectAtv.innerHTML = "<option value=''>-- Selecione o curso acima primeiro --</option>";
+                document.getElementById('painelOperacoesChamada').style.display = 'none';
+                return;
+            }
+            selectAtv.innerHTML = "<option>Mapeando cronograma...</option>";
+            
+            google.script.run.withSuccessHandler(function(res) {
+                selectAtv.innerHTML = "";
+                if(res.sucesso && res.atividades && res.atividades.length > 0) {
+                    selectAtv.innerHTML = "<option value=''>-- Escolha a Atividade/Palestra --</option>";
+                    res.atividades.forEach(function(atv) {
+                        selectAtv.innerHTML += `<option value="${atv.sinopseAtividade}">${atv.sinopseAtividade} (${atv.tipo})</option>`;
+                    });
+                } else {
+                    // Fallback Técnico Unificado Automático contra cronogramas vazios
+                    selectAtv.innerHTML = "<option value='Geral'>Frequência Geral Unificada</option>";
+                    abrirPainelOperacoesPresenca();
+                }
+            }).buscarCronogramaEvento(idEvento);
+        }
+
+        function abrirPainelOperacoesPresenca() {
+            var atv = document.getElementById('selectAtividadePresenca').value;
+            document.getElementById('painelOperacoesChamada').style.display = atv ? 'block' : 'none';
+            desativarScannerCamera();
+        }
+
+        function exibirListaChamadaManual() {
+            var idEvento = document.getElementById('selectEventoPresenca').value;
+            var containerTabela = document.getElementById('containerTabelaChamadaManual');
+            var corpoTabela = document.getElementById('linhasAlunosInscritosChamada');
+            
+            corpoTabela.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:15px;'>Buscando inscritos...</td></tr>";
+            containerTabela.style.display = 'block';
+
+            google.script.run.withSuccessHandler(function(lista) {
+                corpoTabela.innerHTML = "";
+                var filtrados = lista.filter(function(item) { return String(item.idEvento) === String(idEvento); });
+                if(filtrados.length === 0) {
+                    corpoTabela.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:15px; color:#888;'>Nenhum participante matriculado neste curso.</td></tr>";
+                    return;
+                }
+
+                var fragment = document.createDocumentFragment();
+                filtrados.forEach(function(aluno) {
+                    var tr = document.createElement('tr');
+                    tr.style.cssText = "border-bottom:1px solid #e5e7eb;";
+                    var isChecked = aluno.presenca === "Sim";
+                    
+                    var htmlMembroLinha = '<td style="padding:12px; font-family:monospace; font-weight:bold;" class="td-cod"></td>';
+                    htmlMembroLinha += '<td style="padding:12px;"><strong class="aluno-nome"></strong></td>';
+                    htmlMembroLinha += '<td style="padding:12px; color:#4b5563;" class="aluno-email"></td>';
+                    htmlMembroLinha += '<td style="padding:12px; text-align:center;"><input type="checkbox" style="width:18px; height:18px; cursor:pointer;" class="chk-presenca"></td>';
+                    tr.innerHTML = htmlMembroLinha;
+
+                    tr.querySelector('.td-cod').textContent = aluno.idInscricao;
+                    tr.querySelector('.aluno-nome').textContent = aluno.nomeAluno || aluno.nome;
+                    tr.querySelector('.aluno-email').textContent = aluno.emailAluno || aluno.email;
+                    
+                    var chk = tr.querySelector('.chk-presenca');
+                    chk.checked = isChecked;
+                    chk.onchange = function() { 
+                        google.script.run.mudarStatusPresencaPorMembro(aluno.idInscricao, this.checked ? "Sim" : "Não"); 
+                    };
+                    fragment.appendChild(tr);
+                });
+                corpoTabela.appendChild(fragment);
+            }).obterListaCertificadosParaAuditoria();
+        }
+
+        function activarScannerCameraQRCode() {
+            document.getElementById('containerScannerCamera').style.display = 'block';
+            document.getElementById('containerTabelaChamadaManual').style.display = 'none';
+            if(html5QrcodeScanner === null) {
+                html5QrcodeScanner = new Html5Qrcode("leitorVideoCamera");
+            }
+            registrarAcoesScannerEfetivo();
+        }
+
+        function registrarAcoesScannerEfetivo() {
+            var config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            html5QrcodeScanner.start(
+                { facingMode: "environment" }, 
+                config, 
+                function(textoQrCode) {
+                    html5QrcodeScanner.stop().then(function() {
+                        document.getElementById('containerScannerCamera').style.display = 'none';
+                        processarCheckInPorQRCode(textoQrCode);
+                    });
+                },
+                function(err) { }
+            ).catch(function(err) { alert("Erro ao ligar a câmera: Verifique as permissões de privacidade."); });
+        }
+
+        function desativarScannerCamera() {
+            if(html5QrcodeScanner && html5QrcodeScanner.isScanning) { html5QrcodeScanner.stop(); }
+            document.getElementById('containerScannerCamera').style.display = 'none';
+        }
+
+        function processarCheckInPorQRCode(idInscricao) {
+            google.script.run.withSuccessHandler(function(res) {
+                if(res.sucesso) {
+                    alert("🎉 CHECK-IN CONFIRMADO!\n\nAluno: " + res.nome + "\nVoucher: " + idInscricao);
+                    exibirListaChamadaManual();
+                } else {
+                    alert("⚠️ FALHA OPERACIONAL:\n" + res.mensagem);
+                }
+            }).processarEntradaQRCodeMembro(idInscricao);
+        }
+
+        function exportarListaPresencaPDF() {
+            var selectEvt = document.getElementById('selectEventoPresenca');
+            var idEvento = selectEvt.value;
+            var nomeEvento = selectEvt.options[selectEvt.selectedIndex].text;
+            var selectAtv = document.getElementById('selectAtividadePresenca');
+            var nomeAtividade = selectAtv.value || "Frequência Geral";
+            
+            if(!idEvento) { alert("Selecione um evento válido antes de exportar."); return; }
+            alert("Gerando layout oficial em PDF...");
+            
+            google.script.run.withSuccessHandler(function(res) {
+                if(res.sucesso) {
+                    var novaJanela = window.open(); novaJanela.document.write(res.htmlConteudo); novaJanela.document.close();
+                } else { alert("Erro ao gerar PDF: " + res.mensagem); }
+            }).exportarChamadaConsolidadaPDF(idEvento, nomeEvento, nomeAtividade);
+        }
+
+        function fazerLogoutCompleto() {
+            localStorage.clear();
+            window.top.location.href = window.top.location.origin + window.top.location.pathname;
+        }
+
+        function abrirManualAjudaPopup() { document.getElementById('modalManualAjuda').style.display = 'flex'; }
+        function fecharManualAjudaPopup() { document.getElementById('modalManualAjuda').style.display = 'none'; }
+    </script>
+</body>
+</html>

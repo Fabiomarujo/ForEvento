@@ -1,0 +1,6 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ForEvento</title><link rel="stylesheet" href="/static/css/app.css">
+<style>:root{--page-bg:{{theme.page_bg if theme else '#f4f6f8'}};--panel-bg:{{theme.panel_bg if theme else '#fff'}};--title:{{theme.title_color if theme else '#17212b'}};--title-bg:{{theme.title_bg if theme else '#fff'}};--card-bg:{{theme.card_bg if theme else '#fff'}}}</style></head>
+<body><header class="topbar"><div class="who">{% if user %}{{user.name.split()[0]}}{% endif %}</div><a class="brand" href="/">ForEvento</a><div class="right">{% if user %}<a href="/logout">🚪 Sair</a>{% else %}<a href="/login">Login</a>{% endif %}</div></header>
+{% if user %}<nav class="quicknav"><button type="button" onclick="history.back()">← Voltar</button><a href="/dashboard">⌂ Painel</a></nav>{% endif %}
+<main class="container">{% block content %}{% endblock %}</main><script src="/static/js/app.js"></script></body></html>

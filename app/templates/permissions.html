@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block content %}<h1>Permissões por categoria</h1><p>Participante não entra nesta matriz. <b>Usuários cadastrados</b> é exclusivo do Administrador Master.</p>
+<form method="post"><div class="permission-grid"><table><tr><th>Permissão</th>{% for role in roles %}<th>{{role}}</th>{% endfor %}</tr>
+{% for p in perms %}{% if p!="users.manage" %}<tr><td>{{p}}</td>{% for role in roles %}<td><input type="checkbox" name="{{role}}|{{p}}" {% if data.get((role,p)) %}checked{% endif %}></td>{% endfor %}</tr>{% endif %}{% endfor %}</table></div><button class="primary">Salvar permissões</button></form>{% endblock %}

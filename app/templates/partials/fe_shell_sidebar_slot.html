@@ -1,0 +1,80 @@
+<div id="feShellSidebarSlot" aria-label="Área do menu lateral">
+  <aside id="feSharedSidebar" aria-label="Menu administrativo" aria-busy="true">
+    <nav id="feMasterStaticNav" aria-label="Navegação fixa do Administrador Master" hidden>
+<a class="feSharedLink feSharedGroup" href="/?page=admin-dashboard&amp;tab=evento">📅 EVENTO</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=cronograma-lista">↳ Cronograma/Lista</a>
+<a class="feSharedLink feSharedGroup" href="/?page=vitrine-admin">🖼️ VITRINE</a>
+<a class="feSharedLink feSharedGroup" href="/?page=admin-dashboard&amp;tab=financeiro">💰 FINANCEIRO</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=financeiro-auditoria">↳ Consulta/Auditoria</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=reembolso">↳ Reembolso</a>
+<a class="feSharedLink feSharedGroup" href="/?page=admin-dashboard&amp;tab=certificados">🎓 CERTIFICADOS</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=certificados-modelos">↳ Cadastrar Modelos</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=certificados-configurar">↳ Configurar certificados</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=certificados-gerar">↳ Gerar e Enviar</a>
+<a class="feSharedLink feSharedGroup" href="/?page=admin-dashboard&amp;tab=graficos">📊 RELATÓRIOS</a>
+<a class="feSharedLink feSharedGroup" href="/?page=configurar">⚙️ CONFIGURAR</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=configurar">↳ Aparência e Segurança</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=backup-restauracao">↳ Backup e Restauração</a>
+<a class="feSharedLink feSharedSubmenu" href="/?page=configurar-permissoes">↳ Configurar Permissões</a>
+<a class="feSharedLink feSharedGroup" href="/?page=admin-dashboard&amp;tab=permissoes">🔐 PERMISSÕES</a>
+<a class="feSharedLink feSharedGroup" href="/?page=admin-dashboard&amp;tab=usuarios">👥 USUÁRIOS CADASTRADOS</a>
+<a class="feSharedLink feSharedGroup" href="/?page=perfil">👤 MEU PERFIL</a>
+    </nav>
+  </aside>
+</div>
+<script id="fe-master-static-menu-v36">
+(function(){try{
+ var u=JSON.parse(localStorage.getItem('fe_user')||'null');
+ var role=String(u&&(u.categoria||u.tipo||u.role)||'').toUpperCase();
+ if(role!=='ADMINISTRADOR_MASTER')return;
+ var nav=document.getElementById('feMasterStaticNav');
+ var side=document.getElementById('feSharedSidebar');
+ if(!nav||!side)return;
+ nav.hidden=false;side.removeAttribute('aria-busy');
+ document.documentElement.classList.add('feMasterDesktop');
+ document.body.classList.remove('feSharedCollapsed','fe-admin-collapsed');
+ document.body.classList.add('feSharedLayout');
+ var current=new URL(location.href);
+ nav.querySelectorAll('a').forEach(function(a){
+  var dest=new URL(a.href,location.href);
+  var match=dest.searchParams.get('page')===current.searchParams.get('page') && (dest.searchParams.get('tab')||'')===(current.searchParams.get('tab')||'') && dest.hash===current.hash;
+  if(match && a.classList.contains('feSharedSubmenu'))a.setAttribute('aria-current','page');
+  else a.removeAttribute('aria-current');
+ });
+}catch(e){console.warn('Menu Master: nao foi possivel inicializar',e)}})();
+</script>
+
+<style id="fe-nav-accordion-style">
+#feMasterStaticNav .feSharedGroup.fe-has-children{position:relative;padding-right:36px!important}
+#feMasterStaticNav .feSharedGroup.fe-has-children .fe-accordion-toggle{position:absolute;right:0;top:0;bottom:0;width:34px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:inherit;cursor:pointer;font-size:15px;z-index:2}
+#feMasterStaticNav .feSharedSubmenu[hidden]{display:none!important}
+/* Controle antigo do rodapé: backup agora é exclusivo de CONFIGURAR → Backup e Restauração. */
+#feBackupManual,#feBackupStatus{display:none!important}
+</style>
+<script id="fe-nav-accordion-v41">
+(function(){
+function init(){
+ var nav=document.getElementById('feMasterStaticNav');if(!nav)return;
+ var groups=Array.from(nav.querySelectorAll('.feSharedGroup'));
+ var entries=groups.map(function(g){var children=[],n=g.nextElementSibling;while(n&&n.classList.contains('feSharedSubmenu')){children.push(n);n=n.nextElementSibling;}return {g:g,children:children};}).filter(function(e){return e.children.length});
+ var current=new URL(location.href);
+ function matches(a){var dest=new URL(a.href,location.href);return dest.searchParams.get('page')===current.searchParams.get('page')&&(dest.searchParams.get('tab')||'')===(current.searchParams.get('tab')||'')&&dest.hash===current.hash;}
+ function open(entry){entries.forEach(function(e){var on=e===entry;e.g.classList.toggle('fe-expanded',on);e.g.setAttribute('aria-expanded',String(on));var b=e.g.querySelector('.fe-accordion-toggle');if(b){b.textContent=on?'▾':'▸';b.setAttribute('aria-label',on?'Recolher submenus':'Expandir submenus');b.setAttribute('aria-expanded',String(on));}e.children.forEach(function(c){c.hidden=!on;});});}
+ entries.forEach(function(e){
+  e.g.classList.add('fe-has-children');e.g.setAttribute('aria-expanded','false');
+  e.children.forEach(function(c){c.hidden=true;});
+  // O nome do menu permanece um LINK para a tela principal. Somente a seta expande.
+  var toggle=document.createElement('button');toggle.type='button';toggle.className='fe-accordion-toggle';toggle.textContent='▸';toggle.setAttribute('aria-label','Expandir submenus');toggle.setAttribute('aria-expanded','false');
+  toggle.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();open(e.g.classList.contains('fe-expanded')?null:e);});
+  e.g.appendChild(toggle);
+ });
+ var active=entries.find(function(e){return e.children.some(matches);})||entries.find(function(e){return matches(e.g);});if(active)open(active);
+ // Não apagar nem tocar nos arquivos de backup: somente remover controles antigos da interface.
+ function cleanupOldBackup(){['feBackupManual','feBackupStatus'].forEach(function(id){var el=document.getElementById(id);if(el){var wrapper=el.closest('.fe-backup-footer');if(wrapper)wrapper.remove();else el.remove();}});}
+ cleanupOldBackup();window.addEventListener('load',cleanupOldBackup,{once:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<style id="fe-one-active-submenu">#feMasterStaticNav .feSharedSubmenu[aria-current="page"]{background:#2563eb!important;color:#fff!important}#feMasterStaticNav .feSharedSubmenu:not([aria-current="page"]){background:transparent!important}</style>

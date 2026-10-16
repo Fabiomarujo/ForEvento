@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<div class="hero"><h1>{{title or 'Painel'}}</h1><p>Selecione uma área.</p></div><div class="app-grid">{% for icon,name,url in cards %}<a class="app-card" href="{{url}}"><span>{{icon}}</span><b>{{name}}</b></a>{% endfor %}</div>{% endblock %}

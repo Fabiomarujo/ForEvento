@@ -1,0 +1,56 @@
+/* ForEvento: layout administrativo único nas páginas independentes. */
+/* A verificacao de acesso nao deve ocultar a pagina inteira. */
+body.feSharedLayout:not(:has(#feUnifiedHeader)){padding-left:240px!important;min-width:0}
+body.feSharedLayout header.top{height:70px;min-height:70px;position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;padding:0 24px 0 80px!important;width:100%;box-sizing:border-box;z-index:901;background:var(--titlebg,#fff)}
+body.feSharedLayout header.top>*{min-width:0}
+body.feSharedLayout header.top .brand{justify-self:center}
+body.feSharedLayout header.top .right{justify-self:end}
+#feSharedSidebar{position:fixed;top:70px;bottom:0;left:0;width:240px;box-sizing:border-box;background:var(--menuLateral,#172c4b);z-index:900;overflow-y:auto;padding:16px 10px;display:flex;flex-direction:column;gap:4px}
+#feSharedSidebar .feSharedLink{display:block;color:var(--textoMenuLateral,#fff);text-decoration:none;font:600 13px system-ui,Arial,sans-serif;padding:12px;border-radius:9px}
+#feSharedSidebar .feSharedLink:hover,#feSharedSidebar .feSharedLink[aria-current=page]{background:#2563eb;color:#fff}
+#feSharedToggle{position:absolute;left:16px;top:50%;transform:translateY(-50%);z-index:1002;background:#f1f5f9;color:#172b4d;border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px;cursor:pointer;font-size:14px;white-space:nowrap}
+body.feSharedLayout main.wrap{width:min(100%,1100px);max-width:1100px!important;margin:28px auto;padding:0 24px;box-sizing:border-box}
+body.feSharedLayout main:not(.wrap){max-width:100%;box-sizing:border-box}
+body.feSharedLayout.feSharedCollapsed{padding-left:0!important}
+body.feSharedLayout.feSharedCollapsed #feSharedSidebar{transform:translateX(-105%)}
+@media(max-width:800px){body.feSharedLayout{padding-left:0!important}body.feSharedLayout header.top{height:62px;min-height:62px;padding:0 12px 0 65px!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}body.feSharedLayout header.top .brand{font-size:20px}body.feSharedLayout header.top .user-name{font-size:12px}#feSharedSidebar{top:62px;transform:translateX(-105%);transition:transform .2s;width:min(280px,85vw)}#feSharedSidebar.feSharedOpen{transform:translateX(0)!important}#feSharedToggle{left:8px;padding:7px}body.feSharedLayout main.wrap{max-width:100%!important;margin:18px auto;padding:0 14px}}
+
+/* Padrão visual igual ao painel principal */
+body.feSharedLayout header.top.fe-unified-header{height:70px!important;min-height:70px!important;border-bottom:1px solid #dce5f0!important}
+body.feSharedLayout header.top .brand{font:800 25px system-ui,Arial,sans-serif!important;color:#0f172a!important}
+body.feSharedLayout header.top .user-name{font:500 14px system-ui,Arial,sans-serif!important}
+body.feSharedLayout header.top .right button{background:#f1f5f9!important;border:1px solid #dce5f0!important;border-radius:9px!important;padding:10px 15px!important}
+body.feSharedLayout #feSharedSidebar .feSharedLink{font:600 13px system-ui,Arial,sans-serif!important}
+body.feSharedLayout main.wrap{min-width:0!important}
+body.feSharedLayout .profile-name-label{display:block!important;margin-top:18px!important;clear:both!important}
+body.feSharedLayout small.muted:has(+ .profile-name-label){display:block!important;margin-top:9px!important}
+@media(max-width:800px){body.feSharedLayout header.top.fe-unified-header{height:62px!important;min-height:62px!important}body.feSharedLayout header.top .brand{font-size:19px!important}}
+
+/* Reinstalacao limpa: botao fixado no canto esquerdo da janela.
+   Evita o deslocamento do header e sobrepoe regras operacionais antigas. */
+body.feSharedLayout #feSharedToggle,
+body.fe-operational.feSharedLayout #feSharedToggle,
+body.feSharedDashboard #feSharedToggle,
+body.fe-operational.feSharedDashboard #feSharedToggle {
+ position:fixed!important;left:16px!important;top:16px!important;
+ transform:none!important;z-index:1205!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ width:38px!important;height:38px!important;box-sizing:border-box!important;
+ margin:0!important;padding:0!important;
+}
+@media(max-width:800px){
+ body.feSharedLayout #feSharedToggle,
+ body.fe-operational.feSharedLayout #feSharedToggle,
+ body.feSharedDashboard #feSharedToggle,
+ body.fe-operational.feSharedDashboard #feSharedToggle{left:8px!important;top:12px!important}
+}
+
+/* v33: espaço lateral presente desde o HTML inicial, antes do JS de permissões. */
+/* v34: o deslocamento do conteudo pertence exclusivamente a fe_shell_v25.css */
+body.painel-aberto #feShellSidebarSlot{display:none!important}
+#feSharedSidebar[aria-busy="true"]{display:flex!important;visibility:visible!important;opacity:1!important}
+#feSharedSidebar .fe-menu-v33-wait{color:var(--textoMenuLateral,#fff);font:500 13px system-ui,sans-serif;padding:12px;opacity:.8}
+@media(max-width:800px){body:has(#feShellSidebarSlot){padding-left:0!important}}
+
+/* v34: o shell unificado gerencia o conteudo, sem deslocamento duplo. */
+@media(min-width:801px){body.feSharedLayout:has(#feUnifiedHeader){padding-left:0!important}body.feSharedLayout:has(#feUnifiedHeader) #feShellContent{margin-left:var(--fe-shell-side,240px)!important}body.feSharedLayout.feSharedCollapsed:has(#feUnifiedHeader) #feShellContent{margin-left:0!important}}

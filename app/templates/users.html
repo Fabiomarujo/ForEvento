@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<h1>Usuários cadastrados</h1><p>Somente o Administrador Master altera a categoria. Todo cadastro público nasce como <b>Participante</b>.</p>
+<div class="tabs"><a href="/admin/usuarios?modo=ativos">🟢 Ativos</a><a href="/admin/usuarios?modo=desativados">🔴 Desativados</a></div>
+<table><tr><th>Nome</th><th>E-mail</th><th>Categoria</th><th>Status</th><th>Alterar categoria</th><th>Acesso</th></tr>
+{% for u in users %}<tr><td>{{u.name}}</td><td>{{u.email}}</td><td><b>{{u.role}}</b></td><td>{{u.access_status}}</td>
+<td><form method="post" action="/admin/usuarios/{{u.id}}/categoria"><select name="role">{% for r in ["Participante","Equipe Administrativa","Monitor","Coordenador","Ministrante","Extensionista"] %}<option {% if u.role==r %}selected{% endif %}>{{r}}</option>{% endfor %}</select><button class="primary">Salvar</button></form></td>
+<td><form method="post" action="/admin/usuarios/{{u.id}}/status">{% if u.access_status=="AUTORIZADO" %}<button class="danger" name="status" value="DESATIVADO">Desativar</button>{% else %}<button class="success" name="status" value="AUTORIZADO">Reativar</button>{% endif %}</form></td></tr>
+{% else %}<tr><td colspan="6">Nenhum usuário.</td></tr>{% endfor %}</table>{% endblock %}

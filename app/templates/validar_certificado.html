@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Validação de Certificado | ForEvento</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;padding:24px;display:flex;align-items:center;justify-content:center;font:15px Arial,Helvetica,sans-serif;background:#f1f5f9;color:#172033}
+    main{width:100%;max-width:760px;background:#fff;border:1px solid #dbe3ed;border-radius:14px;overflow:hidden;box-shadow:0 12px 34px #15233d15}
+    header{padding:24px 28px;background:#111c30;color:#fff}
+    h1{font-size:23px;margin:0 0 7px}header p{margin:0;color:#cbd5e1;font-size:13px}
+    .content{padding:26px}.status{padding:13px 15px;border-radius:8px;margin:0 0 18px;line-height:1.5;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+    .status.ok{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}.status.error{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+    label{display:block;margin-bottom:8px;font-weight:bold} .lookup{display:flex;gap:9px;margin-bottom:20px;flex-wrap:wrap}
+    input{flex:1;min-width:190px;padding:11px;border:1px solid #cbd5e1;border-radius:7px;font-size:15px}
+    button,.button{padding:11px 15px;border:0;border-radius:7px;background:#1d4ed8;color:#fff;cursor:pointer;font-weight:bold;text-decoration:none;display:inline-block}
+    button:disabled{opacity:.6;cursor:wait}.button.secondary,button.secondary{background:#e2e8f0;color:#1e293b}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .item{padding:12px;border:1px solid #e2e8f0;border-radius:8px;min-width:0}
+    .item .label{font-size:11px;font-weight:bold;text-transform:uppercase;color:#64748b;margin-bottom:7px}
+    .item .value{overflow-wrap:anywhere;line-height:1.5}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    [hidden]{display:none!important}@media(max-width:600px){body{padding:12px}.content{padding:18px}.grid{grid-template-columns:1fr}}
+  </style>
+
+<script>
+/* Compatibilidade google.script.run -> FastAPI.
+   Preserva success/failure handlers e chamadas diretas do Apps Script. */
+(function(){
+  function makeRun(state){
+    state=state||{ok:null,fail:null};
+    return new Proxy({}, {get:function(_t,prop){
+      if(prop==="withSuccessHandler") return function(fn){return makeRun({ok:fn,fail:state.fail});};
+      if(prop==="withFailureHandler") return function(fn){return makeRun({ok:state.ok,fail:fn});};
+      if(prop==="withUserObject") return function(){return makeRun(state);};
+      return function(){
+        var args=[].slice.call(arguments), ok=state.ok, fail=state.fail;
+        fetch("/api/call/"+encodeURIComponent(String(prop)),{
+          method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({args:args})
+        }).then(async function(resp){
+          var data=await resp.json();
+          if(!resp.ok||data.__error) throw new Error(data.__error||("HTTP "+resp.status));
+          if(ok) ok(data.result);
+        }).catch(function(err){if(fail) fail(err); else console.error("ForEvento:",prop,err);});
+      };
+    }});
+  }
+  window.google=window.google||{}; google.script=google.script||{};
+  Object.defineProperty(google.script,"run",{configurable:true,get:function(){return makeRun();}});
+})();
+</script>
+
+</head>
+<body>
+<main>
+  <header><h1>Validação de Certificado</h1><p>ForEvento — consulta pública de autenticidade</p></header>
+  <section class="content">
+    <div id="status" class="status" role="status" aria-live="polite">Preparando consulta...</div>
+    <form id="consulta" autocomplete="off">
+      <label for="codigo">Código da credencial</label>
+      <div class="lookup"><input id="codigo" name="codigo" type="text" maxlength="100" placeholder="Ex.: FE-2026-XXXXX" required><button id="consultar" type="submit">Consultar</button></div>
+    </form>
+    <div id="dados" class="grid" hidden></div>
+    <div id="acoes" class="actions" hidden></div>
+  </section>
+</main>
+<script>
+(function(){
+  'use strict';
+  var statusEl=document.getElementById('status');
+  var input=document.getElementById('codigo');
+  var button=document.getElementById('consultar');
+  var dados=document.getElementById('dados');
+  var acoes=document.getElementById('acoes');
+  var consulta=document.getElementById('consulta');
+  var codigoAtual='';
+  function status(texto,tipo){statusEl.className='status'+(tipo?' '+tipo:'');statusEl.textContent=texto;}
+  function campo(rotulo,valor){
+    var box=document.createElement('div');box.className='item';
+    var titulo=document.createElement('div');titulo.className='label';titulo.textContent=rotulo;
+    var conteudo=document.createElement('div');conteudo.className='value';conteudo.textContent=String(valor==null||valor===''?'Não informado':valor);
+    box.appendChild(titulo);box.appendChild(conteudo);dados.appendChild(box);
+  }
+  function acaoCopiar(rotulo,valor){
+    if(!valor)return;
+    var btn=document.createElement('button');btn.type='button';btn.className='secondary';btn.textContent=rotulo;
+    btn.addEventListener('click',function(){
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(valor).then(function(){btn.textContent='Copiado!';},function(){input.value=valor;input.select();});}
+      else{input.value=valor;input.select();try{document.execCommand('copy');btn.textContent='Copiado!';}catch(e){status('Selecione e copie o texto exibido no campo.');}}
+    });acoes.appendChild(btn);
+  }
+  function consultar(codigo){
+    codigo=String(codigo||'').trim().toUpperCase();
+    input.value=codigo;dados.hidden=true;acoes.hidden=true;dados.replaceChildren();acoes.replaceChildren();
+    if(!codigo){status('Informe o código da credencial para consultar.','error');return;}
+    if(!/^[A-Z0-9_-]{5,100}$/.test(codigo)){status('Código inválido. Confira os caracteres informados.','error');return;}
+    if(!window.google||!google.script||!google.script.run){status('Esta consulta deve ser aberta pelo endereço publicado do ForEvento.','error');return;}
+    codigoAtual=codigo;button.disabled=true;status('Consultando a autenticidade da credencial...');
+    google.script.run.withSuccessHandler(function(res){
+      button.disabled=false;
+      if(codigoAtual!==codigo)return;
+      if(!res||!res.sucesso||!res.certificado){status((res&&res.mensagem)||'Credencial não localizada ou ainda não publicada.','error');return;}
+      var c=res.certificado;
+      status('Credencial válida — ForEvento','ok');
+      [['Nome',c.nome],['Evento',c.evento],['Atividade',c.atividade],['Data',c.data],['Carga horária',c.cargaHoraria],['Código da credencial',c.codigo||codigo]].forEach(function(x){campo(x[0],x[1]);});
+      dados.hidden=false;
+      acaoCopiar('Copiar código',String(c.codigo||codigo));
+      // Use the published /exec address, not the iframe's googleusercontent URL.
+      if(window.google&&google.script&&google.script.url&&google.script.url.getLocation){
+        google.script.url.getLocation(function(loc){
+          if(codigoAtual!==codigo)return;
+          var base=loc&&loc.url?String(loc.url).split('?')[0]:'';
+          if(/^https:\/\/script\.google\.com\/macros\//.test(base))acaoCopiar('Copiar URL da credencial',base+'?pagina=validar-certificado&codigo='+encodeURIComponent(c.codigo||codigo));
+        });
+      }
+      if(/^https:\/\//i.test(String(c.urlPdf||''))){
+        var link=document.createElement('a');link.className='button';link.textContent='Abrir certificado';link.href=c.urlPdf;link.target='_blank';link.rel='noopener noreferrer';acoes.appendChild(link);
+      }
+      acoes.hidden=false;
+    }).withFailureHandler(function(erro){
+      button.disabled=false;if(codigoAtual!==codigo)return;
+      status('Não foi possível consultar a credencial: '+String(erro&&erro.message||erro||'erro desconhecido'),'error');
+    }).validarCredencialForEventoPublica(codigo);
+  }
+  consulta.addEventListener('submit',function(e){e.preventDefault();consultar(input.value);});
+  // In Apps Script, window.location may point to an embedded googleusercontent page.
+  // getLocation returns the original /exec query parameters reliably.
+  if(window.google&&google.script&&google.script.url&&google.script.url.getLocation){
+    google.script.url.getLocation(function(loc){
+      var codigo=loc&&loc.parameter&&loc.parameter.codigo||'';
+      if(!codigo){try{codigo=new URLSearchParams(window.location.search).get('codigo')||'';}catch(e){}}
+      if(codigo)consultar(codigo);else status('Informe o código da credencial para consultar.');
+    });
+  }else{
+    var codigo='';try{codigo=new URLSearchParams(window.location.search).get('codigo')||'';}catch(e){}
+    if(codigo)consultar(codigo);else status('Informe o código da credencial para consultar.');
+  }
+})();
+</script>
+</body>
+</html>

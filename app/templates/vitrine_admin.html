@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/css/app_new.css?v=20261008c">
+  <script src="/static/js/app_new.js?v=20261008c"></script>
+  <title>Vitrine</title>
+<style>
+/* Garantia local: a imagem original nunca controla a altura da linha administrativa. */
+#lista .banner-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;min-height:88px!important;height:auto!important;padding:9px 12px!important;gap:14px!important;border-bottom:1px solid #e2e8f0!important;overflow:hidden!important}
+#lista .banner-row-main{display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important;height:72px!important}
+#lista img.banner-list-thumb{display:block!important;width:112px!important;height:68px!important;min-width:112px!important;max-width:112px!important;min-height:68px!important;max-height:68px!important;object-fit:contain!important;object-position:center!important;background:#f8fafc!important;border:1px solid #e2e8f0!important;border-radius:9px!important;margin:0!important;padding:0!important}
+#lista .banner-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;flex-wrap:nowrap!important}
+@media(max-width:760px){ #lista .banner-row{grid-template-columns:1fr!important}#lista .banner-row-main{height:64px!important}#lista img.banner-list-thumb{width:96px!important;height:60px!important;min-width:96px!important;max-width:96px!important;min-height:60px!important;max-height:60px!important}#lista .banner-actions{justify-content:flex-start!important;flex-wrap:wrap!important}}
+</style><link rel="stylesheet" href="/static/css/admin_menu_central.css?v=20261011-clean"><script defer src="/static/js/admin_menu_central.js?v=20261011-36"></script><link rel="stylesheet" href="/static/css/operational_theme.css?v=20261009-fix2"><script defer src="/static/js/operational_theme.js?v=20261011-26"></script><link rel="stylesheet" href="/static/css/operational_navigation_v3.css?v=20261009-v3"><link rel="stylesheet" href="/api/appearance.css"><link rel="stylesheet" href="/static/css/fe_shell_v25.css?v=20261011-25"><script defer src="/static/js/fe_shell_v25.js?v=20261011-35"></script><script id="fe-access-preload-v27">(function(){
+try {
+  var page=new URLSearchParams(location.search).get('page')||'';
+  if(!page && /\/(admin-dashboard|equipe-dashboard)$/.test(location.pathname))page='admin-dashboard';
+  var pages=['admin-dashboard','equipe-dashboard','cronograma-lista','configurar','financeiro-auditoria','reembolso','perfil','vitrine-admin','certificados-modelos','certificados-configurar','certificados-gerar'];
+  if(pages.indexOf(page)<0)return;
+  var u=JSON.parse(localStorage.getItem('fe_user')||'null');
+  if(page==='perfil' && String((u&& (u.tipo||u.role))||'').toUpperCase()==='PARTICIPANTE')return;
+  var token=localStorage.getItem('fe_token');if(!token||window.feAdminAccessPromise)return;
+  window.feAdminAccessPromise=fetch('/api/admin/acesso',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token}),cache:'no-store'})
+    .then(function(r){if(!r.ok)throw Error('Sessão expirada ou sem autorização');return r.json()})
+    .then(function(d){if(!d.sucesso)throw Error(d.mensagem||'Acesso negado');return d})
+    .catch(function(e){window.feAdminAccessPromise=null;throw e});
+} catch(e) { /* O controlador normal tratará a autenticação. */ }
+})();</script>
+<script id="fe-master-desktop-v35">(function(){try{var u=JSON.parse(localStorage.getItem('fe_user')||'null');if(String(u?.categoria||u?.tipo||u?.role||'').toUpperCase()==='ADMINISTRADOR_MASTER')document.documentElement.classList.add('feMasterDesktop')}catch(_){}})();</script><link rel="stylesheet" href="/static/css/fe_master_desktop_v35.css?v=37"><link rel="stylesheet" href="/static/css/fe_menu_padrao_v017.css?v=017"></head>
+<body>
+{% include 'partials/fe_header_shared.html' %}{% include 'partials/fe_shell_sidebar_slot.html' %}
+{% include 'partials/fe_shell_content_open.html' %}<main class="wrap">
+  <h1>Vitrine</h1>
+
+  <section class="card">
+    <input type="hidden" id="bid">
+    <label>Nome do banner</label>
+    <input class="field" id="nome">
+
+    <label>Imagem</label>
+    <div class="toolbar">
+      <label class="btn" for="img">📁 Buscar em Arquivos</label>
+      <input id="img" type="file" accept="image/*" hidden>
+      <label class="btn" for="camera">📷 Tirar Foto Agora</label>
+      <input id="camera" type="file" accept="image/*" capture="environment" hidden>
+    </div>
+    <small class="muted">Tratamento automático: redução proporcional, sem cortes e compressão para web. A imagem se adapta ao computador e ao celular.</small>
+
+    <div id="previewWrap" class="banner-preview-wrap" hidden>
+      <img id="previewBanner" class="banner-admin-preview" alt="Prévia do banner">
+      <div id="imageInfo" class="image-info"></div>
+    </div>
+
+    <label>Título</label>
+    <input class="field" id="titulo">
+    <label>Sinopse</label>
+    <textarea class="field" id="sinopse"></textarea>
+    <div class="banner-date-fields" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px">
+      <div><label for="dataPublicacao">Data da publicação</label><input class="field" type="date" id="dataPublicacao"></div>
+      <div><label for="dataTermino">Data término da publicação</label><input class="field" type="date" id="dataTermino"></div>
+    </div>
+    <small class="muted">Datas opcionais. Sem datas, o banner ativo permanece publicado. O período usa o horário de Brasília.</small>
+    <label>Status</label>
+    <select class="field" id="status"><option>ATIVO</option><option>INATIVO</option></select>
+    <div class="toolbar mt">
+      <button class="btn blue" id="btnSalvar" type="button">Salvar banner</button>
+      <button class="btn" id="cancelEdit" type="button" hidden>Cancelar alteração</button>
+    </div>
+  </section>
+
+  <section class="card mt">
+    <h2>Banners cadastrados</h2>
+    <p class="muted">Esta lista é carregada diretamente dos banners cadastrados. Use ↑ e ↓ para mudar a ordem de apresentação.</p>
+    <div id="lista"><div class="muted">Carregando banners...</div></div>
+  </section>
+</main>{% include 'partials/fe_shell_content_close.html' %}
+<script>
+(() => {
+  let imagem = '';
+  let cache = [];
+  const $ = id => document.getElementById(id);
+  const el = {
+    bid:$('bid'), nome:$('nome'), img:$('img'), camera:$('camera'), previewWrap:$('previewWrap'),
+    preview:$('previewBanner'), imageInfo:$('imageInfo'), titulo:$('titulo'), sinopse:$('sinopse'),
+    status:$('status'), dataPublicacao:$('dataPublicacao'), dataTermino:$('dataTermino'), lista:$('lista'), cancelEdit:$('cancelEdit'), btnSalvar:$('btnSalvar')
+  };
+
+  function dataBytes(data){
+    if (!data || !String(data).startsWith('data:')) return 0;
+    const comma = data.indexOf(',');
+    return comma < 0 ? 0 : Math.round((data.length - comma - 1) * 3 / 4);
+  }
+
+  function mostrarPreview(src, info=''){
+    if (!src){ ocultarPreview(); return; }
+    el.preview.src = src;
+    el.previewWrap.hidden = false;
+    el.imageInfo.textContent = info;
+  }
+  function ocultarPreview(){
+    el.preview.removeAttribute('src');
+    el.previewWrap.hidden = true;
+    el.imageInfo.textContent = '';
+  }
+
+  function otimizar(file){
+    return new Promise((resolve,reject) => {
+      const reader = new FileReader();
+      const image = new Image();
+      reader.onerror = () => reject(new Error('Não foi possível ler a imagem selecionada.'));
+      image.onerror = () => reject(new Error('O arquivo selecionado não pôde ser aberto como imagem.'));
+      reader.onload = () => { image.src = reader.result; };
+      image.onload = () => {
+        try {
+          const MAX_W=1200, MAX_H=900;
+          const scale=Math.min(1, MAX_W/image.naturalWidth, MAX_H/image.naturalHeight);
+          const W=Math.max(1,Math.round(image.naturalWidth*scale));
+          const H=Math.max(1,Math.round(image.naturalHeight*scale));
+          const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+          canvas.getContext('2d').drawImage(image,0,0,W,H);
+          let quality=.82, data=canvas.toDataURL('image/webp',quality);
+          while(dataBytes(data)>550000 && quality>.55){ quality-=.07; data=canvas.toDataURL('image/webp',quality); }
+          resolve(data);
+        } catch(e){ reject(e); }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function usarArquivo(file){
+    if(!file) return;
+    try{
+      mostrarPreview(URL.createObjectURL(file),'Preparando imagem...');
+      imagem = await otimizar(file);
+      const im=new Image(); im.onload=()=>mostrarPreview(imagem,`Imagem otimizada: ${im.naturalWidth} × ${im.naturalHeight} • ${Math.round(dataBytes(imagem)/1024)} KB • sem cortes`); im.src=imagem;
+    }catch(e){
+      imagem=''; ocultarPreview();
+      alert(e.message || 'Não foi possível carregar a imagem.');
+    }
+  }
+
+  function limpar(){
+    el.bid.value=''; el.nome.value=''; el.titulo.value=''; el.sinopse.value=''; el.status.value='ATIVO'; el.dataPublicacao.value=''; el.dataTermino.value='';
+    el.img.value=''; el.camera.value=''; imagem=''; ocultarPreview(); el.cancelEdit.hidden=true;
+  }
+
+  async function salvar(){
+    try{
+      el.btnSalvar.disabled=true;
+      if(el.dataPublicacao.value && el.dataTermino.value && el.dataPublicacao.value>el.dataTermino.value){ alert('A data de término deve ser igual ou posterior à data de publicação.');return; }
+      const r=await call('salvarBannerVitrine',{dataPublicacao:el.dataPublicacao.value,dataTermino:el.dataTermino.value,id:el.bid.value,nome:el.nome.value,imagem,titulo:el.titulo.value,sinopse:el.sinopse.value,status:el.status.value});
+      alert(r.mensagem || (r.sucesso?'Banner salvo.':'Não foi possível salvar o banner.'));
+      if(r.sucesso){ limpar(); await carregar(); }
+    }catch(e){ alert('Erro ao salvar banner: '+e.message); }
+    finally{ el.btnSalvar.disabled=false; }
+  }
+
+  function editar(id){
+    const x=cache.find(v=>String(v.id)===String(id)); if(!x)return;
+    el.bid.value=x.id; el.nome.value=x.name||''; el.titulo.value=x.title||''; el.sinopse.value=x.synopsis||''; el.status.value=x.status||'ATIVO'; el.dataPublicacao.value=x.publish_date||''; el.dataTermino.value=x.end_date||'';
+    imagem=x.image||'';
+    if(imagem){
+      const kb=dataBytes(imagem); mostrarPreview(imagem,kb?`Imagem atual • ${Math.round(kb/1024)} KB`:'Imagem atual cadastrada');
+    } else ocultarPreview();
+    el.cancelEdit.hidden=false; window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function visualizar(id){
+    const x=cache.find(v=>String(v.id)===String(id)); if(!x)return;
+    const w=window.open('','_blank'); if(!w)return;
+    w.document.write(`<title>${x.title||x.name||'Banner'}</title>${x.image?`<img style="max-width:100%" src="${x.image}">`:''}<h1>${x.title||x.name||''}</h1><p>${x.synopsis||''}</p>`);
+  }
+
+  async function mover(id,direcao){
+    try{ await call('moverBannerVitrine',{id,direcao}); await carregar(); }
+    catch(e){ alert('Erro ao alterar a ordem: '+e.message); }
+  }
+
+  async function excluir(id){
+    if(!confirm('Excluir banner?')) return;
+    try{ const r=await call('excluirBannerVitrine',id); if(r?.mensagem) alert(r.mensagem); await carregar(); }
+    catch(e){ alert('Erro ao excluir banner: '+e.message); }
+  }
+
+  async function carregar(){
+    el.lista.innerHTML='<div class="muted">Carregando banners...</div>';
+    try{
+      const dados=await call('listarBannersVitrine');
+      cache=Array.isArray(dados)?dados:[];
+      if(!cache.length){ el.lista.innerHTML='<div class="banner-list-empty">Nenhum banner cadastrado.</div>'; return; }
+      el.lista.innerHTML=cache.map((x,i)=>`<div class="banner-row">
+        <div class="banner-row-main">${x.image?`<img class="banner-list-thumb" src="${x.image}" alt="">`:''}<div><b>${i+1}. ${x.title||x.name||'Banner sem título'}</b><div class="muted">${x.status||'ATIVO'} • ${x.publish_date||'Sem início'} até ${x.end_date||'Sem término'}</div></div></div>
+        <div class="banner-actions">
+          <button class="btn" type="button" data-act="view" data-id="${x.id}">👁</button>
+          <button class="btn" type="button" data-act="edit" data-id="${x.id}">✏️ Alterar</button>
+          <button class="btn" type="button" data-act="up" data-id="${x.id}" ${i===0?'disabled':''}>↑</button>
+          <button class="btn" type="button" data-act="down" data-id="${x.id}" ${i===cache.length-1?'disabled':''}>↓</button>
+          <button class="btn" type="button" data-act="delete" data-id="${x.id}">Excluir</button>
+        </div></div>`).join('');
+    }catch(e){
+      cache=[];
+      el.lista.innerHTML=`<div class="banner-list-error">Não foi possível carregar a lista de banners. <button class="btn" type="button" id="retryBanners">Tentar novamente</button><div class="muted">${e.message||''}</div></div>`;
+      $('retryBanners')?.addEventListener('click',carregar);
+    }
+  }
+
+  el.img.addEventListener('change',()=>usarArquivo(el.img.files?.[0]));
+  el.camera.addEventListener('change',()=>usarArquivo(el.camera.files?.[0]));
+  el.btnSalvar.addEventListener('click',salvar);
+  el.cancelEdit.addEventListener('click',limpar);
+  el.lista.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b)return;
+    const {act,id}=b.dataset;
+    if(act==='view') visualizar(id); else if(act==='edit') editar(id); else if(act==='up') mover(id,'UP'); else if(act==='down') mover(id,'DOWN'); else if(act==='delete') excluir(id);
+  });
+
+  // A listagem é independente do formulário e sempre é carregada ao abrir a tela.
+  carregar();
+})();
+</script>
+{% include 'partials/fe_shell_footer.html' %}</body></html>

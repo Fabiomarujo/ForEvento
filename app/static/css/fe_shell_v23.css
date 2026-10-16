@@ -1,0 +1,30 @@
+/* ForEvento v23: four-region shell. One header, one sidebar, one body, one footer. */
+:root{--fe-shell-h:60px;--fe-shell-foot:28px;--fe-shell-side:240px}
+html,body{max-width:100%;overflow-x:clip}
+body:has(#feUnifiedHeader){box-sizing:border-box!important;min-height:100vh!important;padding-top:var(--fe-shell-h)!important;padding-bottom:var(--fe-shell-foot)!important}
+body:has(#feUnifiedHeader) #feUnifiedHeader{position:fixed!important;inset:0 0 auto 0!important;top:0!important;left:0!important;right:0!important;margin:0!important;width:100%!important;max-width:100%!important;height:var(--fe-shell-h)!important;min-height:var(--fe-shell-h)!important;box-sizing:border-box!important;padding:0 16px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;background:var(--fe-cor-cabecalho,var(--op-header-bg,var(--cabecalho,#0f172a)))!important;color:var(--fe-cor-texto-cabecalho,var(--op-header-text,var(--textoCabecalho,#fff)))!important;z-index:1300!important;transform:none!important}
+#feUnifiedHeader .fe-header-left{display:flex;align-items:center;gap:12px;min-width:0}#feUnifiedHeader #feHeaderGreeting{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#feUnifiedHeader .fe-header-title{font-size:21px;font-weight:800;justify-self:center;white-space:nowrap;color:inherit!important}#feUnifiedHeader .fe-header-right{justify-self:end}#feUnifiedHeader button{position:static!important;inset:auto!important;transform:none!important;display:inline-flex!important;align-items:center;justify-content:center;min-height:36px;border:0;background:transparent;color:inherit;cursor:pointer;padding:7px 10px;font:inherit}
+/* Main column and sidebar start below header; footer spans the entire viewport. */
+body.feSharedLayout:has(#feUnifiedHeader){padding-left:0!important}
+body.feSharedLayout:has(#feUnifiedHeader) #feShellContent{margin-left:var(--fe-shell-side)!important;min-width:0!important;box-sizing:border-box!important;width:auto!important;max-width:none!important;padding:0!important}
+body.feSharedLayout.feSharedCollapsed:has(#feUnifiedHeader) #feShellContent{margin-left:0!important}
+body:has(#feUnifiedHeader) #feShellContent main.wrap{max-width:1100px!important;margin:28px auto!important;padding:0 24px!important}
+body:has(#feUnifiedHeader) #feShellFooter{position:fixed!important;inset:auto 0 0 0!important;width:100%!important;height:var(--fe-shell-foot)!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:1350!important;margin:0!important;background:var(--fe-cor-cabecalho,var(--op-header-bg,var(--cabecalho,#0f172a)))!important;color:var(--fe-cor-texto-cabecalho,var(--op-header-text,var(--textoCabecalho,#fff)))!important;font-size:11px!important}
+body:has(#feUnifiedHeader) #feShellSidebarSlot{display:contents}
+body:has(#feUnifiedHeader) #feSharedSidebar{position:fixed!important;top:var(--fe-shell-h)!important;bottom:var(--fe-shell-foot)!important;left:0!important;width:var(--fe-shell-side)!important;z-index:1200!important;overflow-y:auto!important;background:var(--menuLateral,var(--fe-cor-menu-lateral,#0f172a))!important;color:var(--textoMenuLateral,var(--fe-cor-texto-menu-lateral,#fff))!important;box-sizing:border-box!important}
+body:has(#feUnifiedHeader) #feSidebar{box-sizing:border-box!important;min-height:0!important;overflow-y:auto!important;background:var(--menuLateral,var(--fe-cor-menu-lateral,#0f172a))!important;color:var(--textoMenuLateral,var(--fe-cor-texto-menu-lateral,#fff))!important}
+body:has(#feUnifiedHeader) #feSharedToggle,body:has(#feUnifiedHeader) #feMenuMobile{display:none!important}
+body:has(#feUnifiedHeader) .admin-layout-wrapper{min-height:calc(100vh - var(--fe-shell-h) - var(--fe-shell-foot))!important}
+/* All menu groups have the same separation, shape, hover and active appearance. */
+body:has(#feUnifiedHeader) #feSharedSidebar .feSharedGroup{border-top:1px solid rgba(255,255,255,.22)!important;border-radius:9px 9px 0 0!important;margin-top:10px!important;padding-top:16px!important}
+body:has(#feUnifiedHeader) #feSharedSidebar .feSharedGroup:first-child{border-top:0!important;margin-top:0!important;padding-top:12px!important}
+body:has(#feUnifiedHeader) #feSharedSidebar .feSharedLink{color:inherit!important;font:600 13px system-ui,Arial,sans-serif!important;min-height:36px;box-sizing:border-box}
+body:has(#feUnifiedHeader) #feSharedSidebar .feSharedSubmenu{padding-left:24px!important}
+body:has(#feUnifiedHeader) #feSharedSidebar .feSharedLink[aria-current="page"],body:has(#feUnifiedHeader) #feSharedSidebar .feSharedLink:hover{background:var(--fe-menu-active,#2563eb)!important;color:var(--fe-menu-active-text,#fff)!important;border-radius:9px!important}
+body:has(#feUnifiedHeader) #feSidebar .fe-menu-group{border-top:1px solid rgba(255,255,255,.22)!important;border-radius:9px 9px 0 0!important;margin-top:10px!important;padding-top:16px!important}
+body:has(#feUnifiedHeader) #feSidebar .aba-item-lateral{color:inherit!important}
+body:has(#feUnifiedHeader) #feSidebar .aba-item-lateral.active,body:has(#feUnifiedHeader) #feSidebar .aba-item-lateral:hover{background:var(--fe-menu-active,#2563eb)!important;color:var(--fe-menu-active-text,#fff)!important}
+/* Dashboard sidebar and content remain above footer; don't change functional event markup. */
+body:has(#feUnifiedHeader) #feSidebar{max-height:calc(100vh - var(--fe-shell-h) - var(--fe-shell-foot))!important}
+@media(max-width:800px){body.feSharedLayout:has(#feUnifiedHeader) #feShellContent{margin-left:0!important}body:has(#feUnifiedHeader) #feSharedSidebar{width:min(280px,85vw)!important}body:has(#feUnifiedHeader) #feUnifiedHeader{padding:0 8px!important}#feUnifiedHeader #feHeaderGreeting{max-width:100px;font-size:12px}#feUnifiedHeader .fe-header-title{font-size:18px}#feUnifiedHeader button{padding:6px!important}body:has(#feUnifiedHeader) #feShellContent main.wrap{padding:0 14px!important}}
+@media(max-width:390px){#feUnifiedHeader #feHeaderGreeting{display:none}}

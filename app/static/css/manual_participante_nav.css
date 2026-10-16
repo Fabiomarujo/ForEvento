@@ -1,0 +1,10 @@
+.fe-manual-participant .fe-vitrine-header{display:flex;align-items:center;gap:18px;padding:14px 28px;background:white}
+#manualParticipantMenu{border:1px solid #dbe3ef;background:#f8fafc;border-radius:9px;padding:10px 13px;cursor:pointer}
+.manual-participant-greeting{font-size:13px;color:#52627b}.manual-participant-brand{position:absolute;left:50%;transform:translateX(-50%);font-size:23px;color:#142944}
+.manual-participant-return{margin-left:auto;text-decoration:none;color:#1d4ed8;font-weight:700}
+.manual-participant-drawer{position:fixed;z-index:110;top:0;bottom:0;left:0;width:min(290px,85vw);background:#152a48;color:white;transform:translateX(-110%);transition:transform .2s;padding:34px 18px;box-shadow:5px 0 25px #0002}
+.manual-participant-drawer.open{transform:translateX(0)}.manual-participant-drawer nav{display:grid;gap:8px;margin-top:26px}.manual-participant-drawer a{color:white;text-decoration:none;padding:13px;border-radius:9px}.manual-participant-drawer a:hover{background:#ffffff20}
+.manual-participant-shade:not([hidden]){position:fixed;inset:0;background:#0008;z-index:109}
+@media(max-width:650px){.manual-participant-greeting{display:none}.manual-participant-brand{font-size:18px}.manual-participant-return{font-size:12px}.fe-manual-participant .fe-vitrine-header{padding:12px}}
+
+.fe-manual-participant .manual-participant-return{border:1px solid #dbe3ef;border-radius:9px;padding:10px 17px;background:#f8fafc;color:#10233f;cursor:pointer;font:inherit;font-weight:700}

@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<form class="panel form" method="post"><h1>Esqueceu a senha?</h1><p>Informe seu e-mail.</p>{% if message %}<div class="notice">{{message}}</div>{% endif %}<label>E-mail<input name="email" type="email" required></label><button class="primary wide">Continuar</button><a href="/login">Voltar ao Login</a></form>{% endblock %}

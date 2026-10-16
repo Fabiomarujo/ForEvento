@@ -1,0 +1,8 @@
+(function(){'use strict';function init(){const header=document.getElementById('feUnifiedHeader');if(!header)return;const button=document.getElementById('feHeaderMenuButton'),g=document.getElementById('feHeaderGreeting'),out=document.getElementById('feHeaderExit');try{const u=typeof user==='function'?user():JSON.parse(localStorage.getItem('fe_user')||'null');if(u&&u.nome)g.textContent='Olá, '+String(u.nome).trim().split(/\s+/)[0]}catch(e){}
+// Shared sidebar is generated after access check; move only the existing instance.
+const slot=document.getElementById('feShellSidebarSlot');const moveSidebar=()=>{const sidebar=document.getElementById('feSharedSidebar');if(sidebar&&slot&&sidebar.parentElement!==slot)slot.appendChild(sidebar)};moveSidebar();const obs=new MutationObserver(()=>{if(document.getElementById('feSharedSidebar')){moveSidebar();obs.disconnect()}});if(!document.getElementById('feSharedSidebar'))obs.observe(document.body,{childList:true});
+button.addEventListener('click',()=>{const admin=document.getElementById('feSidebar');if(admin&&typeof window.feToggleSidebar==='function'){window.feToggleSidebar();return}const old=document.getElementById('feSharedToggle');if(old){old.click();return}const side=document.getElementById('feSharedSidebar');if(side)side.classList.toggle('feSharedOpen')});
+out.addEventListener('click',()=>{if(typeof window.feLogout==='function')window.feLogout();else if(typeof window.logout==='function')window.logout();else location.href='/login'});
+// The dashboard retains its original menu with the functional Backup and Manual buttons.
+// Do not clone these buttons: their handlers are defined in admin.html.
+}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();

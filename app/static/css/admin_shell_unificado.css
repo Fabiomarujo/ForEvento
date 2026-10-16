@@ -1,0 +1,15 @@
+/* ForEvento — apresentação administrativa unificada. Nenhuma regra de negócio é modificada. */
+:root{--fe-header-height:70px;--fe-menu-width:240px}
+body.painel-aberto .navbar{height:var(--fe-header-height)!important;min-height:var(--fe-header-height)!important;box-sizing:border-box!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;gap:0!important;padding:0 24px 0 80px!important;position:relative!important;background:var(--titlebg,#fff);border-bottom:1px solid #dce5f0}
+body.painel-aberto .navbar #feNomeTopo{justify-self:start;white-space:nowrap;font:500 14px system-ui,Arial,sans-serif!important}
+body.painel-aberto .navbar .logo{justify-self:center!important;white-space:nowrap;font:800 25px system-ui,Arial,sans-serif!important;color:#0f172a}
+body.painel-aberto .navbar .fe-shell-exit{justify-self:end!important;background:#f1f5f9!important;border:1px solid #dce5f0!important;border-radius:9px!important;padding:10px 15px!important;font:500 13px system-ui,Arial,sans-serif!important;cursor:pointer}
+body.painel-aberto #feMenuMobile{display:block!important;position:absolute!important;left:16px!important;top:50%!important;transform:translateY(-50%)!important;background:#f1f5f9!important;color:#172b4d!important;border:1px solid #cbd5e1!important;border-radius:8px!important;padding:8px 10px!important;z-index:1002!important;font-size:14px!important}
+body.painel-aberto .admin-layout-wrapper{min-height:calc(100vh - var(--fe-header-height))!important}
+body.painel-aberto #feSidebar{width:var(--fe-menu-width)!important;min-width:var(--fe-menu-width)!important;box-sizing:border-box!important;background:var(--menuLateral,#172c4b);padding:16px 10px!important;overflow-y:auto!important;justify-content:flex-start!important}
+body.painel-aberto #feSidebar .aba-item-lateral{font:600 13px system-ui,Arial,sans-serif!important;padding:12px!important;text-align:left!important;border-radius:9px!important;min-height:0!important}
+body.painel-aberto #feSidebar .aba-item-lateral.fe-menu-group{margin-top:8px!important;padding-top:16px!important;border-top:1px solid rgba(255,255,255,.20)!important}
+body.painel-aberto .admin-conteudo-dinamico{min-width:0!important;box-sizing:border-box!important}
+body.painel-aberto.fe-admin-collapsed #feSidebar{display:none!important}
+body.painel-aberto.fe-admin-collapsed .admin-conteudo-dinamico{width:100%!important}
+@media(max-width:760px){body.painel-aberto .navbar{height:62px!important;min-height:62px!important;padding:0 12px 0 65px!important}body.painel-aberto .navbar .logo{font-size:19px!important}body.painel-aberto .navbar #feNomeTopo{font-size:11px!important}body.painel-aberto #feMenuMobile{left:8px!important}body.painel-aberto #feSidebar{position:fixed!important;top:62px!important;bottom:0!important;left:0!important;z-index:1000!important;transform:translateX(-105%);display:flex!important}body.painel-aberto #feSidebar.fe-open{transform:translateX(0)!important}body.painel-aberto .admin-conteudo-dinamico{padding:14px!important}}

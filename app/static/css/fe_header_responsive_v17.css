@@ -1,0 +1,91 @@
+/* ForEvento v19 - cabecalho operacional: mesma geometria da tela EVENTO.
+   Substitui a folha v17, nao empilha mais um CSS. Sem alteracoes em Master/Participante. */
+:root{--fe17-header-h:70px;--fe17-side-w:240px}
+/* A coluna de conteudo continua deslocada pelo menu, mas o cabecalho NAO. */
+body.fe-operational.feSharedLayout:not(.feSharedDashboard){
+ --fe-op-height:var(--fe17-header-h);--fe-op-width:var(--fe17-side-w);
+ padding-top:var(--fe17-header-h)!important;
+ box-sizing:border-box!important;overflow-x:clip;
+}
+/* Ancoragem no viewport: elimina margin-left -240px, left -240px e width 100vw
+   das folhas antigas. Inclui estado expandido/recolhido. */
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top,
+body.fe-operational.feSharedLayout.feSharedCollapsed:not(.feSharedDashboard) header.top,
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top.fe-unified-header{
+ position:fixed!important;inset:0 0 auto 0!important;
+ top:0!important;left:0!important;right:0!important;
+ margin:0!important;transform:none!important;
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ height:var(--fe17-header-h)!important;min-height:var(--fe17-header-h)!important;
+ box-sizing:border-box!important;z-index:950!important;
+ display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+ align-items:center!important;gap:0!important;padding:0 24px 0 80px!important;
+ background:var(--op-header-bg,var(--fe17-header-color,var(--titlebg,#fff)))!important;
+ color:var(--op-header-text,var(--fe17-header-text,#172b4d))!important;
+ border-bottom:1px solid var(--op-divider,#dce5f0)!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top .user-name{
+ grid-column:1!important;justify-self:start!important;min-width:0!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+ color:var(--op-header-text,var(--fe17-header-text,#172b4d))!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top .brand{
+ grid-column:2!important;justify-self:center!important;text-align:center!important;
+ margin:0!important;min-width:0!important;
+ color:var(--op-header-text,var(--fe17-header-text,#172b4d))!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top .right{
+ grid-column:3!important;justify-self:end!important;min-width:0!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedToggle{
+ position:fixed!important;top:16px!important;left:16px!important;transform:none!important;
+ width:38px!important;height:38px!important;margin:0!important;padding:0!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ z-index:1205!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedSidebar{
+ top:var(--fe17-header-h)!important;
+ background:var(--op-sidebar-bg,var(--fe17-sidebar-color,#172c4b))!important;
+ color:var(--op-sidebar-text,var(--fe17-sidebar-text,#fff))!important;
+}
+/* Mesma hierarquia visual do menu da tela EVENTO, sem fixar cores de tema. */
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedSidebar .feSharedGroup{
+ margin-top:8px!important;border-top:1px solid var(--op-divider,rgba(255,255,255,.2))!important;
+ border-radius:9px 9px 0 0!important;padding-top:15px!important;font-weight:700!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedSidebar .feSharedSubmenu{
+ border-radius:8px!important;margin-left:0!important;
+}
+body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedSidebar .feSharedLink[aria-current=page]{
+ background:var(--op-active-bg,#3979e8)!important;color:var(--op-active-text,#fff)!important;
+}
+@media(max-width:800px){
+ :root{--fe17-header-h:62px}
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard){padding-left:0!important}
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top,
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top.fe-unified-header{
+  padding:0 65px 0 60px!important;
+ }
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top .user-name{
+  max-width:20vw!important;font-size:11px!important;
+ }
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedToggle{
+  top:12px!important;left:8px!important;
+ }
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedSidebar{
+  width:min(280px,85vw)!important;transform:translateX(-105%)!important;
+ }
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) #feSharedSidebar.feSharedOpen{
+  transform:translateX(0)!important;
+ }
+}
+@media(max-width:480px){
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top,
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top.fe-unified-header{
+  padding:0 60px 0 52px!important;
+ }
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top .brand{font-size:17px!important}
+ body.fe-operational.feSharedLayout:not(.feSharedDashboard) header.top .right button{
+  padding:7px 9px!important;font-size:12px!important;
+ }
+}

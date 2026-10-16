@@ -1,0 +1,33 @@
+/* ForEvento - ajuste incremental da barra administrativa.
+   Cores: aproveita variaveis existentes do tema operacional, sem gravar valores no banco.
+   As cores sao definidas na area Configuracao. */
+#feSidebar.admin-sidebar-fixa {
+  box-sizing:border-box !important;
+  height:calc(100dvh - 60px) !important;
+  max-height:calc(100dvh - 60px) !important;
+  position:sticky !important;
+  top:60px !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--sidebar-text, #94a3b8) transparent;
+  background-color:var(--sidebar-bg, #0f172a) !important;
+  color:var(--sidebar-text, #ffffff);
+  justify-content:flex-start !important;
+}
+#feSidebar .fe-menu-group {
+  border-top:1px solid currentColor !important;
+  border-radius:0 !important;
+  margin-top:9px !important;
+  padding-top:12px !important;
+  box-shadow:none !important;
+}
+#feSidebar .aba-item-lateral {box-sizing:border-box;flex-shrink:0;max-width:100%;}
+#feSidebar .aba-item-lateral:not(.fe-menu-group) {color:var(--submenu-text, inherit);}
+#feSidebar > div:last-child {margin-top:auto;flex-shrink:0;}
+#feSidebar::-webkit-scrollbar {width:8px;}
+#feSidebar::-webkit-scrollbar-thumb {background:color-mix(in srgb,currentColor 38%,transparent);border-radius:9px;}
+@media(max-width:760px){
+ #feSidebar.admin-sidebar-fixa{position:fixed !important;top:60px !important;bottom:0 !important;height:calc(100dvh - 60px) !important;max-height:none !important;}
+}

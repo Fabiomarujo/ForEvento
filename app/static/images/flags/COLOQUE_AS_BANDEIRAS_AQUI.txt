@@ -1,0 +1,1 @@
+Use: pt.png, en.png, es.png, fr.png, it.png, zh.png

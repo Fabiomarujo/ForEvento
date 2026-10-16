@@ -1,0 +1,54 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Backup e Restauração | ForEvento</title>
+<style>body{font-family:Arial,sans-serif;background:#f3f6fb;color:#111827;margin:0}header{background:#0f172a;color:white;padding:18px 6%;display:flex;justify-content:space-between}main{max-width:960px;margin:28px auto;padding:0 20px}.panel{background:white;border:1px solid #dbe2ed;border-radius:12px;padding:22px;margin:16px 0}button,select,input{padding:11px;border:1px solid #cbd5e1;border-radius:7px}button{background:#2563eb;color:white;cursor:pointer}button:disabled{opacity:.5}.danger{background:#b91c1c}.muted{color:#64748b;font-size:13px}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #e2e8f0;padding:12px;text-align:left}a{color:#2563eb}#msg{white-space:pre-wrap}</style>
+<link rel="stylesheet" href="/static/css/fe_master_desktop_v35.css?v=37">
+<link rel="stylesheet" href="/static/css/fe_sidebar_height_fix.css?v=20261012-1">
+<style>
+body{padding-top:60px!important}header{display:none!important}
+#feBackupShell{position:fixed;left:0;top:60px;bottom:0;width:240px;background:#0f172a;overflow-y:auto;z-index:10}
+#feBackupShell #feShellSidebarSlot,#feBackupShell #feSharedSidebar{height:100%;display:block!important}
+#feBackupShell #feMasterStaticNav{display:flex!important;flex-direction:column;gap:4px;padding:14px 10px}
+#feBackupShell a{color:white;text-decoration:none;padding:12px 10px;border-radius:7px;font-size:13px}
+#feBackupShell a[aria-current="page"]{background:#2563eb!important}
+#feBackupTop{position:fixed;top:0;left:0;right:0;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:white;z-index:11;border-bottom:1px solid #dbe2ed}
+#feBackupTop strong{position:absolute;left:50%;transform:translateX(-50%)}
+main{margin:26px 24px 28px 264px!important;max-width:none!important}
+@media(max-width:760px){ #feBackupShell{position:relative;top:auto;bottom:auto;width:100%;height:auto}body{padding-top:60px!important}main{margin:20px 8px!important}}
+</style><link rel="stylesheet" href="/static/css/fe_menu_padrao_v017.css?v=017"></head><body>
+<div id="feBackupTop"><span id="feBackupGreeting">Olá, Administrador</span><strong>ForEvento</strong><a href="/" onclick="localStorage.removeItem('fe_token');localStorage.removeItem('fe_user')">Sair</a></div>
+<div id="feBackupShell">{% include 'partials/fe_shell_sidebar_slot.html' %}</div>
+<script>try{var feU=JSON.parse(localStorage.getItem('fe_user')||'null');if(feU&&feU.nome)document.getElementById('feBackupGreeting').textContent='Olá, '+feU.nome.split(' ')[0]}catch(e){}</script>
+<header><b>ForEvento — Backup e Restauração</b><a style="color:white" href="/?page=configurar">← Voltar a Configurar</a></header><main>
+<h1>Backup e Restauração</h1><p class="muted">Exclusivo do Administrador Master. Os arquivos são preservados no servidor; o download permite escolher o destino conforme o navegador.</p>
+<div class="panel"><h2>Backup manual</h2><button onclick="action('criar')">Criar backup agora</button><p class="muted">Inclui banco SQLite, modelos e arquivos da pasta storage. O backup anterior não será sobrescrito.</p></div>
+<div class="panel"><h2>Agendamento automático</h2>
+<p class="muted">O ForEvento cria cópias no servidor, mesmo sem administrador conectado, desde que o serviço esteja em funcionamento.</p>
+<label style="display:block;margin-bottom:16px"><input type="checkbox" id="ativar" onchange="atualizarResumo()"> <strong>Ativar backup automático</strong></label>
+<div style="display:grid;gap:14px;max-width:560px">
+<label>Com que frequência deseja fazer o backup?<br><select id="dias" onchange="atualizarResumo()" style="width:100%"><option value="1">Todos os dias</option><option value="7">A cada 7 dias</option><option value="15">A cada 15 dias</option><option value="30" selected>A cada 30 dias</option><option value="3m">A cada 3 meses</option></select></label>
+<label>Limite de backups automáticos armazenados<br><select id="manter" onchange="atualizarResumo()" style="width:100%"><option value="5">Guardar os últimos 5 backups automáticos</option><option value="6">Guardar os últimos 6 backups automáticos</option><option value="7">Guardar os últimos 7 backups automáticos</option><option value="8">Guardar os últimos 8 backups automáticos</option><option value="9">Guardar os últimos 9 backups automáticos</option><option value="10" selected>Guardar os últimos 10 backups automáticos</option></select></label>
+</div><p class="muted">Após criar e validar um novo backup automático, o sistema mantém a quantidade selecionada (de 5 a 10), removendo somente os backups automáticos excedentes mais antigos. Backups manuais não são excluídos por essa regra.</p>
+<div id="resumo" role="status" style="background:#f1f5f9;padding:14px;border-radius:8px;margin:14px 0"></div>
+<p id="proxima" class="muted">Próximo backup: agendamento desativado.</p><p id="ultimo" class="muted">Último backup: ainda não informado.</p>
+<button onclick="action('configurar')">Salvar agendamento</button><p class="muted">O agendamento permanece salvo após sair e entrar novamente. Em instalações com múltiplos processos, configure apenas um agendador.</p></div>
+<div class="panel"><h2>Pontos de restauração</h2><button onclick="action('listar')">Atualizar lista</button><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Tamanho</th><th>Ações</th></tr></thead><tbody id="pontos"></tbody></table></div><p class="muted">Restaurar valida o ZIP e prepara a recuperação do banco para a próxima reinicialização do servidor. Os arquivos anexos permanecem disponíveis no ZIP para recuperação controlada.</p></div>
+<div class="panel" id="msg" role="status"></div>
+</main><script>
+const token=localStorage.getItem('fe_token')||'';
+const user=JSON.parse(localStorage.getItem('fe_user')||'null');
+if(!user||String(user.tipo||user.role||user.categoria||'').toUpperCase()!=='ADMINISTRADOR_MASTER'){document.querySelector('main').innerHTML='<h2>Acesso exclusivo do Administrador Master</h2>'}
+function msg(s){document.getElementById('msg').textContent=s}
+function atualizarResumo(){let on=document.getElementById('ativar').checked,d=document.getElementById('dias'),m=document.getElementById('manter');d.disabled=!on;m.disabled=!on;let periodo=d.options[d.selectedIndex].text.toLowerCase();document.getElementById('resumo').textContent=on?'O ForEvento fará backup '+periodo+' e '+'manterá os últimos '+m.value+' backups automáticos.':'Backup automático desativado. Preferência inicial: a cada 30 dias, guardando 10 cópias automáticas.'}
+atualizarResumo();
+async function action(acao,arquivo){try{
+ let body={token,acao};if(acao==='configurar'){body.periodo=document.getElementById('ativar').checked?document.getElementById('dias').value:'0';body.manter=Number(document.getElementById('manter').value)}
+ if(acao==='excluir'){if(!confirm('Excluir definitivamente este arquivo de backup do servidor?\n'+arquivo+'\nEsta operação não pode ser desfeita.'))return;let v=prompt('Digite EXCLUIR para confirmar');if(v!=='EXCLUIR')return;body.confirmacao=v;body.arquivo=arquivo}
+ if(acao==='restaurar'){if(!confirm('Restaurar o banco da data escolhida após reiniciar o servidor?'))return;let v=prompt('Digite RESTAURAR para confirmar');if(v!=='RESTAURAR')return;body.confirmacao=v;body.arquivo=arquivo}
+ msg('Processando...');let r=await fetch('/api/admin/backup/gerenciar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let d=await r.json();if(!r.ok||!d.sucesso)throw Error(d.mensagem||'Falha na operação');
+ const cfg=d.configuracao;document.getElementById('ativar').checked=String(cfg.days)!=='0';document.getElementById('dias').value=String(cfg.days)==='0'?'30':String(cfg.days);if(!document.getElementById('dias').value)document.getElementById('dias').value='30';document.getElementById('manter').value=String(cfg.keep??10);if(!document.getElementById('manter').value)document.getElementById('manter').value='10';atualizarResumo();
+ document.getElementById('proxima').textContent=d.proximo_backup?'Próximo backup previsto: '+new Date(d.proximo_backup).toLocaleString('pt-BR'):'Próximo backup: agendamento desativado.';
+ document.getElementById('ultimo').textContent='Último backup: '+(cfg.last?new Date(cfg.last).toLocaleString('pt-BR'):'nenhum registrado')+(cfg.last_auto_status?' | Automático: '+cfg.last_auto_status:'');
+ let tb=document.getElementById('pontos');tb.replaceChildren();for(let p of d.pontos){let tr=document.createElement('tr');for(let v of [new Date(p.data).toLocaleString('pt-BR'),p.tipo,(p.tamanho/1048576).toFixed(2)+' MB']){let td=document.createElement('td');td.textContent=v;tr.appendChild(td)}let td=document.createElement('td');let a=document.createElement('a');a.textContent='Baixar';a.href='/api/admin/backup/baixar/'+encodeURIComponent(p.arquivo)+'?token='+encodeURIComponent(token);a.download=p.arquivo;td.appendChild(a);let b=document.createElement('button');b.className='danger';b.textContent='Restaurar';b.style.marginLeft='12px';b.onclick=()=>action('restaurar',p.arquivo);td.appendChild(b);let del=document.createElement('button');del.className='danger';del.textContent='Excluir';del.style.marginLeft='12px';del.setAttribute('aria-label','Excluir backup de '+new Date(p.data).toLocaleString('pt-BR'));del.onclick=()=>action('excluir',p.arquivo);td.appendChild(del);tr.appendChild(td);tb.appendChild(tr)}
+ msg(d.resultado?.mensagem||'Operação concluída. '+d.pontos.length+' ponto(s) de restauração disponível(is).');
+ }catch(e){msg('Erro: '+e.message)}}
+if(token&&document.querySelector('#pontos'))action('listar');
+</script></body></html>

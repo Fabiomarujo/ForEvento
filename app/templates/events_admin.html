@@ -1,0 +1,42 @@
+{% extends "base.html" %}{% block content %}
+<div class="pagehead"><div><h1>📅 Evento</h1><p>Cadastro e operação do evento no mesmo painel, preservando o fluxo do sistema anterior.</p></div></div>
+<div class="event-workspace">
+<section class="panel event-builder">
+  <div class="pagehead"><h2>🖼️ Configurar Novo Evento</h2><span class="badge">✏️ Novo ID</span></div>
+  <form method="post" action="/admin/eventos/salvar" enctype="multipart/form-data">
+    <input type="hidden" name="event_id" value="">
+    <label>🔯 Código oficial do Evento<input value="Será gerado na publicação" disabled><small>Rascunhos não recebem código EVT. O código oficial é criado somente quando o evento for publicado.</small></label>
+    <label>📷 Imagem de Capa do Evento<input type="file" name="cover" accept="image/*"></label>
+    <label>Nome do Evento<input name="name" placeholder="Ex: WORKSHOP DE DESIGN" required></label>
+    <label>Resumo do Evento<input name="summary" placeholder="Ex: Descrição rápida..." required></label>
+    <div class="grid2"><label>Período (Data Geral/Mês)<input name="period" placeholder="Ex: Novembro de 2026" required></label><label>Local / Plataforma Geral<input name="location" placeholder="Ex: Auditório Central" required></label></div>
+    <div class="grid2"><label>Vagas Totais<input type="number" name="capacity" min="0" placeholder="Ex: 80"></label><label>Palavra-Chave GERAL<input name="keyword" placeholder="Ex: GERAL2026"></label></div>
+    <hr><h3>📅 Cronograma Acadêmico</h3><label>Sinopse Geral do Cronograma<textarea name="schedule_synopsis" placeholder="Grade horária geral..."></textarea></label>
+    <div id="activities"></div><button type="button" class="insert-activity" onclick="addActivity()">＋ Deseja Inserir atividade?</button>
+    <div class="builder-actions"><button type="reset" class="danger">Limpar Tela</button><button name="action" value="draft" class="warning">Salvar Rascunho</button><button name="action" value="publish" class="primary">Publicar Evento</button></div>
+  </form>
+</section>
+
+<section class="panel registered-events">
+  <div class="pagehead"><h2>📊 Eventos Registrados</h2><div class="tabs"><a href="?status=ATIVOS">Ativos</a><a href="?status=ARQUIVADOS">Arquivados</a><a href="?status=CANCELADOS">Cancelados</a></div></div>
+  {% for e in events %}<article class="registered-card">
+    <div><h3>{{e.name}}</h3><small>🔯 {{e.code}} | Vagas: {{e.capacity}}</small></div><span class="badge">{{e.status}}</span>
+    <div class="registered-actions"><a class="primary" href="/admin/eventos/{{e.id}}/cronograma">📅 Cronograma</a>
+    {% if user.role=="ADMINISTRADOR MASTER" or user.role in ["Equipe Administrativa","Coordenador"] %}
+      <a class="warning" href="/admin/eventos/{{e.id}}/editar">✏️ Alterar</a>
+      <form method="post" action="/admin/eventos/{{e.id}}/acao">
+      {% if e.status=="RASCUNHO" %}<button class="primary" name="action" value="publish">Publicar</button><button class="danger" name="action" value="delete" onclick="return confirm('Excluir definitivamente o rascunho?')">Excluir</button>
+      {% elif e.status=="PUBLICADO" %}<button class="danger" name="action" value="cancel" onclick="return confirm('Cancelar este evento?')">🛑 Cancelar Evento</button><button name="action" value="archive">📦 Arquivar</button>{% endif %}
+      </form>{% endif %}
+    </div>
+  </article>{% else %}<div class="empty">Nenhum evento nesta categoria.</div>{% endfor %}
+</section></div>
+
+<template id="activityTpl"><div class="activity-editor"><input type="hidden" name="activity_id" value="0"><h4>Atividade do Cronograma</h4>
+<div class="grid3"><label>Data<input name="activity_date" placeholder="dd/mm/aaaa"></label><label>Hora Início<input type="time" name="activity_start"></label><label>Hora Término<input type="time" name="activity_end"></label></div>
+<div class="grid2"><label>Tipo de Atividade<select name="activity_type"><option>Palestra</option><option>Oficina</option><option>Mesa-redonda</option><option>Curso</option><option>Apresentação</option><option>Outro</option></select></label><label>Ministrante/Convidado<input name="activity_speaker"></label>
+<label>Modalidade<select name="activity_modality"><option>Presencial</option><option>Online</option><option>Híbrida</option></select></label><label>Vagas específicas<input type="number" name="activity_specific_capacity" value="0"></label>
+<label>Local<input name="activity_location"></label><label>Endereço eletrônico<input name="activity_electronic"></label><label>Vagas<input type="number" name="activity_capacity" value="0"></label><label>Carga horária (minutos)<input type="number" name="activity_workload" value="0"></label>
+<label>Modelo de preço<select name="activity_price_model"><option value="Gratis">Grátis</option><option value="Pago">Pago</option></select></label><label>Valor<input type="number" step="0.01" name="activity_price" value="0"></label></div>
+<label>Currículo<textarea name="activity_curriculum"></textarea></label><label>Ementa<textarea name="activity_syllabus"></textarea></label><label>Sinopse curta<textarea name="activity_synopsis"></textarea></label><button type="button" class="danger" onclick="this.closest('.activity-editor').remove()">Remover atividade</button></div></template>
+{% endblock %}

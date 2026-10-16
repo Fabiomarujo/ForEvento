@@ -1,0 +1,29 @@
+/* ForEvento: terceiro modelo - shell e submenus compartilham a mesma geometria. */
+body.fe-operational.feSharedLayout{--fe-op-width:240px;--fe-op-height:70px;padding-left:var(--fe-op-width)!important;background:var(--op-content-bg,#f5f7fb)!important}
+body.fe-operational.feSharedLayout.feSharedCollapsed{padding-left:0!important}
+body.fe-operational.feSharedLayout #feSharedSidebar{position:fixed!important;top:var(--fe-op-height)!important;bottom:0!important;left:0!important;width:var(--fe-op-width)!important;z-index:900!important;background:var(--op-sidebar-bg,#405d94)!important;box-sizing:border-box!important;padding:16px 10px!important;display:flex!important;gap:4px!important;overflow-y:auto!important;flex-direction:column!important}
+body.fe-operational.feSharedLayout.feSharedCollapsed #feSharedSidebar{transform:translateX(-105%)!important}
+/* Cabeçalho sempre na largura da janela, inclusive nas rotas dos submenus. */
+body.fe-operational.feSharedLayout header.top.fe-unified-header{width:calc(100% + var(--fe-op-width))!important;max-width:none!important;margin-left:calc(-1 * var(--fe-op-width))!important;height:var(--fe-op-height)!important;min-height:var(--fe-op-height)!important;padding:0 24px 0 80px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;background:var(--op-header-bg,#fff)!important;box-sizing:border-box!important}
+body.fe-operational.feSharedLayout.feSharedCollapsed header.top.fe-unified-header{width:100%!important;margin-left:0!important}
+body.fe-operational.feSharedLayout #feSharedToggle{position:absolute!important;top:50%!important;left:16px!important;transform:translateY(-50%)!important;display:block!important;z-index:1002!important}
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink{font:600 13px system-ui,Arial,sans-serif!important;min-height:40px!important;display:flex!important;align-items:center!important;padding:10px 12px!important;border-radius:9px!important;text-decoration:none!important;color:var(--op-sidebar-text,#fff)!important;background:transparent!important}
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink.feSharedSubmenu{padding-left:23px!important;background:var(--op-submenu-bg,transparent)!important;color:var(--op-submenu-text,#fff)!important;font-weight:500!important}
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink.feSharedParentActive{outline:1px solid var(--op-active-bg,#3979e8)!important}
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink[aria-current=page],body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink.feSharedSubmenu[aria-current=page]{background:var(--op-active-bg,#3979e8)!important;color:var(--op-active-text,#fff)!important;font-weight:700!important}
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink:hover:not([aria-current=page]){filter:brightness(1.15)}
+/* No dashboard operacional o menu antigo fica inerte, mas continua no DOM para preservar JS legado. */
+body.fe-operational.feSharedDashboard #feSidebar{display:none!important}
+body.fe-operational.feSharedDashboard .admin-layout-wrapper{width:100%!important;min-width:0!important;min-height:calc(100vh - var(--fe-op-height))!important}
+body.fe-operational.feSharedDashboard .admin-conteudo-dinamico{flex:1 1 auto!important;width:100%!important;min-width:0!important;max-width:100%!important;background:var(--op-content-bg,#f5f7fb)!important}
+body.fe-operational.feSharedDashboard .navbar.fe-unified-header{height:var(--fe-op-height)!important;min-height:var(--fe-op-height)!important;position:relative!important;width:calc(100% + var(--fe-op-width))!important;margin-left:calc(-1 * var(--fe-op-width))!important;box-sizing:border-box!important;background:var(--op-header-bg,#fff)!important}
+body.fe-operational.feSharedDashboard.feSharedCollapsed .navbar.fe-unified-header{width:100%!important;margin-left:0!important}
+body.fe-operational.feSharedDashboard #feMenuMobile{display:none!important}
+body.fe-operational.feSharedDashboard #feSharedToggle{left:16px!important}
+@media(max-width:800px){
+ body.fe-operational.feSharedLayout{--fe-op-height:62px;padding-left:0!important}
+ body.fe-operational.feSharedLayout #feSharedSidebar{width:min(280px,85vw)!important;transform:translateX(-105%)!important}
+ body.fe-operational.feSharedLayout #feSharedSidebar.feSharedOpen{transform:translateX(0)!important}
+ body.fe-operational.feSharedLayout header.top.fe-unified-header,body.fe-operational.feSharedDashboard .navbar.fe-unified-header{width:100%!important;margin-left:0!important;height:62px!important;min-height:62px!important;padding-left:65px!important}
+ body.fe-operational.feSharedLayout #feSharedToggle,body.fe-operational.feSharedDashboard #feSharedToggle{left:8px!important}
+}

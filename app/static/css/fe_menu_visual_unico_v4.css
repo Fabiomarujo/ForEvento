@@ -1,0 +1,16 @@
+/* ForEvento v4: visual unico para dois menus ESTRUTURALMENTE separados. */
+
+/* FOR EVENTO - contrato visual administrativo v4. Nao altera a navegacao. */
+:root{--fe-admin-nav-width:240px;--fe-admin-nav-top:70px;--fe-admin-nav-padding:10px;--fe-admin-nav-row:42px;--fe-admin-nav-radius:9px;--fe-admin-nav-line:rgba(255,255,255,.24);--fe-admin-nav-active:var(--op-active-bg,#2563eb);--fe-admin-nav-active-text:var(--op-active-text,#fff)}
+@media(max-width:800px){:root{--fe-admin-nav-top:62px}}
+
+body.painel-aberto:not(.fe-operational) .admin-layout-wrapper{height:calc(100dvh - var(--fe-admin-nav-top))!important;min-height:0!important;overflow:hidden!important;align-items:stretch!important}
+body.painel-aberto:not(.fe-operational) #feSidebar{height:100%!important;min-height:0!important;max-height:100%!important;overflow-y:scroll!important;overflow-x:hidden!important;overscroll-behavior:contain;scrollbar-gutter:stable;justify-content:flex-start!important;padding:16px 10px!important;border-radius:0!important}
+body.painel-aberto:not(.fe-operational) .admin-conteudo-dinamico{height:100%!important;min-height:0!important;overflow-y:auto!important;flex:1 1 auto!important}
+body.painel-aberto:not(.fe-operational) #feSidebar .aba-item-lateral,body.feSharedLayout #feSharedSidebar .feSharedLink{box-sizing:border-box!important;flex-shrink:0!important;min-height:42px!important;display:flex!important;align-items:center!important;padding:10px 12px!important;border-radius:9px!important;margin-bottom:0!important;font:600 13px system-ui,Arial,sans-serif!important}
+body.painel-aberto:not(.fe-operational) #feSidebar .fe-menu-group,body.feSharedLayout #feSharedSidebar .feSharedGroup:not(:first-child){border-top:1px solid var(--fe-admin-nav-line)!important;border-radius:0!important;margin-top:9px!important;padding-top:16px!important;box-shadow:none!important}
+body.feSharedLayout #feSharedSidebar{overflow-y:scroll!important;overflow-x:hidden!important;overscroll-behavior:contain;scrollbar-gutter:stable;border-radius:0!important}
+body.painel-aberto:not(.fe-operational) #feSidebar .aba-item-lateral.active,body.feSharedLayout #feSharedSidebar .feSharedLink[aria-current="page"]{background:var(--fe-admin-nav-active)!important;color:var(--fe-admin-nav-active-text)!important}
+body.painel-aberto:not(.fe-operational) #feSidebar::-webkit-scrollbar,body.feSharedLayout #feSharedSidebar::-webkit-scrollbar{width:9px}
+body.painel-aberto:not(.fe-operational) #feSidebar::-webkit-scrollbar-thumb,body.feSharedLayout #feSharedSidebar::-webkit-scrollbar-thumb{background:rgba(148,163,184,.65);border:2px solid transparent;background-clip:padding-box;border-radius:9px}
+@media(max-width:800px){body.painel-aberto:not(.fe-operational) .admin-layout-wrapper{height:auto!important;min-height:calc(100dvh - 62px)!important;overflow:visible!important}body.painel-aberto:not(.fe-operational) #feSidebar{height:calc(100dvh - 62px)!important;max-height:calc(100dvh - 62px)!important}body.painel-aberto:not(.fe-operational) .admin-conteudo-dinamico{height:auto!important;overflow:visible!important}}

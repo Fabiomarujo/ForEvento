@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Assinatura de Autoridades — ForEvento</title>
+    <!-- Reaproveita os estilos corporativos universais do portal -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+<script>
+/* Compatibilidade google.script.run -> FastAPI.
+   Preserva success/failure handlers e chamadas diretas do Apps Script. */
+(function(){
+  function makeRun(state){
+    state=state||{ok:null,fail:null};
+    return new Proxy({}, {get:function(_t,prop){
+      if(prop==="withSuccessHandler") return function(fn){return makeRun({ok:fn,fail:state.fail});};
+      if(prop==="withFailureHandler") return function(fn){return makeRun({ok:state.ok,fail:fn});};
+      if(prop==="withUserObject") return function(){return makeRun(state);};
+      return function(){
+        var args=[].slice.call(arguments), ok=state.ok, fail=state.fail;
+        fetch("/api/call/"+encodeURIComponent(String(prop)),{
+          method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({args:args})
+        }).then(async function(resp){
+          var data=await resp.json();
+          if(!resp.ok||data.__error) throw new Error(data.__error||("HTTP "+resp.status));
+          if(ok) ok(data.result);
+        }).catch(function(err){if(fail) fail(err); else console.error("ForEvento:",prop,err);});
+      };
+    }});
+  }
+  window.google=window.google||{}; google.script=google.script||{};
+  Object.defineProperty(google.script,"run",{configurable:true,get:function(){return makeRun();}});
+})();
+</script>
+
+</head>
+<body class="painel-aberto" style="background-color: #f8fafc;">
+
+    <!-- Barra Superior Limpa e Institucional Ajustada -->
+    <nav class="navbar" style="border-top: 6px solid #7c3aed;">
+        <span class="logo" style="color: #7c3aed; font-weight: bold;">Mesa Virtual de Assinatura ICP-Brasil ✒️</span>
+        <div>
+            <!-- Ajuste Dinâmico: Exibe o Nome Completo antes da Função Acadêmica -->
+            <span id="txtNomeAutoridade" style="font-size: 14px; font-weight: bold; margin-right: 20px; color: #4b5563;">Carregando perfil...</span>
+            <button type="button" onclick="fazerLogoutAutoridade()" style="background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; transition: background 0.2s;">Sair da Mesa</button>
+        </div>
+    </nav>
+
+    <!-- Bloco Central de Trabalho e Métricas Reativas -->
+    <div style="width: 100%; max-width: 1100px; margin: 40px auto; padding: 0 20px;">
+        
+        <!-- SEÇÃO DE CARDS ESTATÍSTICOS REATIVOS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 5px solid #7c3aed; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: left; transition: all 0.3s ease;">
+                <span style="font-size: 12px; font-weight: bold; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Minhas Pendências</span>
+                <h3 id="cardPendentes" style="font-size: 32px; color: #111827; margin-top: 5px; font-weight: bold; line-height: 1;">0</h3>
+            </div>
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 5px solid #10b981; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: left; transition: all 0.3s ease;" id="cardStatusContainer">
+                <span style="font-size: 12px; font-weight: bold; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Status da Mesa</span>
+                <h3 id="cardStatusMesa" style="font-size: 16px; color: #10b981; margin-top: 15px; font-weight: bold;">🟢 Tudo Assinado</h3>
+            </div>
+        </div>
+
+        <!-- LISTAGEM DA ESTEIRA DE DOCUMENTOS -->
+        <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: left;">
+            <h2 style="font-size: 22px; color: #111827; font-weight: 700; margin-bottom: 5px;">Documentos Aguardando Sua Assinatura</h2>
+            <p style="color:#6b7280; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">
+                Baixe os rascunhos de certificados gerados, realize a assinatura digital utilizando sua conta gov.br no portal oficial do governo 
+                <a href="https://iti.gov.br" target="_blank" style="color:#1a73e8; font-weight:bold; text-decoration:underline;">Assinador ITI / Gov.br</a> 
+                e faça o upload do arquivo assinado de volta para tramitar a esteira institucional.
+            </p>
+
+            <!-- Tabela de Trabalho Corporativa -->
+            <div style="overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                    <thead>
+                        <tr style="background: #f8fafc; color: #374151; border-bottom: 2px solid #e5e7eb;">
+                            <th style="padding: 14px; width: 140px; font-weight: 700;">Cód. Inscrição</th>
+                            <th style="padding: 14px; font-weight: 700;">Participante / Evento</th>
+                            <th style="padding: 14px; width: 140px; font-weight: 700;">Minha Função</th>
+                            <th style="padding: 14px; width: 130px; text-align: center; font-weight: 700;">Fase Anterior</th>
+                            <th style="padding: 14px; width: 220px; text-align: center; font-weight: 700;">Ações Necessárias</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaAssinaturasAutoridade">
+                        <tr><td colspan="5" style="text-align:center; padding:35px; color:#6b7280;">Sincronizando lote de documentos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Lógica Interna Client-Side Reativa -->
+    <script>
+        var perfilAutoridade = ""; 
+
+        // GATILHO DE ENTRADA: Identifica o perfil pelo tipo de login persistido
+        window.addEventListener('load', function() {
+            var tipoUsuario = localStorage.getItem('forEvento_loginTipo') || "Palestrante"; 
+            var nomeUsuario = localStorage.getItem('forEvento_alunoNome') || "Autoridade Institucional";
+            
+            // Regra de negócio hierárquica unificada das imagens
+            if (tipoUsuario === "Palestrante" || tipoUsuario === "Ministrante") {
+                perfilAutoridade = "Coordenador";
+            } else {
+                perfilAutoridade = "Diretor";
+            }
+            
+            // Correção Dinâmica: Garante a exibição do Nome antes da Função
+            document.getElementById('txtNomeAutoridade').innerText = nomeUsuario + " (" + perfilAutoridade + ") 👋";
+            carregarFilaDeDocumentos();
+        });
+
+        // FILTRA E CONSTRÓI AS PENDÊNCIAS VISUAIS DE FORMA REATIVA
+        function carregarFilaDeDocumentos() {
+            var corpo = document.getElementById('corpoTabelaAssinaturasAutoridade');
+            if(!corpo) return;
+
+            google.script.run.withSuccessHandler(function(lista) {
+                corpo.innerHTML = "";
+                
+                // Filtra as linhas dependendo estritamente de quem está logado na esteira
+                var filaTrabalho = lista.filter(function(item) {
+                    if (perfilAutoridade === "Coordenador") {
+                        return item.statusEnvio === "Aguardando Assinatura Coordenador";
+                    } else if (perfilAutoridade === "Diretor") {
+                        return item.statusEnvio === "Aguardando Assinatura Diretor";
+                    }
+                    return false;
+                });
+
+                // ATUALIZAÇÃO REATIVA DOS CARDS SUPERIORES
+                document.getElementById('cardPendentes').innerText = filaTrabalho.length;
+                var cardStatus = document.getElementById('cardStatusMesa');
+                var containerCardStatus = document.getElementById('cardStatusContainer');
+                
+                if(filaTrabalho.length > 0) {
+                    cardStatus.innerText = "⚠️ Assinaturas Pendentes";
+                    cardStatus.style.color = "#d97706";
+                    containerCardStatus.style.borderLeftColor = "#d97706";
+                } else {
+                    cardStatus.innerText = "🟢 Tudo Assinado";
+                    cardStatus.style.color = "#10b981";
+                    containerCardStatus.style.borderLeftColor = "#10b981";
+                }
+
+                // VERIFICAÇÃO DE FILA VAZIA
+                if (filaTrabalho.length === 0) {
+                    corpo.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:40px; color:#059669; font-weight:bold; background:#f0fdf4; border-radius:0 0 8px 8px;">
+                                🎉 Excelente! Todos os certificados do seu escopo já foram assinados digitalmente e despachados.
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                var fragment = document.createDocumentFragment();
+                filaTrabalho.forEach(function(doc) {
+                    var tr = document.createElement('tr');
+                    tr.style.borderBottom = "1px solid #e5e7eb";
+                    
+                    var proximoStatus = (perfilAutoridade === "Coordenador") ? "Aguardando Assinatura Diretor" : "CONCLUÍDO";
+                    var statusFaseAnterior = (perfilAutoridade === "Coordenador") ? "⏳ Rascunho Inicial" : "✅ Coordenador Assinou";
+                    var corFaseAnterior = (perfilAutoridade === "Coordenador") ? "#4b5563" : "#10b981";
+                    
+                    // Concatenação de string tradicional e segura (Blindada contra quebras)
+                    var htmlLinha = '<td style="padding:14px; font-family:monospace; font-weight:bold; color:#111827; vertical-align:middle;">' + doc.idInscricao + '</td>';
+                    htmlLinha += '<td style="padding:14px; vertical-align:middle;">';
+                    htmlLinha += '    <strong style="color:#111827; font-size:14px;" class="nome-txt"></strong>';
+                    htmlLinha += '    <span style="font-size:12px; color:#6b7280; display:block;" class="evento-txt"></span>';
+                    htmlLinha += '</td>';
+                    htmlLinha += '<td style="padding:14px; vertical-align:middle;"><span style="background:#f3f4f6; color:#1f2937; padding:4px 8px; border-radius:4px; font-weight:700; font-size:11px; text-transform:uppercase;">✍️ ' + perfilAutoridade + '</span></td>';
+                    htmlLinha += '<td style="padding:14px; text-align:center; vertical-align:middle; font-weight:bold; color:' + corFaseAnterior + '; font-size:12px;">' + statusFaseAnterior + '</td>';
+                    htmlLinha += '<td style="padding:14px; text-align:center; display:flex; flex-direction:column; gap:6px; align-items:center; justify-content:center; vertical-align:middle;">';
+                    htmlLinha += '    <a href="' + doc.urlRascunho + '" target="_blank" style="background:#1a73e8; color:white; padding:6px 12px; border-radius:6px; text-decoration:none; font-weight:bold; font-size:12px; display:inline-block; width:160px; text-align:center; transition:background 0.2s;">⬇️ Baixar Documento</a>';
+                    htmlLinha += '    <div style="position:relative; width:160px; background:#10b981; color:white; padding:6px 12px; border-radius:6px; text-align:center; font-weight:bold; font-size:12px; cursor:pointer; transition:background 0.2s;">';
+                    htmlLinha += '        <span>📤 Subir Assinado</span>';
+                    htmlLinha += '        <input type="file" accept=".pdf" onchange="processarUploadGov(this, \'' + doc.idInscricao + '\', \'' + proximoStatus + '\')" style="position:absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer;">';
+                    htmlLinha += '    </div>';
+                    htmlLinha += '</td>';
+                    
+                    tr.innerHTML = htmlLinha;
+                    
+                    // Injeção de textos isolada por nós lógicos para anular brechas de XSS
+                    tr.querySelector('.nome-txt').textContent = doc.nomeAluno;
+                    tr.querySelector('.evento-txt').textContent = "Curso: " + doc.nomeEvento;
+                    
+                    fragment.appendChild(tr);
+                });
+                corpo.appendChild(fragment);
+
+            }).obterListaCertificadosParaAuditoria();
+        }
+
+        // CAPTURA O UPLOAD DO OPERADOR, CONVERTE EM BASE64 E TRANSMITE AO BANCO
+        function processarUploadGov(inputElement, idInscricao, proximoStatus) {
+            if (!inputElement.files || inputElement.files.length === 0) return;
+            
+            var arquivo = inputElement.files[0];
+            var leitor = new FileReader();
+            
+            // Travamento visual de segurança durante o processamento do binário do PDF
+            document.getElementById('corpoTabelaAssinaturasAutoridade').innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:35px; color:#7c3aed; font-weight:bold;">
+                        🔄 Executando validação de integridade e transmitindo documento assinado para a nuvem...
+                    </td>
+                </tr>`;
+            
+            leitor.onload = function(e) {
+                var base64Documento = e.target.result;
+                
+                google.script.run.withSuccessHandler(function(res) {
+                    alert(res.mensagem);
+                    carregarFilaDeDocumentos(); 
+                }).atualizarDocumentoAssinado(idInscricao, base64Documento, proximoStatus);
+            };
+            
+            leitor.readAsDataURL(arquivo);
+        }
+
+        // LIMPEZA COMPLETA DE SESSÕES
+        function fazerLogoutAutoridade() {
+            localStorage.clear();
+            window.top.location.href = '{{ base_url }}';
+        }
+    </script>
+</body>
+</html>

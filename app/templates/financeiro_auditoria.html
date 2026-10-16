@@ -1,0 +1,60 @@
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/static/css/app_new.css"><script src="/static/js/app_new.js"></script><title>Auditoria financeira</title><link rel="stylesheet" href="/static/css/admin_menu_central.css?v=20261011-clean"><script defer src="/static/js/admin_menu_central.js?v=20261011-36"></script><link rel="stylesheet" href="/static/css/operational_theme.css?v=20261009-fix2"><script defer src="/static/js/operational_theme.js?v=20261011-26"></script><link rel="stylesheet" href="/static/css/operational_navigation_v3.css?v=20261009-v3"><link rel="stylesheet" href="/api/appearance.css"><link rel="stylesheet" href="/static/css/fe_shell_v25.css?v=20261011-25"><script defer src="/static/js/fe_shell_v25.js?v=20261011-35"></script><script id="fe-access-preload-v27">(function(){
+try {
+  var page=new URLSearchParams(location.search).get('page')||'';
+  if(!page && /\/(admin-dashboard|equipe-dashboard)$/.test(location.pathname))page='admin-dashboard';
+  var pages=['admin-dashboard','equipe-dashboard','cronograma-lista','configurar','financeiro-auditoria','reembolso','perfil','vitrine-admin','certificados-modelos','certificados-configurar','certificados-gerar'];
+  if(pages.indexOf(page)<0)return;
+  var u=JSON.parse(localStorage.getItem('fe_user')||'null');
+  if(page==='perfil' && String((u&& (u.tipo||u.role))||'').toUpperCase()==='PARTICIPANTE')return;
+  var token=localStorage.getItem('fe_token');if(!token||window.feAdminAccessPromise)return;
+  window.feAdminAccessPromise=fetch('/api/admin/acesso',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token}),cache:'no-store'})
+    .then(function(r){if(!r.ok)throw Error('Sessão expirada ou sem autorização');return r.json()})
+    .then(function(d){if(!d.sucesso)throw Error(d.mensagem||'Acesso negado');return d})
+    .catch(function(e){window.feAdminAccessPromise=null;throw e});
+} catch(e) { /* O controlador normal tratará a autenticação. */ }
+})();</script>
+<script id="fe-master-desktop-v35">(function(){try{var u=JSON.parse(localStorage.getItem('fe_user')||'null');if(String(u?.categoria||u?.tipo||u?.role||'').toUpperCase()==='ADMINISTRADOR_MASTER')document.documentElement.classList.add('feMasterDesktop')}catch(_){}})();</script><link rel="stylesheet" href="/static/css/fe_master_desktop_v35.css?v=37"><link rel="stylesheet" href="/static/css/fe_sidebar_height_fix.css?v=20261012-1"><style>.fe-fin-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}.fe-fin-filters label{display:block;font-weight:600;margin-bottom:5px}.fe-fin-filters .wide{grid-column:1/-1}.fe-fin-choice{display:flex;flex-wrap:wrap;gap:16px;padding:10px 0}.fe-fin-choice label{font-weight:400;margin:0}.fe-fin-note{margin:10px 0;color:#52627b}.fe-fin-table{overflow-x:auto}.fe-fin-table table{width:100%}@media(max-width:700px){.fe-fin-filters{grid-template-columns:1fr}}</style><link rel="stylesheet" href="/static/css/fe_menu_padrao_v017.css?v=017"></head><body>{% include 'partials/fe_header_shared.html' %}{% include 'partials/fe_shell_sidebar_slot.html' %}{% include 'partials/fe_shell_content_open.html' %}<main class="wrap"><h1>Consulta/Auditoria de pagamentos</h1><div class="fe-fin-filters"><div class="wide"><label>Situação do evento</label><div class="fe-fin-choice"><label><input type="radio" name="situacaoEvento" value="ativo" checked onchange="feEvents()"> Ativo</label><label><input type="radio" name="situacaoEvento" value="encerrado" onchange="feEvents()"> Encerrado</label><label><input type="radio" name="situacaoEvento" value="arquivado" onchange="feEvents()"> Arquivado</label></div></div><div class="wide"><label for="ev">Evento</label><select class="field" id="ev"><option value="">Iniciando consulta...</option></select><button type="button" onclick="feEvents()" style="margin-top:7px;padding:6px 12px;cursor:pointer">↻ Recarregar eventos</button></div><div class="wide"><label>Situação do pagamento</label><div class="fe-fin-choice"><label><input type="radio" name="situacao" value="todos" checked> Todos</label><label><input type="radio" name="situacao" value="pago"> Pago</label><label><input type="radio" name="situacao" value="pendente"> Pendente</label></div></div><div class="wide"><label>Pesquisar participantes</label><div class="fe-fin-choice"><label><input type="radio" name="busca" value="todos" checked onchange="feFilter()"> Todos</label><label><input type="radio" name="busca" value="nome" onchange="feFilter()"> Por nome</label><label><input type="radio" name="busca" value="id" onchange="feFilter()"> Por ID</label></div></div><div id="termoBox" class="wide" hidden><label for="termo">Pesquisar</label><input class="field" id="termo" placeholder="Nome do participante"></div><div><label for="inicio">Data inicial (opcional)</label><input class="field" id="inicio" type="date"></div><div><label for="fim">Data final (opcional)</label><input class="field" id="fim" type="date"></div></div><button class="btn blue" type="button" onclick="feSearch('auditoria')">Pesquisar</button><p id="msg" class="fe-fin-note" role="status">Selecione o evento e os filtros.</p><div class="fe-fin-table"><table class="table"><thead><tr><th>ID</th><th>Participante</th><th>Atividade</th><th>Valor</th><th>Situação</th><th>Data</th><th>Comprovante</th></tr></thead><tbody id="tb"></tbody></table></div></main>{% include 'partials/fe_shell_content_close.html' %}<script>function feEsc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function feMoney(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function feFilter(){let t=document.querySelector('input[name="busca"]:checked').value;document.getElementById('termoBox').hidden=t==='todos';document.getElementById('termo').placeholder=t==='id'?'ID do participante ou inscrição':'Nome do participante'}
+async function feEvents(){
+  const sel=document.getElementById('ev'),msg=document.getElementById('msg');
+  const status=document.querySelector('input[name="situacaoEvento"]:checked').value;
+  sel.disabled=true;
+  sel.innerHTML='<option value="">Carregando eventos...</option>';
+  document.getElementById('tb').innerHTML='';
+  msg.textContent='Consultando eventos '+status+'s...';
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),12000);
+  try{
+    const resp=await fetch('/api/admin/financeiro/eventos',{
+      method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',
+      body:JSON.stringify({token:localStorage.getItem('fe_token')||'',situacao:status}),
+      signal:controller.signal
+    });
+    const raw=await resp.text();
+    let data;try{data=JSON.parse(raw)}catch(_){throw Error('Resposta inválida do servidor (HTTP '+resp.status+'). Confira se a rota /api/admin/financeiro/eventos está instalada.')}
+    if(!resp.ok||!data.sucesso)throw Error(data.mensagem||'Falha ao carregar eventos');
+    const events=Array.isArray(data.eventos)?data.eventos:[];
+    sel.replaceChildren(new Option(events.length?'Selecione o evento':'Nenhum evento nesta situação',''));
+    events.forEach(e=>sel.add(new Option(e.nome||e.id,e.id)));
+    msg.textContent=events.length?'Selecione um evento e os filtros.':'Nenhum evento encontrado nesta situação.';
+  }catch(e){
+    sel.replaceChildren(new Option('Erro ao consultar eventos — tente trocar o filtro',''));
+    msg.textContent='Erro ao carregar eventos: '+(e.name==='AbortError'?'tempo de resposta excedido':e.message)+'. Altere o filtro para tentar novamente.';
+  }finally{clearTimeout(timeout);sel.disabled=false;}
+}
+async function feSearch(modulo){let event=document.getElementById('ev').value;if(!event){document.getElementById('msg').textContent='Nenhum evento selecionado. Clique em Recarregar eventos; se houver erro, confira a mensagem acima.';return}let tb=document.getElementById('tb');tb.innerHTML='';document.getElementById('msg').textContent='Pesquisando...';try{let r=await fetch('/api/admin/financeiro/consulta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:localStorage.getItem('fe_token')||'',modulo:modulo,idEvento:event,situacao:document.querySelector('input[name="situacao"]:checked').value,tipoBusca:document.querySelector('input[name="busca"]:checked').value,termo:document.getElementById('termo').value,inicio:document.getElementById('inicio').value,fim:document.getElementById('fim').value})});let d=await r.json();if(!r.ok||!d.sucesso)throw Error(d.mensagem||'Falha na consulta');window.feRows=d.itens||[];document.getElementById('msg').textContent=window.feRows.length?window.feRows.length+' inscrição(ões) encontrada(s).':'Nenhuma inscrição em atividade paga encontrada para os filtros selecionados.';feRender(modulo)}catch(e){document.getElementById('msg').textContent='Erro na pesquisa: '+e.message}}
+function feRender(){document.getElementById('tb').innerHTML=(window.feRows||[]).map(x=>'<tr><td>'+feEsc(x.idUsuario||x.id)+'</td><td>'+feEsc(x.nome)+'</td><td>'+feEsc(x.atividade)+'</td><td>'+feMoney(x.valor)+'</td><td>'+feEsc(x.situacao)+'</td><td>'+feEsc(x.data)+'</td><td>'+feEsc(x.pagamento)+'</td></tr>').join('')}
+// Inicialização isolada: não depende de scripts externos nem de ações do usuário.
+(function(){
+  function iniciar(){
+    try { feEvents(); }
+    catch(e) {
+      const sel=document.getElementById('ev'), msg=document.getElementById('msg');
+      if(sel) sel.innerHTML='<option value="">Falha ao iniciar a lista</option>';
+      if(msg) msg.textContent='Erro ao iniciar: '+(e&&e.message||String(e));
+      console.error('ForEvento: erro ao iniciar eventos financeiros',e);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar,{once:true});
+  else iniciar();
+})();</script>{% include 'partials/fe_shell_footer.html' %}</body></html>

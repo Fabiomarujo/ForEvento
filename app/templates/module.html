@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<a class="back" href="/dashboard">← Painel</a>
+<div class="hero"><h1>{{ title }}</h1><p>Selecione uma opção.</p></div>
+<div class="app-grid">
+{% for icon, name, url in cards %}
+<a class="app-card" href="{{ url }}"><span class="app-icon">{{ icon }}</span><strong>{{ name }}</strong></a>
+{% endfor %}
+</div>
+{% endblock %}

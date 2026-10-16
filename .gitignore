@@ -1,0 +1,35 @@
+# Ambiente Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Banco de dados
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Senhas e credenciais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Armazenamento privado
+storage/
+modelos_cert/
+payload/
+storage_arquivo_preservado*
+
+# Arquivos particulares e atualizacoes
+Chave_Cert_ForEvento.docx
+*.zip
+*.rar
+
+# Arquivos temporarios
+*.log
+*.tmp

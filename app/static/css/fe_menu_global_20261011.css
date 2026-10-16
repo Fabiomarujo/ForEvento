@@ -1,0 +1,14 @@
+/* Navegacao unica para paginas independentes. Cores herdadas de Configuracao. */
+body.feSharedLayout #feSharedSidebar{display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin;overscroll-behavior:contain;box-sizing:border-box!important;}
+body.feSharedLayout #feSharedSidebar .feSharedLink.feSharedGroup{border-top:1px solid color-mix(in srgb,var(--textoMenuLateral,var(--op-sidebar-text,#fff)) 24%,transparent)!important;border-radius:0!important;margin-top:8px!important;padding-top:14px!important;flex-shrink:0;}
+body.feSharedLayout #feSharedSidebar .feSharedLink.feSharedSubmenu{padding-left:22px!important;flex-shrink:0;}
+body.feSharedLayout #feSharedSidebar .feSharedTools{display:flex;flex-direction:column;gap:9px;margin-top:auto;padding:15px 0 8px;border-top:1px solid color-mix(in srgb,var(--textoMenuLateral,var(--op-sidebar-text,#fff)) 24%,transparent);flex-shrink:0;}
+body.feSharedLayout #feSharedSidebar .feSharedBackup,body.feSharedLayout #feSharedSidebar .feSharedHelp{display:block;width:100%;box-sizing:border-box;padding:11px 10px;text-align:left;text-decoration:none;border-radius:7px;font:600 12px system-ui,Arial,sans-serif;cursor:pointer;background:color-mix(in srgb,var(--menuLateral,var(--op-sidebar-bg,#172c4b)) 75%,white 9%);}
+body.feSharedLayout #feSharedSidebar .feSharedBackup{border:1px solid #047857;color:#d1fae5;}
+body.feSharedLayout #feSharedSidebar .feSharedHelp{border:1px solid #6d28d9;color:#ddd6fe;}
+body.feSharedLayout #feSharedSidebar .feSharedBackup:disabled{opacity:.6;cursor:wait;}
+body.feSharedLayout #feSharedSidebar::-webkit-scrollbar{width:8px}
+body.feSharedLayout #feSharedSidebar::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--textoMenuLateral,var(--op-sidebar-text,#fff)) 35%,transparent);border-radius:8px}
+body.feSharedLayout header.top.fe-unified-header{position:relative!important;box-sizing:border-box!important;}
+body.feSharedLayout header.top.fe-unified-header #feSharedToggle{left:16px!important;top:50%!important;transform:translateY(-50%)!important;margin:0!important;}
+@media(max-width:800px){body.feSharedLayout header.top.fe-unified-header #feSharedToggle{left:8px!important}}

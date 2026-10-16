@@ -1,0 +1,13 @@
+/* ForEvento Vitrine PUBLICA: fundo desfocado somente nos banners de divulgacao. */
+.fe-public-banners .banner-card{display:block!important;width:100%!important;max-width:none!important;overflow:hidden!important;border-radius:18px!important}
+.fe-public-banners .fe-banner-stage{position:relative;isolation:isolate;width:100%;height:clamp(230px,28vw,360px);display:flex;align-items:center;justify-content:center;overflow:hidden;background:#172c4b}
+.fe-public-banners .fe-banner-blur{position:absolute;inset:-24px;z-index:-1;background-size:cover;background-position:center;filter:blur(26px) brightness(.70) saturate(1.1);transform:scale(1.06);pointer-events:none}
+.fe-public-banners .fe-banner-stage img.fe-banner-foreground{position:relative!important;z-index:1!important;display:block!important;width:100%!important;max-width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;margin:0 auto!important;background:transparent!important}
+.fe-public-banners .banner-copy{position:static!important;background:#fff!important;color:#0f172a!important;padding:16px 20px!important}
+.fe-public-banners .banner-copy h2{color:#0f172a!important;font-size:clamp(19px,2vw,24px)!important}
+.fe-public-banners .banner-copy p{color:#475569!important}
+@media(max-width:760px){.fe-public-banners .fe-banner-stage{height:clamp(190px,50vw,270px)}.fe-public-banners .banner-copy{padding:14px 16px!important}}
+
+/* v33: fundo é IMG real, não background CSS sem URL. */
+.fe-public-banners .fe-banner-stage img.fe-banner-blur{position:absolute!important;inset:-32px!important;width:calc(100% + 64px)!important;height:calc(100% + 64px)!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;filter:blur(28px) brightness(.72)!important;transform:scale(1.05)!important;z-index:0!important;pointer-events:none!important}
+.fe-public-banners .fe-banner-stage img.fe-banner-foreground{position:relative!important;z-index:1!important;width:100%!important;height:100%!important;object-fit:contain!important;background:transparent!important}

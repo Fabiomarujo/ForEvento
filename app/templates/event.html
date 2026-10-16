@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<a class="back" href="/">← Voltar aos eventos</a>
+<h1>{{ event.nome if event else "Evento" }}</h1>
+<h2>Cronograma</h2>
+<div class="activity-list">
+{% for a in activities %}
+<button class="activity-card" onclick="loginRequired()">
+  <strong>{{ a.hora }} — {{ a.nome }}</strong>
+  <span>{{ a.modalidade }} · Vagas: {{ a.vagas }}</span>
+</button>
+{% endfor %}
+</div>
+<div id="loginModal" class="modal" hidden>
+ <div class="modal-box">
+   <h2>Faça o login para se inscrever</h2>
+   <p>Você pode consultar a programação livremente. Para realizar a inscrição, entre na sua conta.</p>
+   <div class="actions"><button onclick="closeModal()">Fechar</button><a class="primary" href="/login">Ir para Login</a></div>
+ </div>
+</div>
+{% endblock %}

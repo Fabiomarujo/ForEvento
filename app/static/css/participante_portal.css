@@ -1,0 +1,54 @@
+:root{--p-header:#fff;--p-sidebar:#152a48;--p-page:#eff5fc;--p-card:#fff;--p-accent:#2563eb;--p-text:#10233f}*{box-sizing:border-box}.portal-restored{margin:0;background:var(--p-page);color:var(--p-text);font-family:Arial,sans-serif}.portal-restored button{cursor:pointer;font:inherit}.portal-restored button:disabled{cursor:not-allowed;opacity:.6}.participant-header{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:18px;padding:15px clamp(16px,4vw,48px);background:var(--p-header);border-bottom:1px solid #e2e8f0}.participant-header #menuBtn{border:1px solid #dbe3ef;background:#f8fafc;border-radius:9px;padding:10px 13px}.participant-header #greeting{font-size:13px;color:#52627b}.participant-brand{position:absolute;left:50%;transform:translateX(-50%);font-size:23px}.participant-logout{margin-left:auto;border:1px solid #dae4f3;background:#f7f9fc;border-radius:9px;padding:10px 16px}.portal-drawer{position:fixed;z-index:45;top:0;bottom:0;left:0;width:min(290px,85vw);background:var(--p-sidebar);color:white;transform:translateX(-110%);transition:transform .2s ease;padding:32px 18px;box-shadow:5px 0 25px #0002}.portal-drawer.open{transform:translateX(0)}.portal-drawer h3{margin:20px 10px 25px;font-size:14px}.portal-drawer nav{display:grid;gap:8px}.portal-drawer nav button,.portal-drawer nav a{color:white;text-decoration:none;border:0;background:transparent;text-align:left;padding:13px 12px;border-radius:9px;font-size:14px}.portal-drawer nav button:hover,.portal-drawer nav a:hover{background:#ffffff20}.portal-backdrop:not([hidden]){position:fixed;inset:0;background:#0008;z-index:44}.portal-main{max-width:1160px;margin:0 auto;padding:34px 24px 80px}.portal-heading{margin-bottom:25px}.portal-heading span{color:var(--p-accent);font-size:12px;letter-spacing:.09em;font-weight:bold}.portal-heading h1{font-size:clamp(26px,3vw,38px);margin:10px 0}.portal-heading p{color:#5c6d83}.portal-event{background:var(--p-card);border:1px solid #dce5f1;border-radius:20px;overflow:hidden;display:grid;grid-template-columns:minmax(230px,38%) 1fr;margin-bottom:20px;box-shadow:0 6px 18px #20305008}.portal-cover{background:#e5edf7;display:grid;place-items:center;min-height:250px;color:#64748b}.portal-cover img{width:100%;height:100%;max-height:440px;object-fit:cover}.portal-event-content{padding:24px}.portal-event-content h2{margin-top:0}.portal-event-content p{line-height:1.6}.portal-primary,.portal-danger,.portal-warning-btn,.portal-disabled{display:inline-block;border:0;border-radius:9px;padding:11px 16px;font-weight:700;margin:8px 8px 8px 0}.portal-primary{background:var(--p-accent);color:white}.portal-danger{background:#dc2626;color:white}.portal-warning-btn{background:#b45309;color:white}.portal-disabled{background:#94a3b8;color:white}.portal-activities{border-top:1px solid #e5e7eb;margin-top:18px;padding-top:16px}.portal-activities[hidden],.portal-section[hidden],.portal-modal[hidden],.portal-backdrop[hidden],.portal-notice[hidden]{display:none!important}.portal-day{font-size:15px;background:#fff3c5;border-radius:8px;padding:11px}.portal-activity{border:1px solid #dce4ef;border-radius:12px;background:#f8fbff;padding:16px;margin:12px 0}.portal-activity p{margin:8px 0}.portal-muted{color:#64748b;font-size:13px}.portal-price,.portal-success{color:#15803d;font-weight:bold}.portal-warning{color:#a16207;font-weight:bold}.portal-link{border:0;background:transparent;color:#1d4ed8;font-weight:bold;text-align:left;padding:0;text-decoration:underline}.portal-list-card{padding:18px;margin-bottom:12px;background:var(--p-card);border:1px solid #dce5f1;border-radius:14px}.portal-notice{padding:15px;background:#dcfce7;color:#166534;border-radius:10px;margin-bottom:18px}.portal-notice.error{background:#fee2e2;color:#991b1b}.portal-modal:not([hidden]){position:fixed;inset:0;z-index:60;background:#0009;display:grid;place-items:center;padding:15px}.portal-dialog{background:white;border-radius:17px;padding:25px;max-width:580px;width:100%;max-height:88vh;overflow:auto;position:relative}.portal-close{position:absolute;right:18px;top:12px;background:transparent;border:0;font-size:28px}.portal-dialog input[type=file]{display:block;margin:14px 0;width:100%}@media(max-width:750px){.participant-header{padding:10px 14px;gap:10px}.participant-header #greeting{display:none}.participant-brand{font-size:19px}.portal-main{padding:24px 14px 55px}.portal-event{display:block}.portal-cover{height:220px;min-height:0}.portal-event-content{padding:18px}.portal-event-content h2{font-size:21px}.portal-primary,.portal-danger,.portal-warning-btn{max-width:100%}}
+
+/* Cronograma em linha própria, sem deslocar a capa do evento. */
+.portal-event{align-items:start}.portal-cover{grid-column:1;grid-row:1;height:100%;min-height:250px}.portal-event-content{grid-column:2;grid-row:1}.portal-event>.portal-activities{grid-column:1/-1;grid-row:2;margin:0 24px 24px;padding-top:20px}.portal-event>.portal-activities[hidden]{display:none!important}.portal-cover img{display:block;object-fit:cover;max-height:360px}.portal-event:not(:has(>.portal-activities:not([hidden]))) .portal-cover{align-self:stretch}
+@media(max-width:750px){.portal-event{display:grid;grid-template-columns:1fr}.portal-cover,.portal-event-content,.portal-event>.portal-activities{grid-column:1;grid-row:auto}.portal-cover{height:220px}.portal-event>.portal-activities{margin:0 18px 18px}}
+/* Perfil: mesmo menu retrátil dos eventos, em qualquer tamanho de tela. */
+.fe-profile-drawer .top{position:sticky;top:0;z-index:40}.fe-profile-drawer #menuBtn{display:inline-block;border:1px solid #dbe3ef;background:#f8fafc;border-radius:9px;padding:10px 13px;cursor:pointer;margin-right:12px}.fe-profile-drawer main.wrap{max-width:1160px;margin:0 auto;padding:34px 24px 80px}.fe-profile-drawer .portal-drawer{z-index:55}.fe-profile-drawer .portal-backdrop:not([hidden]){z-index:54;display:block}
+
+/* Correção do cabeçalho de Meu Perfil: três áreas independentes */
+.fe-profile-drawer #hdr.top{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;gap:10px!important;min-height:70px;height:auto!important;padding:10px clamp(14px,3vw,48px)!important;position:sticky;top:0}
+.fe-profile-drawer #hdr .profile-left{display:flex;align-items:center;gap:14px;min-width:0}
+.fe-profile-drawer #hdr #menuBtn{flex:none!important;display:inline-flex!important;align-items:center;justify-content:center;width:44px!important;min-width:44px!important;height:44px!important;padding:0!important;margin:0!important;font-size:20px;line-height:1}
+.fe-profile-drawer #hdr .user-name{display:block!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+.fe-profile-drawer #hdr .brand{grid-column:2;font-size:24px;white-space:nowrap}
+.fe-profile-drawer #hdr .right{grid-column:3;justify-self:end;white-space:nowrap}
+.fe-profile-drawer #hdr .right button{width:auto!important;white-space:nowrap}
+@media(max-width:600px){.fe-profile-drawer #hdr .user-name{display:none!important}.fe-profile-drawer #hdr .brand{font-size:19px}.fe-profile-drawer #hdr.top{min-height:62px!important}}
+
+/* Passaporte recuperado do Apps Script, sem modificar o shell do participante. */
+#ticketList{display:flex;flex-direction:column;align-items:stretch;gap:18px;width:100%}
+.ticket-card-passaporte{width:100%;max-width:100%;background:#fff;border:1px solid #334155;border-radius:10px;overflow:hidden;color:#111827;font-size:12px}
+.ticket-passport-header{background:#4682b4;color:#fff;text-align:center;padding:15px 12px;font-weight:700}
+.ticket-passport-brand{font-size:12px;letter-spacing:1px;opacity:.95}
+.ticket-passport-welcome{font-size:13px;margin-top:4px}
+.ticket-corpo-pontilhado{border:2px dashed #9ca3af;margin:15px;padding:15px}
+.ticket-event-title{font-size:15px;color:#000;margin:0 0 14px;text-transform:uppercase}
+.ticket-passport-label{font-size:14px;font-weight:700;margin-bottom:8px}
+.ticket-event-location{font-size:12px;font-weight:700;margin-bottom:16px}
+.badge-data-amarela{display:table;background:#ffdc36;color:#111827;padding:5px 8px;border-radius:5px;font-weight:700;margin:16px 0 8px}
+.ticket-atv-item{line-height:1.6;overflow-wrap:anywhere;margin-bottom:14px}
+.ticket-atv-title{font-size:12px;margin-bottom:6px}
+.ticket-atv-meta{font-size:11px;margin:3px 0}
+.ticket-atv-meta a{color:#1d4ed8;text-decoration:underline}
+.ticket-atv-voucher{font:700 11px/1.5 monospace;margin-top:5px}
+.ticket-atv-pending{background:#fee2e2;color:#991b1b;border:1px solid #f87171;padding:9px;margin-top:8px;border-radius:5px;font-weight:700;text-align:center}
+.ticket-atv-confirmed{color:#166534;font-size:11px;font-weight:700;margin-top:6px}
+.ticket-atv-missing{font-size:11px;color:#92400e;margin-top:7px}
+@media(max-width:440px){.ticket-corpo-pontilhado{margin:10px;padding:12px}}
+
+/* Apenas a tela Meus Ingressos: ocultar título redundante e reduzir espaço superior. */
+.portal-restored.portal-ingressos-view .portal-heading{display:block!important}
+.portal-restored.portal-ingressos-view .portal-main{padding-top:14px}
+
+/* Certificados: referência visual do Apps Script, sem segundo menu ou saudação. */
+.portal-restored.portal-certificados-view .portal-heading{display:block!important}
+.portal-restored.portal-certificados-view .portal-main{padding-top:14px}
+#certificateList{display:flex;justify-content:stretch;width:100%}
+.portal-cert-shell{width:100%;max-width:100%}
+.portal-cert-banner{background:#1d70e8;color:white;text-align:center;padding:20px 16px;border-radius:8px 8px 0 0;font-size:14px}
+.portal-cert-panel{background:white;border:1px solid #e2e8f0;border-radius:9px;padding:20px;margin-top:12px;box-shadow:0 3px 9px #0000000c}
+.portal-cert-panel h2{font-size:20px;margin:2px 0 20px;color:#10233f}
+.portal-cert-empty{text-align:center;color:#64748b;font-size:13px;margin:18px 0 2px}
+.portal-cert-panel .portal-list-card{box-shadow:none}
+@media(max-width:500px){.portal-cert-panel{padding:16px}}

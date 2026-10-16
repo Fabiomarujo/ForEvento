@@ -1,0 +1,143 @@
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/static/css/app_new.css?v=20261007c"><script src="/static/js/app_new.js?v=20261007c"></script><title>Certificados</title><link rel="stylesheet" href="/static/css/admin_menu_central.css?v=20261011-clean"><script defer src="/static/js/admin_menu_central.js?v=20261011-36"></script><link rel="stylesheet" href="/static/css/operational_theme.css?v=20261009-fix2"><script defer src="/static/js/operational_theme.js?v=20261011-26"></script><link rel="stylesheet" href="/static/css/operational_navigation_v3.css?v=20261009-v3"><link rel="stylesheet" href="/api/appearance.css"><link rel="stylesheet" href="/static/css/fe_shell_v25.css?v=20261011-25"><script defer src="/static/js/fe_shell_v25.js?v=20261011-35"></script><script id="fe-access-preload-v27">(function(){
+try {
+  var page=new URLSearchParams(location.search).get('page')||'';
+  if(!page && /\/(admin-dashboard|equipe-dashboard)$/.test(location.pathname))page='admin-dashboard';
+  var pages=['admin-dashboard','equipe-dashboard','cronograma-lista','configurar','financeiro-auditoria','reembolso','perfil','vitrine-admin','certificados-modelos','certificados-configurar','certificados-gerar'];
+  if(pages.indexOf(page)<0)return;
+  var u=JSON.parse(localStorage.getItem('fe_user')||'null');
+  if(page==='perfil' && String((u&& (u.tipo||u.role))||'').toUpperCase()==='PARTICIPANTE')return;
+  var token=localStorage.getItem('fe_token');if(!token||window.feAdminAccessPromise)return;
+  window.feAdminAccessPromise=fetch('/api/admin/acesso',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token}),cache:'no-store'})
+    .then(function(r){if(!r.ok)throw Error('Sessão expirada ou sem autorização');return r.json()})
+    .then(function(d){if(!d.sucesso)throw Error(d.mensagem||'Acesso negado');return d})
+    .catch(function(e){window.feAdminAccessPromise=null;throw e});
+} catch(e) { /* O controlador normal tratará a autenticação. */ }
+})();</script>
+<script id="fe-master-desktop-v35">(function(){try{var u=JSON.parse(localStorage.getItem('fe_user')||'null');if(String(u?.categoria||u?.tipo||u?.role||'').toUpperCase()==='ADMINISTRADOR_MASTER')document.documentElement.classList.add('feMasterDesktop')}catch(_){}})();</script><link rel="stylesheet" href="/static/css/fe_master_desktop_v35.css?v=37"><style id="fe-cert-table-parity-v027">
+#gerar .table-scroll{width:100%;overflow-x:auto;overflow-y:visible}
+#gerar .table-scroll>table{width:100%;min-width:970px;border-collapse:collapse;text-align:left;font-size:12px;table-layout:auto;border:1px solid #e5e7eb}
+#gerar .table-scroll thead tr{background:#374151;color:#fff}
+#gerar .table-scroll thead th{background:#374151!important;color:#fff!important;font-size:12px!important;font-weight:700!important;padding:11px!important;line-height:1.25!important;white-space:normal;vertical-align:middle;border:0!important}
+#gerar .table-scroll tbody td{font-size:12px!important;line-height:1.3!important;padding:10px!important;vertical-align:middle;border:0!important;border-bottom:1px solid #e5e7eb!important;overflow-wrap:normal;word-break:normal}
+#gerar .table-scroll th:nth-child(1),#gerar .table-scroll td:nth-child(1){min-width:105px}
+#gerar .table-scroll th:nth-child(2),#gerar .table-scroll td:nth-child(2){min-width:155px;overflow-wrap:anywhere}
+#gerar .table-scroll th:nth-child(3),#gerar .table-scroll td:nth-child(3){min-width:170px;max-width:260px;overflow-wrap:break-word}
+#gerar .table-scroll th:nth-child(4),#gerar .table-scroll td:nth-child(4){min-width:85px}
+#gerar .table-scroll th:nth-child(5),#gerar .table-scroll td:nth-child(5),#gerar .table-scroll th:nth-child(6),#gerar .table-scroll td:nth-child(6){min-width:56px}
+#gerar .table-scroll th:nth-child(7),#gerar .table-scroll td:nth-child(7){min-width:72px}
+#gerar .table-scroll th:nth-child(8),#gerar .table-scroll td:nth-child(8){min-width:75px}
+#gerar .table-scroll th:nth-child(9),#gerar .table-scroll td:nth-child(9){min-width:32px;text-align:center}
+#gerar .table-scroll th:nth-child(10),#gerar .table-scroll td:nth-child(10){min-width:115px;text-align:center}
+#gerar .table-scroll td button{box-sizing:border-box;max-width:none}
+
+/* v0.1.28 — indicadores com duas faixas e ações à direita */
+#gerar .cert-stats{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:10px!important;align-items:stretch!important;margin:14px 0!important}
+#gerar .cert-stats .stat-card{min-width:0!important;display:flex!important;flex-direction:column!important;padding:0!important;overflow:hidden!important;border:1px solid #dce4ef!important;border-radius:12px!important;background:#f8fafc!important;box-sizing:border-box!important}
+#gerar .cert-stats .stat-card .fe-stat-label{min-height:57px!important;display:flex!important;align-items:center!important;padding:10px 12px!important;box-sizing:border-box!important;border-bottom:1px solid #dce4ef!important;font-size:12px!important;font-weight:400!important;line-height:1.45!important;color:#58708d!important}
+#gerar .cert-stats .stat-card .fe-stat-value{display:flex!important;align-items:center!important;justify-content:center!important;min-height:52px!important;padding:8px 10px!important;box-sizing:border-box!important;font-size:23px!important;font-weight:700!important;line-height:1!important;color:#0f2547!important;font-variant-numeric:tabular-nums!important}
+#gerar .toolbar{display:flex!important;justify-content:flex-end!important;align-items:center!important;gap:10px!important;flex-wrap:wrap!important;width:100%!important;margin:14px 0 0!important}
+#gerar .toolbar .btn{margin:0!important}
+@media(max-width:1050px){ #gerar .cert-stats{grid-template-columns:repeat(auto-fit,minmax(125px,1fr))!important}}
+@media(max-width:480px){ #gerar .toolbar .btn{flex:1 1 auto!important}}
+</style></head><body>{% include 'partials/fe_header_shared.html' %}{% include 'partials/fe_shell_sidebar_slot.html' %}{% include 'partials/fe_shell_content_open.html' %}<main class="wrap"><div class="section-title"><h1 id="feCertPageTitle">Certificados</h1><p id="feCertPageSubtitle" class="muted">Modelos, configuração por evento, geração e envio em etapas independentes.</p></div>
+
+<section id="modelos" class="card mt" hidden><h2>Cadastrar Modelos</h2><p class="muted">Use nomes como <b>pt_certificado_participacao_a.pdf</b> ou <b>pt_certificado_participacao_m.pdf</b>. O prefixo define o idioma e o sufixo define assinatura automática/manual.</p><input id="modeloArquivo" type="file" class="field"><button class="btn blue" onclick="uploadModelo()">Cadastrar modelo</button><div id="listaModelos" class="mt"></div></section>
+<section id="config" class="card mt" hidden><h2>Mensagem Email</h2><label>Evento</label><select id="eventoConfig" class="field" onchange="loadCfg()"><option value="">Selecione...</option></select><label>Tipo de assinatura</label><select id="tipoAssinatura" class="field"><option value="AUTOMATICA">Automática</option><option value="MANUAL">Manual</option></select><label>Assunto do e-mail</label><input id="assunto" class="field" value="Seu certificado está disponível - ForEvento"><label>Mensagem</label><textarea id="mensagem" class="field" rows="7">Olá, {{NOME_PARTICIPANTE}}!
+
+Seu certificado de participação no evento {{NOME_EVENTO}}, referente à atividade {{NOME_ATIVIDADE}}, já está disponível.
+
+Para acessar seu certificado, entre na área do participante do ForEvento.
+Código de validação: {{CODIGO_VALIDACAO}}
+Link para verificar a autenticidade: {{URL_VALIDACAO}}
+
+Atenciosamente,
+Equipe ForEvento</textarea><button class="btn blue" onclick="saveCfg()">Salvar configuração</button><p id="modeloAuto" class="muted"></p><div id="modelosDisponiveis" class="muted" aria-live="polite"></div></section>
+<section class="card mt" id="smtpPanel" hidden><h2>Configuração de envio SMTP</h2><p class="muted">Exclusivo do Administrador Master. A senha é armazenada no servidor, fora do banco de dados. Utilize uma senha de aplicativo do seu provedor.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px"><label>Servidor SMTP<input id="smtpHost" class="field" placeholder="smtp.exemplo.com"></label><label>Porta<input id="smtpPort" class="field" type="number" min="1" max="65535" value="587"></label><label>Remetente<input id="smtpSender" class="field" type="email"></label><label>Usuário SMTP<input id="smtpUser" class="field"></label><label>Segurança<select id="smtpSecurity" class="field"><option value="starttls">STARTTLS</option><option value="ssl">SSL/TLS</option></select></label><label>Senha de aplicativo<input id="smtpPassword" class="field" type="password" autocomplete="new-password" placeholder="Deixe vazio para manter a atual"></label></div><p id="smtpPasswordStatus" class="muted"></p><button class="btn blue" type="button" onclick="saveSmtp()">Salvar SMTP</button><hr><label>E-mail para teste<input id="smtpTestEmail" class="field" type="email" placeholder="voce@exemplo.com"></label><button class="btn" type="button" onclick="testSmtp()">Enviar e-mail de teste</button><p id="smtpResult" role="status" class="muted"></p></section>
+<section id="gerar" class="card mt" hidden><h2>Gerar e Enviar</h2><label>Evento</label><select id="eventoGerar" class="field" onchange="loadPanel()"><option value="">Selecione...</option></select><div class="search-cert"><div class="search-box"><input id="busca" class="field" placeholder="Pesquisar nome, e-mail ou atividade" onkeydown="if(event.key==='Enter')renderRows()"><button class="btn blue" title="Pesquisar" onclick="renderRows()">🔍</button></div><button class="btn" onclick="busca.value='';renderRows()">Limpar filtros</button></div><div id="stats" class="cert-stats"></div><div class="toolbar"><button class="btn blue" type="button" onclick="certGenerate()">📄 Gerar Certificado</button><button class="btn blue" id="btnLote" onclick="certSendBatch()">Enviar em Lote</button></div><div class="table-scroll"><table class="table"><thead><tr><th>Nome</th><th>E-mail</th><th>Atividade</th><th>Assinatura</th><th>QR</th><th>PDF</th><th>Área do inscrito</th><th>Status</th><th class="check-cell"><input id="checkAllCert" type="checkbox" title="Selecionar todos os certificados válidos para envio" onchange="toggleAll(this.checked)"></th><th>Ação</th></tr></thead><tbody id="rows"></tbody></table></div></section></main>{% include 'partials/fe_shell_content_close.html' %}
+<script>
+const section={{ cert_section|tojson }};document.getElementById(section==='certificados-configurar'?'config':section==='certificados-gerar'?'gerar':'modelos').hidden=false;let painel=[];let resumoCertificados={};
+async function events(){let es=await call('listarEventos');[eventoConfig,eventoGerar].forEach(s=>s.innerHTML='<option value="">Selecione...</option>'+es.map(e=>`<option value="${e.id}">${e.id} — ${e.nome}</option>`).join(''))}events();
+function fr(f){return new Promise((ok,no)=>{let r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)})}async function uploadModelo(){let f=modeloArquivo.files[0];if(!f)return alert('Selecione um arquivo.');let r=await call('salvarModeloCertificado',{nomeArquivo:f.name,base64:await fr(f)});alert(r.mensagem);if(r.sucesso){modeloArquivo.value='';listModels()}}async function listModels(){let m=await call('listarModelosCertificados');listaModelos.innerHTML=m.length?m.map(x=>`<div class="banner-row"><div><b>${x.filename}</b><br><small>${x.language.toUpperCase()} · ${x.signature_type}</small></div><button class="btn" onclick="delModel(${x.id})">Excluir</button></div>`).join(''):'<div class="empty">Nenhum modelo cadastrado.</div>'}async function delModel(id){if(confirm('Excluir modelo?')){await call('excluirModeloCertificado',id);listModels()}}if(!modelos.hidden)listModels();
+if(!config.hidden){call('listarModelosCertificados').then(ms=>{document.getElementById('modelosDisponiveis').textContent=ms.length?'Modelos no servidor: '+ms.map(m=>m.filename).join(' · '):'Nenhum modelo no servidor. Cadastre modelos antes de gerar.'}).catch(()=>{document.getElementById('modelosDisponiveis').textContent='Não foi possível consultar modelos do servidor.'})}
+async function loadCfg(){if(!eventoConfig.value)return;let c=await call('obterConfiguracaoCertificadoPorEvento',eventoConfig.value);tipoAssinatura.value=c.tipoAssinatura||'AUTOMATICA';assunto.value=c.assunto||'Seu certificado está disponível - ForEvento';mensagem.value=c.mensagem||mensagem.defaultValue;let ms=await call('listarModelosCertificados');let sig=tipoAssinatura.value;modeloAuto.textContent='Modelos disponíveis para seleção automática: '+ms.filter(x=>x.signature_type===sig).map(x=>x.filename).join(', ')}async function saveCfg(){if(!eventoConfig.value)return alert('Selecione o evento.');let r=await call('salvarConfiguracaoCertificadoEvento',{idEvento:eventoConfig.value,tipoAssinatura:tipoAssinatura.value,assunto:assunto.value,mensagem:mensagem.value});alert(r.mensagem)}
+
+let feCertTitlesV027=new Map();
+function feCertTitleKeyV027(v){return String(v==null?'':v).trim().toLocaleLowerCase('pt-BR')}
+function feCertDisplayTitleV027(v){return feCertTitlesV027.get(feCertTitleKeyV027(v))||v||''}
+async function feCertLoadTitlesV027(eventId){
+ feCertTitlesV027=new Map();
+ try{
+  const rows=await call('buscarCronogramaEvento',eventId);
+  if(!Array.isArray(rows))return;
+  const candidates=new Map();
+  rows.forEach(a=>{
+   const title=String(a.titulo||'').trim();if(!title)return;
+   [a.sinopse,a.ministrante,title].forEach(k=>{const key=feCertTitleKeyV027(k);if(!key)return;
+    if(candidates.has(key)&&candidates.get(key)!==title)candidates.set(key,null);
+    else if(!candidates.has(key))candidates.set(key,title);
+   });
+  });
+  candidates.forEach((title,key)=>{if(title)feCertTitlesV027.set(key,title)});
+ }catch(e){console.warn('Título da atividade: mantendo texto original',e)}
+}
+function certEsc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function certToken(){try{return localStorage.getItem('fe_token')||sessionStorage.getItem('fe_token')||''}catch(e){return ''}}
+async function certApi(path,data){let r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:certToken(),...data})});let j=await r.json();if(!r.ok||j.sucesso===false)throw Error(j.mensagem||'Falha na operação');return j}
+async function loadPanel(){
+ if(!eventoGerar.value){painel=[];resumoCertificados={};renderRows();return}
+ try{let res=await call('obterPainelCertificadosPorEvento',eventoGerar.value);
+ if(!res||!res.sucesso)throw Error(res?.mensagem||'Não foi possível consultar o evento');
+ painel=Array.isArray(res.participantes)?res.participantes:[];
+ resumoCertificados=res.resumo||{};await feCertLoadTitlesV027(eventoGerar.value);renderRows();
+ }catch(e){painel=[];resumoCertificados={};renderRows();alert('Erro ao carregar certificados: '+e.message)}
+}
+function filteredRows(){let q=(document.getElementById('busca')?.value||'').toLocaleLowerCase('pt-BR').trim();return painel.filter(x=>[x.nomeAluno,x.emailAluno,x.atividade,feCertDisplayTitleV027(x.atividade)].join(' ').toLocaleLowerCase('pt-BR').includes(q))}
+function toggleAll(v){document.querySelectorAll('.cert-select:not(:disabled)').forEach(x=>x.checked=v);syncAll()}
+function syncAll(){let all=[...document.querySelectorAll('.cert-select:not(:disabled)')],h=document.getElementById('checkAllCert');if(h){h.checked=all.length>0&&all.every(x=>x.checked);h.indeterminate=all.some(x=>x.checked)&&!h.checked}}
+function certFileUrl(url){
+ if(!url)return;
+ if(/\/api\/certificados\/arquivo\//.test(url)){
+  fetch(url,{headers:{'X-ForEvento-Token':certToken()},cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.blob()}).then(blob=>{const u=URL.createObjectURL(blob);window.open(u,'_blank');setTimeout(()=>URL.revokeObjectURL(u),120000)}).catch(e=>alert('Erro ao abrir arquivo: '+e.message));
+ }else window.open(url,'_blank','noopener');
+}
+function certOpenButton(url,label,color){return url?'<button type="button" style="background:'+color+';color:white;border:0;border-radius:4px;padding:5px 8px;cursor:pointer" onclick="certFileUrl('+certEsc(JSON.stringify(url)).replace(/&quot;/g,'&quot;')+')">'+label+'</button>':'—'}
+function renderRows(){
+ const el=document.getElementById('rows'),list=filteredRows();
+ el.innerHTML=list.length?list.map(x=>{
+  const status=String(x.statusEnvio||x.statusCertificado||'PENDENTE').toUpperCase();
+  const eligible=!!x.elegivelCertificado;
+  const pdf=x.urlPdf||x.urlPdfAtual||x.urlPdfAssinado||x.urlRascunho||'';
+  const qr=x.urlQrCode||x.qrCodeUrl||x.QR_CODE_URL||'';
+  const hasCert=!!x.idCertificado && (!!pdf||!!x.possuiCertificado);
+  const id=String(x.idCertificado||'');
+  const signature=x.tipoAssinatura||x.assinatura||'—';
+  const btn=(label,color,handler)=>'<button type="button" style="background:'+color+';color:#fff;border:0;border-radius:4px;padding:5px 7px;cursor:pointer;font-weight:bold;font-size:10px;line-height:1.1;width:105px" onclick="'+handler+'">'+label+'</button>';
+  const send=btn('📧 Enviar Certificado','#059669','certSend('+certEsc(JSON.stringify(id))+')');
+  const del=btn('🗑️ Deletar','#dc2626','certDelete('+certEsc(JSON.stringify(id))+')');
+  const actions=hasCert?'<div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-width:105px">'+send+del+'</div>':'<small>Aguardando certificado</small>';
+  return '<tr><td><strong>'+certEsc(x.nomeAluno)+'</strong></td><td>'+certEsc(x.emailAluno)+'</td><td>'+certEsc(feCertDisplayTitleV027(x.atividade))+'<br><small style="color:'+(eligible?'#047857':'#b91c1c')+'">'+(eligible?'✓ Presença confirmada':'✕ Sem presença — geração bloqueada')+'</small></td><td style="text-align:center"><small><b>'+certEsc(signature)+'</b></small></td><td style="text-align:center">'+certOpenButton(qr,'▣ Ver','#10b981')+'</td><td style="text-align:center">'+certOpenButton(pdf,'👁️ Abrir','#1a73e8')+'</td><td style="text-align:center">'+certEsc(x.publicadoPortal||'NÃO')+'</td><td style="text-align:center"><b>'+certEsc(status)+'</b></td><td class="check-cell"><input class="cert-select" type="checkbox" data-cert="'+certEsc(id)+'" '+(hasCert?'':'disabled')+' onchange="syncAll()"></td><td style="text-align:center">'+actions+'</td></tr>';
+ }).join(''):'<tr><td colspan="10">Nenhum registro para este evento/filtro.</td></tr>';
+ let r=resumoCertificados;
+ document.getElementById('stats').innerHTML=[['Inscrições em atividades',r.totalInscritos||0],['Presenças',r.presencaConfirmada||0],['Elegíveis',r.elegiveisCertificado||0],['Certificados Gerados',r.certificadosGerados||0],['Aguardando Assinatura',r.aguardandoAssinatura||0],['Enviados',r.enviados||0],['Erros',r.errosEnvio||0]].map(x=>'<div class="stat-card"><div class="fe-stat-label">'+x[0]+'</div><div class="fe-stat-value">'+x[1]+'</div></div>').join('');syncAll();
+}
+async function certDelete(id){
+ if(!/^CERT-[A-F0-9]{16}$/.test(id)){alert('ID do certificado inválido. Atualize o painel.');return}
+ if(!confirm('Excluir este certificado do painel? O PDF será preservado no servidor; inscrições e presenças não serão alteradas.'))return;
+ try{let r=await certApi('/api/admin/certificados/excluir',{idCertificado:id});alert(r.mensagem||'Certificado excluído.');await loadPanel()}catch(e){alert('Erro ao excluir: '+e.message)}
+}
+async function certGenerate(){
+ const idEvento=eventoGerar.value;if(!idEvento)return alert('Selecione um evento.');
+ const n=painel.filter(x=>x.elegivelCertificado&&!x.possuiCertificado&&!x.idCertificado).length;
+ if(!n)return alert('Não há inscrições elegíveis aguardando geração.');
+ if(!confirm('Gerar certificados para até '+n+' inscrição(ões) elegível(is)?'))return;
+ try{let r=await certApi('/api/admin/certificados/gerar',{idEvento});alert(r.mensagem||'Geração processada.');await loadPanel()}catch(e){alert('Erro ao gerar: '+e.message)}
+}
+async function certSend(id){if(!id||!confirm('Enviar ou reenviar este certificado por e-mail e liberar na área do participante?'))return;try{let r=await call('enviarCertificadoPorEmailAdmin',id,{});alert(r.mensagem||'Operação concluída.');await loadPanel()}catch(e){alert('Falha no envio: '+e.message)}}
+async function certSendBatch(){let ids=[...document.querySelectorAll('.cert-select:checked:not(:disabled)')].map(x=>x.dataset.cert).filter(Boolean);if(!ids.length)return alert('Selecione certificados existentes para envio.');if(!confirm('Enviar '+ids.length+' certificado(s)?'))return;let erros=[];for(let id of ids){try{let r=await call('enviarCertificadoPorEmailAdmin',id,{});if(!r||r.sucesso===false)erros.push(id+': '+(r?.mensagem||'Falha'))}catch(e){erros.push(id+': '+e.message)}}await loadPanel();alert(erros.length?'Envio concluído com '+erros.length+' erro(s):\n'+erros.join('\n'):'Envio concluído.')}
+function smtpToken(){try{return localStorage.getItem('fe_token')||sessionStorage.getItem('fe_token')||JSON.parse(localStorage.getItem('fe_user')||'{}').token||''}catch(e){return ''}}
+async function smtpRequest(acao,extra={}){const r=await fetch('/api/admin/certificados/smtp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao,token:smtpToken(),...extra})});return r.json()}
+async function loadSmtp(){let r=await smtpRequest('consultar');if(!r.sucesso){smtpResult.textContent=r.mensagem||'Sem permissão para configurar SMTP';return}smtpPanel.hidden=false;let c=r.config||{};smtpHost.value=c.host||'';smtpPort.value=c.port||587;smtpSender.value=c.sender||'';smtpUser.value=c.username||'';smtpSecurity.value=c.security||'starttls';smtpPasswordStatus.textContent=r.senhaConfigurada?'Senha já configurada; deixe vazio para manter.':'Senha ainda não configurada.'}
+async function saveSmtp(){let config={host:smtpHost.value,port:smtpPort.value,sender:smtpSender.value,username:smtpUser.value,security:smtpSecurity.value,password:smtpPassword.value};let r=await smtpRequest('salvar',{config});smtpResult.textContent=r.mensagem||'Não foi possível salvar.';if(r.sucesso){smtpPassword.value='';loadSmtp()}}
+async function testSmtp(){smtpResult.textContent='Testando envio...';let r=await smtpRequest('testar',{destinatario:smtpTestEmail.value});smtpResult.textContent=r.mensagem||'Teste finalizado.'}
+if(section==='certificados-configurar'){document.getElementById('feCertPageTitle').textContent='Configuração para Envio por Email';document.getElementById('feCertPageSubtitle').textContent='Configure a assinatura e a mensagem de envio dos certificados para cada evento.';loadSmtp();}
+</script>{% include 'partials/fe_shell_footer.html' %}</body></html>

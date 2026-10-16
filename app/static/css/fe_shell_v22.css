@@ -1,0 +1,22 @@
+/* Four-block shell: header / sidebar / content / footer. All overrides scoped. */
+:root{--fe-shell-h:60px;--fe-shell-foot:28px;--fe-shell-side:240px}
+html,body{max-width:100%;overflow-x:clip}
+body:has(#feUnifiedHeader){padding-top:var(--fe-shell-h)!important;min-height:100vh!important;box-sizing:border-box!important}
+body:has(#feUnifiedHeader) #feUnifiedHeader{position:fixed!important;inset:0 0 auto 0!important;left:0!important;right:0!important;top:0!important;margin:0!important;width:100vw!important;max-width:100vw!important;height:var(--fe-shell-h)!important;min-height:var(--fe-shell-h)!important;box-sizing:border-box!important;padding:0 16px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;background:var(--fe-cor-cabecalho,var(--op-header-bg,var(--cabecalho,#0f172a)))!important;color:var(--fe-cor-texto-cabecalho,var(--op-header-text,var(--textoCabecalho,#fff)))!important;z-index:1300!important;transform:none!important}
+#feUnifiedHeader .fe-header-left{display:flex;align-items:center;gap:12px;min-width:0}#feUnifiedHeader #feHeaderGreeting{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#feUnifiedHeader .fe-header-title{font-size:21px;font-weight:800;justify-self:center;white-space:nowrap;color:inherit!important}#feUnifiedHeader .fe-header-right{justify-self:end}#feUnifiedHeader button{position:static!important;inset:auto!important;transform:none!important;display:inline-flex!important;align-items:center;justify-content:center;min-height:36px;border:0;background:transparent;color:inherit;cursor:pointer;padding:7px 10px;font:inherit}
+/* Eliminate legacy 240px offset on header, while retaining content offset. */
+body.feSharedLayout:has(#feUnifiedHeader){padding-left:0!important}
+body.feSharedLayout:has(#feUnifiedHeader) #feShellContent{margin-left:var(--fe-shell-side)!important;min-width:0!important;box-sizing:border-box!important}
+body.feSharedLayout.feSharedCollapsed:has(#feUnifiedHeader) #feShellContent{margin-left:0!important}
+body:has(#feUnifiedHeader) #feSharedSidebar{top:var(--fe-shell-h)!important;bottom:var(--fe-shell-foot)!important;left:0!important;width:var(--fe-shell-side)!important;z-index:1200!important}
+body:has(#feUnifiedHeader) #feSidebar{top:auto!important}
+body:has(#feUnifiedHeader) #feSharedToggle,body:has(#feUnifiedHeader) #feMenuMobile{display:none!important}
+body:has(#feUnifiedHeader) #feShellSidebarSlot{display:contents}
+body:has(#feUnifiedHeader) #feShellContent{width:auto!important;max-width:none!important;padding:0!important}
+body:has(#feUnifiedHeader) #feShellContent main.wrap{max-width:1100px!important;margin:28px auto!important;padding:0 24px!important}
+body:has(#feUnifiedHeader) #feShellFooter{height:var(--fe-shell-foot);box-sizing:border-box;display:flex;align-items:center;justify-content:center;position:relative;z-index:10;background:var(--fe-cor-cabecalho,var(--op-header-bg,var(--cabecalho,#0f172a)));color:var(--fe-cor-texto-cabecalho,var(--op-header-text,var(--textoCabecalho,#fff)));font-size:11px}
+body:has(#feUnifiedHeader) .admin-layout-wrapper{min-height:calc(100vh - var(--fe-shell-h) - var(--fe-shell-foot))!important}
+body:has(#feUnifiedHeader) #feSidebar{min-height:calc(100vh - var(--fe-shell-h) - var(--fe-shell-foot))!important}
+/* On small screens sidebar overlays content; never pushes header or footer. */
+@media(max-width:800px){:root{--fe-shell-h:60px}body.feSharedLayout:has(#feUnifiedHeader) #feShellContent{margin-left:0!important}body:has(#feUnifiedHeader) #feSharedSidebar{width:min(280px,85vw)!important}body:has(#feUnifiedHeader) #feUnifiedHeader{padding:0 8px!important}#feUnifiedHeader #feHeaderGreeting{max-width:100px;font-size:12px}#feUnifiedHeader .fe-header-title{font-size:18px}#feUnifiedHeader button{padding:6px!important}}
+@media(max-width:390px){#feUnifiedHeader #feHeaderGreeting{display:none}}

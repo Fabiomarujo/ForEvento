@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Ajuda — ForEvento</title><link rel="stylesheet" href="/static/css/app_new.css?v=20261008fix3">
+    <style>
+        /* RESET E CONFIGURAÇÕES GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* LAYOUT E ESTRUTURA */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 30px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .sidebar .badge {
+            background-color: #7c3aed;
+            color: #ffffff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .sidebar nav a {
+            display: block;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar nav a:hover {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 50px 60px;
+            max-width: 1000px;
+        }
+
+        /* TIPOGRAFIA E COMPONENTES */
+        h2 {
+            font-size: 24px;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #334155;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: #0f172a;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            color: #6366f1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* CARDS E ALERTAS */
+        .alert-box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-purple {
+            background-color: #f5f3ff;
+            border-left: 4px solid #7c3aed;
+            color: #5b21b6;
+        }
+
+        .alert-amber {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .alert-green {
+            background-color: #f0fdf4;
+            border-left: 4px solid #10b981;
+            color: #166534;
+        }
+
+        /* CARD DE FLUXO */
+        .flow-container {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .flow-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow-number {
+            background-color: #6366f1;
+            color: #ffffff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* FAQ CONTAINER */
+        .faq-item {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .faq-answer {
+            color: #475569;
+            font-size: 14.5px;
+            padding-left: 24px;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+            .sidebar .badge {
+                margin-bottom: 15px;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+        }
+    
+/* Itens 1 e 6: largura integral; demais seções preservadas. */
+.fe-manual-body .main-content section#perfis{grid-column:1 / -1}
+.fe-manual-body .main-content section#financeiro-ajustes{grid-column:1 / -1}
+</style>
+
+<script>
+/* Compatibilidade google.script.run -> FastAPI.
+   Preserva success/failure handlers e chamadas diretas do Apps Script. */
+(function(){
+  function makeRun(state){
+    state=state||{ok:null,fail:null};
+    return new Proxy({}, {get:function(_t,prop){
+      if(prop==="withSuccessHandler") return function(fn){return makeRun({ok:fn,fail:state.fail});};
+      if(prop==="withFailureHandler") return function(fn){return makeRun({ok:state.ok,fail:fn});};
+      if(prop==="withUserObject") return function(){return makeRun(state);};
+      return function(){
+        var args=[].slice.call(arguments), ok=state.ok, fail=state.fail;
+        fetch("/api/call/"+encodeURIComponent(String(prop)),{
+          method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({args:args})
+        }).then(async function(resp){
+          var data=await resp.json();
+          if(!resp.ok||data.__error) throw new Error(data.__error||("HTTP "+resp.status));
+          if(ok) ok(data.result);
+        }).catch(function(err){if(fail) fail(err); else console.error("ForEvento:",prop,err);});
+      };
+    }});
+  }
+  window.google=window.google||{}; google.script=google.script||{};
+  Object.defineProperty(google.script,"run",{configurable:true,get:function(){return makeRun();}});
+})();
+</script>
+
+<style>
+body.fe-manual-body{display:block!important;background:#f8fafc;margin:0}.fe-manual-body .fe-vitrine-header{position:sticky;top:0;z-index:80}.fe-manual-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px;max-width:1280px;margin:0 auto;padding:32px 24px}.fe-manual-body .sidebar{position:sticky;top:100px;width:auto;height:fit-content;max-height:calc(100vh - 125px);overflow:auto;border-radius:16px;padding:22px 16px}.fe-manual-body .main-content{margin:0;padding:0;max-width:none;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-content:start}.fe-manual-body .main-content section{background:white;border:1px solid #e0e7f0;border-radius:16px;padding:20px;min-width:0;scroll-margin-top:110px}.fe-manual-body .main-content section#modulos,.fe-manual-body .main-content section#faq,.fe-manual-body .main-content section#pix{grid-column:1/-1}.fe-manual-body .main-content section#modulos{columns:2;column-gap:36px}.fe-manual-body .main-content section#modulos h2{column-span:all}.fe-manual-body .main-content section#modulos h3{break-after:avoid}.fe-manual-body .main-content section#modulos p{break-inside:avoid}.fe-manual-body .main-content h2{margin-top:0}.fe-manual-body .faq-item{display:inline-block;vertical-align:top;width:calc(50% - 12px);margin:5px 8px 10px 0;box-sizing:border-box}.fe-manual-body .faq-question{cursor:pointer}.fe-manual-body .faq-question:focus{outline:2px solid #2563eb}.fe-manual-body .faq-answer[hidden]{display:none}.fe-manual-body .fe-public-footer{margin-top:24px}.fe-manual-body .fe-back-manual{display:block;margin:14px 0;color:white;text-decoration:none;font-weight:700}.fe-manual-body .main-content ol{padding-left:24px}.fe-manual-body .main-content li{margin-bottom:9px}@media(max-width:900px){.fe-manual-layout{grid-template-columns:1fr;padding:16px}.fe-manual-body .sidebar{position:static;max-height:none}.fe-manual-body .main-content{grid-template-columns:1fr}.fe-manual-body .main-content section{grid-column:1/-1}.fe-manual-body .main-content section#modulos{columns:1}.fe-manual-body .faq-item{width:100%}}@media(max-width:600px){.fe-manual-body .fe-public-top{gap:10px}.fe-manual-body .main-content section{padding:15px}}
+</style><link rel="stylesheet" href="/static/css/manual_participante_nav.css"></head>
+<body class="fe-manual-body"><header class="fe-public-top fe-vitrine-header"><a class="fe-logo" href="/">For<span>Evento</span></a><nav class="fe-public-nav" aria-label="Navegação principal"><a href="/#featured">Eventos</a><a href="/manual-usuario" aria-current="page">Ajuda</a><a class="btn blue" href="/login">Entrar</a></nav></header><div class="fe-manual-layout">
+<aside class="sidebar"><h1>ForEvento</h1><span class="badge">CENTRAL DE AJUDA</span><a class="fe-back-manual" href="/">← Voltar à Vitrine</a><nav aria-label="Seções do manual"><a href="#perfis">1. Perfis</a><a href="#modulos">2. Eventos</a><a href="#financeiro-ajustes">3. Financeiro</a><a href="#certificados">4. Certificados</a><a href="#relatorios">5. Relatórios</a><a href="#configuracao">6. Configuração</a><a href="#backup">7. Backup</a><a href="#faq">8. Perguntas</a><a href="#datas">9. Datas</a></nav></aside>
+<main class="main-content">
+<section id="perfis"><h2>1. Perfis de acesso</h2><p>O Administrador Master e o Participante têm permissões fixas. Os perfis operacionais (Coordenador, Equipe Administrativa, Ministrante e Monitor) recebem permissões definidas em Configurar → Configurar Permissões. As cores podem ser personalizadas por perfil, sem alterar suas permissões.</p><p>Os menus disponíveis dependem do perfil e devem ser validados também no servidor.</p></section>
+<section id="modulos"><h2>2. Eventos e inscrições</h2><p>Em Evento, cadastre e publique eventos, configure atividades e cronograma, modalidade, local, horários, vagas e links para atividades online. O participante consulta a vitrine, entra com sua conta e solicita inscrição na atividade disponível.</p><p>O ingresso acompanha o estado da inscrição. Em atividades pagas com comprovante manual, a inscrição permanece pendente até a confirmação administrativa; inscrições pendentes não devem ser tratadas como presença elegível para certificados.</p><p>O Monitor registra presença conforme as permissões do seu perfil. Os registros devem permanecer consistentes entre as telas de presença.</p></section>
+<section id="financeiro-ajustes"><h2>3. Financeiro</h2><p>O evento pode utilizar Pix manual (chave e comprovante, sujeito à conferência) ou integração Pix automática, conforme configuração. Em pagamentos manuais, confira a lista de pendentes e confirme somente após verificar o comprovante.</p><p>Em Consulta/Auditoria, acompanhe pagamentos confirmados, transações e comprovantes. Em Reembolso, consulte atividade, valor, comprovantes e presença; a regra do sistema impede reembolso quando houver presença registrada.</p><p>O indicador Total Recebido considera pagamentos confirmados. O gráfico Gratuito x Pago dos relatórios conta <strong>atividades</strong>, não transações.</p></section>
+<section id="certificados"><h2>4. Certificados</h2><p>Em Cadastrar Modelos, envie e consulte modelos PDF ou PPTX armazenados no servidor. Em Configurar, selecione o evento e a modalidade de assinatura. Os modelos com sufixo <strong>_a</strong> são de assinatura automática; modelos <strong>_m</strong> são de assinatura manual.</p><p>Na modalidade automática, o sistema preenche os campos previstos e gera os elementos de validação (código e QR Code) conforme o modelo. Na manual, o documento fica preparado para assinatura posterior, sem preenchimento automático desses elementos.</p><p>Em Gerar e Enviar, filtre pelo evento, verifique presença e pagamento confirmado, gere certificados individualmente ou em lote e envie somente os que estiverem gerados. Consulte o status PENDENTE, GERADO ou ENVIADO e a lista de erros. A validação utiliza o código e a URL do certificado.</p></section>
+<section id="relatorios"><h2>5. Relatórios</h2><p>Selecione primeiro o evento. Os indicadores superiores são: <strong>Participantes, Atividades, Inscrições em Atividades, Pagamentos e Total Recebido</strong>.</p><p>Os gráficos incluem Presença x Ausência; Gratuito x Pago (quantidade de atividades); certificados em quatro colunas (inscrições, gerados, enviados e erros); e Vagas x Inscritos x Presenças x Ausências para <strong>uma atividade selecionada</strong>. Para atividades sem limite de vagas, o sistema deve indicar “sem limite”, sem criar quantidade fictícia.</p><p>Participantes por idioma apresenta seis idiomas: Português, Inglês, Espanhol, Francês, Italiano e Chinês, com contagens e bandeiras.</p></section>
+<section id="configuracao"><h2>6. Configuração e segurança</h2><p>Em Aparência e Segurança, configure as cores da interface e confira a pré-visualização. As cores dos perfis operacionais são independentes das do Administrador Master e do Participante.</p><p>As sessões administrativas usam, por padrão, 30 minutos de inatividade; a área do Participante, 10 minutos. Interações do usuário renovam a atividade; consultas automáticas não devem renová-la. Somente usuários autorizados podem salvar configurações sensíveis.</p><p>Em Configurar Permissões, defina o acesso dos perfis operacionais aos menus e submenus. As permissões fixas do Administrador Master e do Participante não devem ser reduzidas.</p></section>
+<section id="backup"><h2>7. Backup e Restauração</h2><p>Acesse <strong>Configurar → Backup e Restauração</strong>. O botão Criar backup agora inicia uma cópia manual; backups manuais não entram na exclusão por retenção automática.</p><p>O backup automático pode ser ativado e agendado. A quantidade de backups automáticos retidos pode ser configurada de <strong>5 a 10</strong>; ao ultrapassar o limite, somente a cópia automática mais antiga é removida, após validação da nova cópia.</p><p>Antes de restaurar, confirme o arquivo, faça uma cópia de segurança e siga o procedimento de restauração da instalação. Nunca substitua o banco ativo ao instalar atualizações de código.</p></section>
+<section id="faq"><h2>8. Perguntas frequentes</h2><div class="faq-item"><div class="faq-question">Por que não consigo acessar um submenu?</div><div class="faq-answer">O acesso depende das permissões do perfil. O Administrador Master pode consultar a configuração dos perfis operacionais.</div></div><div class="faq-item"><div class="faq-question">Enviar comprovante libera o certificado?</div><div class="faq-answer">Não. O pagamento manual precisa ser confirmado e a atividade deve atender às regras de presença.</div></div><div class="faq-item"><div class="faq-question">O gráfico mostra todas as atividades ao mesmo tempo?</div><div class="faq-answer">No gráfico de vagas, escolha uma atividade no seletor para visualizar apenas seus dados.</div></div><div class="faq-item"><div class="faq-question">O limite de backups apaga cópias manuais?</div><div class="faq-answer">Não. A retenção configurada vale somente para backups automáticos.</div></div></section>
+<section id="datas"><h2>9. Datas e armazenamento</h2><p>O ForEvento utiliza aplicação Python e banco de dados SQLite, com armazenamento de arquivos no servidor. A interface apresenta datas no formato brasileiro quando aplicável; o sistema deve comparar datas usando a configuração de fuso horário do servidor.</p></section>
+</main></div><footer class="fe-public-footer"><div><strong>ForEvento</strong><p>Eventos, inscrições e certificados em um só lugar.</p></div><small>© 2026 ForEvento</small></footer>
+<script>document.querySelectorAll('.fe-manual-body .faq-question').forEach(el=>{el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-expanded','true');const answer=el.nextElementSibling;function toggle(){answer.hidden=!answer.hidden;el.setAttribute('aria-expanded',String(!answer.hidden));}el.addEventListener('click',toggle);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});});</script><script src="/static/js/app_new.js"></script><script src="/static/js/manual_participante_nav.js?v=20261008b" defer></script></body>
+</html>

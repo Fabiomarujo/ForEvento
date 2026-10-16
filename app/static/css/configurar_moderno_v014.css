@@ -1,0 +1,38 @@
+/* ForEvento v0.1.14 — apresentação unificada de Aparência e Segurança.
+   Somente página Configurar; não altera regras, dados, nem ações. */
+.fe-config-modern{--cfg-line:#dce5f0;--cfg-ink:#142744;--cfg-muted:#64748b;--cfg-blue:#2563eb;max-width:1400px}
+.fe-config-modern>h1{font-size:29px;letter-spacing:-.035em;margin:14px 0 22px;color:var(--cfg-ink)}
+.fe-config-modern .fe-config-section,.fe-config-modern #feOperationalEditor,.fe-config-modern #feV25Appearance{border:1px solid var(--cfg-line)!important;border-radius:16px!important;background:#fff!important;box-shadow:0 3px 18px rgba(15,35,65,.055);padding:24px!important;margin-top:20px!important;min-width:0}
+.fe-config-modern .fe-config-section>h2,.fe-config-modern #feV25Appearance>h2{font-size:22px;letter-spacing:-.025em;color:var(--cfg-ink);margin:0 0 10px}
+.fe-config-modern .fe-config-description,.fe-config-modern .fe-config-section>.muted,.fe-config-modern #feV25Appearance>p{font-size:13px;color:var(--cfg-muted);line-height:1.6;margin:0 0 20px}
+.fe-config-modern .fe-config-section .btn,.fe-config-modern #feV25Appearance .btn{border-radius:9px;min-height:43px;padding:10px 17px;font-weight:600;cursor:pointer}
+.fe-config-modern .fe-config-section .btn.blue,.fe-config-modern #feV25Appearance .btn.blue{background:#2563eb;color:#fff}
+.fe-config-modern .fe-config-general .appearance-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,1fr);align-items:start;gap:20px}
+.fe-config-modern .fe-config-general .color-grid,.fe-config-modern #participantColorGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+.fe-config-modern .color-control{border:1px solid var(--cfg-line);border-radius:12px;background:#fdfefe;padding:14px!important;min-width:0;display:flex;flex-direction:column;gap:8px}
+.fe-config-modern .color-control>label{font-size:13px;font-weight:600;color:var(--cfg-ink);line-height:1.4}
+.fe-config-modern .color-control .color-pair{display:flex;gap:10px;align-items:center;min-width:0}
+.fe-config-modern .color-control input[type=color]{flex:none;width:42px;height:40px;padding:3px;border:1px solid #cbd5e1;border-radius:8px;cursor:pointer;background:#fff}
+.fe-config-modern .color-control .field{min-width:0;flex:1;width:100%;height:40px;border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px}
+.fe-config-modern .color-control small{color:#64748b;font-size:11px}
+.fe-config-modern .theme-preview{border:1px solid var(--cfg-line);border-radius:12px;background:#fff;padding:13px;min-width:0;position:sticky;top:85px;overflow:hidden}
+.fe-config-modern .preview-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.fe-config-modern .preview-tabs button{background:#f1f5f9;border:1px solid #dce5f0;border-radius:8px;padding:9px 12px;color:#1e3a5f;cursor:pointer}
+.fe-config-modern #previewBox{border-radius:9px;overflow:hidden;border:1px solid #e2e8f0;min-height:180px}
+.fe-config-modern #feV25Appearance .feV24Settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:15px 0 20px}
+.fe-config-modern #feV25Appearance .feV24Settings label{display:flex!important;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px;border:1px solid var(--cfg-line);background:#fdfefe;border-radius:12px;min-height:95px;font-weight:600;font-size:13px;color:var(--cfg-ink);white-space:normal}
+.fe-config-modern #feV25Appearance .feV24Settings input[type=color]{width:54px;height:40px;padding:3px;border:1px solid #cbd5e1;border-radius:8px;background:white;cursor:pointer}
+.fe-config-modern #participantAppearance #participantColorGrid{grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0}
+.fe-config-modern #participantAppearance #participantThemePreview{border:1px solid var(--cfg-line)!important;border-radius:12px!important;max-width:100%;margin:16px 0!important}
+.fe-config-modern #participantAppearance #participantThemeStatus,.fe-config-modern #securityStatus{display:block;margin-top:12px;font-size:13px}
+.fe-config-modern #seguranca .fe-security-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
+.fe-config-modern #seguranca .fe-security-grid label{border:1px solid var(--cfg-line);background:#fdfefe;border-radius:12px;padding:15px;display:flex;flex-direction:column;gap:10px;color:var(--cfg-ink)}
+.fe-config-modern #seguranca .fe-security-grid .field{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:8px;padding:9px}
+.fe-config-modern #seguranca .fe-security-check{display:flex;align-items:center;gap:9px;padding:12px 0}
+.fe-config-modern #seguranca .fe-security-check input{width:17px;height:17px}
+/* Operational editor already uses its own card system; harmonize surfaces only. */
+.fe-config-modern #feOperationalEditor{background:#fff!important}
+.fe-config-modern #feOperationalEditor .op-modern-group,.fe-config-modern #feOperationalEditor .op-modern-preview-panel{box-shadow:none;background:#fdfefe}
+@media(max-width:1050px){ .fe-config-modern .fe-config-general .appearance-layout{grid-template-columns:1fr}.fe-config-modern .theme-preview{position:static}.fe-config-modern #feV25Appearance .feV24Settings{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){ .fe-config-modern .fe-config-general .color-grid,.fe-config-modern #participantAppearance #participantColorGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.fe-config-modern .fe-config-section,.fe-config-modern #feOperationalEditor,.fe-config-modern #feV25Appearance{padding:16px!important}}
+@media(max-width:520px){ .fe-config-modern .fe-config-general .color-grid,.fe-config-modern #participantAppearance #participantColorGrid,.fe-config-modern #feV25Appearance .feV24Settings,.fe-config-modern #seguranca .fe-security-grid{grid-template-columns:1fr}.fe-config-modern>h1{font-size:25px}}

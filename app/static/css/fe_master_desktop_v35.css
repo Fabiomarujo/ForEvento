@@ -1,0 +1,67 @@
+/* v35 - Administrador Master: painel desktop fixo. Sem alteracao para participante e outros perfis. */
+@media (min-width:801px){
+html.feMasterDesktop body.feSharedLayout:has(#feUnifiedHeader) #feShellContent{margin-left:240px!important}
+html.feMasterDesktop body.feSharedLayout.feSharedCollapsed:has(#feUnifiedHeader) #feShellContent{margin-left:240px!important}
+html.feMasterDesktop body:has(#feUnifiedHeader) #feSharedSidebar{display:flex!important;visibility:visible!important;opacity:1!important;transform:none!important;width:240px!important;flex-direction:column!important}
+html.feMasterDesktop body.feSharedCollapsed #feSharedSidebar{display:flex!important;visibility:visible!important;transform:none!important}
+html.feMasterDesktop #feHeaderMenuButton,html.feMasterDesktop #feSharedToggle,html.feMasterDesktop #feMenuMobile{display:none!important}
+html.feMasterDesktop body.painel-aberto #feSidebar{display:flex!important;visibility:visible!important;opacity:1!important;transform:none!important;width:240px!important}
+}
+
+/* v36: menu Master e estatico, sem fase provisoria ou retracao no desktop */
+#feMasterStaticNav[hidden]{display:none!important}
+#feMasterStaticNav:not([hidden]){display:flex;flex-direction:column;gap:4px;min-height:0}
+#feMasterStaticNav .feSharedLink{display:block}
+@media(min-width:801px){
+ html.feMasterDesktop #feSharedSidebar:has(#feMasterStaticNav:not([hidden])){display:flex!important;visibility:visible!important;transform:none!important;opacity:1!important}
+ html.feMasterDesktop body.feSharedLayout #feShellContent{margin-left:240px!important}
+ html.feMasterDesktop body.feSharedLayout{padding-left:0!important}
+ html.feMasterDesktop body.painel-aberto #feSidebar .aba-item-lateral{visibility:visible!important}
+}
+
+/* v37: controles auxiliares sempre depois do ultimo link; sem sobreposicao. */
+@media (min-width:801px){
+ html.feMasterDesktop body.painel-aberto #feSidebar.admin-sidebar-fixa{
+   justify-content:flex-start!important; align-items:stretch!important;
+   overflow-y:auto!important; overflow-x:hidden!important;
+ }
+ html.feMasterDesktop body.painel-aberto #feSidebar.admin-sidebar-fixa > div:first-child{flex:0 0 auto!important;min-height:0!important}
+ html.feMasterDesktop body.painel-aberto #feSidebar.admin-sidebar-fixa > div:last-child{
+   position:static!important;inset:auto!important;transform:none!important;
+   margin-top:16px!important;flex:0 0 auto!important;z-index:auto!important;
+ }
+ html.feMasterDesktop #feSharedSidebar:has(#feMasterStaticNav:not([hidden])){
+   display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
+   overflow-y:auto!important;overflow-x:hidden!important;
+ }
+ html.feMasterDesktop #feSharedSidebar #feMasterStaticNav:not([hidden]){
+   position:static!important;flex:0 0 auto!important;overflow:visible!important;
+ }
+ html.feMasterDesktop #feSharedSidebar .feSharedTools{
+   position:static!important;inset:auto!important;transform:none!important;
+   margin-top:16px!important;flex:0 0 auto!important;z-index:auto!important;
+   padding:14px 10px 18px!important;clear:both!important;
+ }
+}
+
+/* Ajuste pontual: menu Master ocupa todo o espaco entre cabecalho e rodape.
+   Apenas desktop Master; nao modifica regras de permissao nem outros perfis. */
+@media (min-width:801px){
+ html.feMasterDesktop body:has(#feUnifiedHeader) #feSharedSidebar{
+   position:fixed!important;
+   top:var(--fe-shell-h,60px)!important;
+   bottom:var(--fe-shell-foot,28px)!important;
+   height:calc(100dvh - var(--fe-shell-h,60px) - var(--fe-shell-foot,28px))!important;
+   max-height:none!important;min-height:0!important;
+   overflow-y:auto!important;overflow-x:hidden!important;
+   align-content:start!important;
+ }
+ html.feMasterDesktop body:has(#feUnifiedHeader) #feSharedSidebar #feSidebar,
+ html.feMasterDesktop body:has(#feUnifiedHeader) #feSidebar.admin-sidebar-fixa{
+   height:auto!important;max-height:none!important;min-height:0!important;
+   overflow:visible!important;position:static!important;
+ }
+ html.feMasterDesktop body:has(#feUnifiedHeader) #feSharedSidebar #feMasterStaticNav{
+   height:auto!important;max-height:none!important;overflow:visible!important;
+ }
+}

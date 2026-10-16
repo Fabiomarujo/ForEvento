@@ -1,0 +1,18 @@
+/* ForEvento: aparencia administrativa; estruturas e permissoes preservadas. */
+:root{--fe-menu-border-radius:9px;--fe-menu-active-radius:9px;--fe-menu-separator-width:1px;--fe-menu-separator-style:solid;--fe-menu-group-gap:9px;--fe-menu-header-offset:16px}
+body.painel-aberto:not(.fe-operational) #feSidebar .aba-item-lateral,
+body.feSharedLayout #feSharedSidebar .feSharedLink{border-radius:var(--fe-menu-border-radius)!important}
+body.painel-aberto:not(.fe-operational) #feSidebar .aba-item-lateral.active,
+body.feSharedLayout #feSharedSidebar .feSharedLink[aria-current="page"]{border-radius:var(--fe-menu-active-radius)!important}
+body.painel-aberto:not(.fe-operational) #feSidebar .fe-menu-group,
+body.feSharedLayout #feSharedSidebar .feSharedGroup:not(:first-child){border-top-width:var(--fe-menu-separator-width)!important;border-top-style:var(--fe-menu-separator-style)!important;margin-top:var(--fe-menu-group-gap)!important}
+/* Isola o cabecalho compartilhado e centraliza o controle de recolher. */
+body.feSharedLayout header.top #feSharedToggle{position:absolute!important;left:16px!important;top:50%!important;transform:translateY(-50%)!important;width:36px!important;height:38px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;margin:0!important;padding:0!important;line-height:1!important}
+/* Rodape dos menus operacionais: visivel apos o conteudo rolavel. */
+body.feSharedLayout #feSharedSidebar{display:flex!important;flex-direction:column!important;overflow-y:auto!important}
+body.feSharedLayout #feSharedSidebar .feSharedTools{display:flex;flex-direction:column;gap:7px;margin-top:14px;padding:12px 0 16px;border-top:1px solid var(--fe-admin-nav-line,rgba(255,255,255,.24));flex-shrink:0}
+body.feSharedLayout #feSharedSidebar .feSharedTool{display:flex;align-items:center;justify-content:center;min-height:38px;padding:9px 10px;box-sizing:border-box;text-align:center;border:1px solid rgba(255,255,255,.25);border-radius:var(--fe-menu-border-radius);background:rgba(255,255,255,.1);color:var(--textoMenuLateral,#fff);text-decoration:none;font:600 12px system-ui,Arial,sans-serif;cursor:pointer}
+body.feSharedLayout #feSharedSidebar .feSharedTool:hover{background:rgba(255,255,255,.2)}
+/* Nao interfere na area do participante. */
+
+.fe-menu-settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}.fe-menu-settings label{display:flex;flex-direction:column;gap:7px}.fe-menu-preview{max-width:290px;background:#192f50;color:white;padding:14px;border-radius:10px;margin:15px 0}.fe-menu-preview-active{background:#2563eb;border-radius:var(--fe-preview-active-radius,9px);padding:12px;font-weight:600}.fe-menu-preview-item{padding:12px;border-radius:var(--fe-preview-radius,9px)}.fe-menu-preview-sep{border-top:var(--fe-preview-thick,1px) var(--fe-preview-sep,solid) rgba(255,255,255,.35);margin-top:var(--fe-preview-gap,9px)}

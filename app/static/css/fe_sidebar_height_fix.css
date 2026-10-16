@@ -1,0 +1,20 @@
+/* ForEvento: menu ate o rodape, com rolagem interna somente quando necessario. */
+@media (min-width:801px){
+ body.painel-aberto .admin-layout-wrapper{min-height:calc(100dvh - 98px)!important;align-items:stretch!important}
+ body.painel-aberto #feSidebar.admin-sidebar-fixa{
+   align-self:stretch!important;height:auto!important;min-height:calc(100dvh - 98px)!important;
+   max-height:none!important;box-sizing:border-box!important;
+   overflow-y:auto!important;overflow-x:hidden!important;
+   justify-content:flex-start!important;position:relative!important;
+ }
+ body.painel-aberto #feSidebar.admin-sidebar-fixa>div:first-child{flex:0 0 auto!important;min-height:0!important}
+ body.painel-aberto #feSidebar.admin-sidebar-fixa>div:last-child{position:static!important;inset:auto!important;transform:none!important;margin-top:16px!important;flex:0 0 auto!important}
+ body.feSharedLayout #feSharedSidebar,body.feSharedDashboard #feSharedSidebar{
+   top:70px!important;bottom:28px!important;height:auto!important;max-height:none!important;
+   box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;
+ }
+ body.feSharedLayout #feSharedSidebar .feSharedTools,body.feSharedDashboard #feSharedSidebar .feSharedTools{
+   position:static!important;inset:auto!important;transform:none!important;margin-top:16px!important;flex-shrink:0!important
+ }
+}
+@media(max-width:800px){#feSharedSidebar{max-height:none!important;overflow-y:auto!important}}

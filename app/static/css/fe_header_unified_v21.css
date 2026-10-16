@@ -1,0 +1,12 @@
+/* ForEvento v21: um único cabeçalho em todas as páginas administrativas. */
+html body .fe-unified-header{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;margin:0!important;padding:0 16px!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;min-width:0!important;height:60px!important;min-height:60px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;gap:8px!important;z-index:1001!important;background:var(--fe-cor-cabecalho,var(--cabecalho,var(--cor-cabecalho,#0f172a)))!important;color:var(--fe-cor-texto-cabecalho,var(--textoCabecalho,var(--cor-texto-cabecalho,#fff)))!important;box-shadow:none!important}
+html body .fe-unified-header .fe-header-left{display:flex;align-items:center;gap:10px;min-width:0;justify-self:start}
+html body .fe-unified-header #feHeaderGreeting{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html body .fe-unified-header .fe-header-title{position:static!important;transform:none!important;margin:0!important;justify-self:center;font-weight:800;font-size:21px;white-space:nowrap;color:inherit!important}
+html body .fe-unified-header .fe-header-right{justify-self:end;min-width:0}
+html body .fe-unified-header button{position:static!important;transform:none!important;inset:auto!important;display:inline-flex!important;align-items:center;justify-content:center;cursor:pointer;border:0;border-radius:6px;background:transparent;color:inherit;font:inherit;padding:8px 10px;min-height:38px;white-space:nowrap}
+html body .fe-unified-header #feHeaderMenuButton{font-size:20px;min-width:38px}
+/* Neutraliza compensações antigas aplicadas ao cabeçalho, não ao conteúdo. */
+html body.feSharedLayout .fe-unified-header,html body.painel-aberto .fe-unified-header{margin-left:0!important;margin-right:0!important}
+@media(max-width:700px){html body .fe-unified-header{height:56px!important;min-height:56px!important;padding:0 8px!important;gap:4px!important}html body .fe-unified-header .fe-header-title{font-size:17px}html body .fe-unified-header #feHeaderGreeting{max-width:72px;font-size:11px}html body .fe-unified-header button{padding:7px 5px;font-size:12px}html body .fe-unified-header #feHeaderMenuButton{font-size:20px;min-width:34px}}
+@media(max-width:390px){html body .fe-unified-header #feHeaderGreeting{display:none}html body .fe-unified-header .fe-header-title{font-size:16px}}

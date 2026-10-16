@@ -1,0 +1,51 @@
+/* ForEvento v17: geometry source of truth, loaded AFTER legacy CSS. */
+:root{--fe17-header-h:70px;--fe17-side-w:240px}
+body.fe-operational.feSharedLayout{--fe-op-height:var(--fe17-header-h);--fe-op-width:var(--fe17-side-w);box-sizing:border-box!important}
+/* Header is anchored to the viewport, never to the content column. */
+body.fe-operational.feSharedLayout header.top.fe-unified-header,
+body.fe-operational.feSharedDashboard .navbar.fe-unified-header{
+ position:relative!important;left:calc(-1 * var(--fe17-side-w))!important;
+ margin-left:0!important;margin-right:0!important;width:100vw!important;max-width:100vw!important;
+ min-width:0!important;box-sizing:border-box!important;height:var(--fe17-header-h)!important;
+ min-height:var(--fe17-header-h)!important;display:grid!important;
+ grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+ align-items:center!important;padding:0 76px!important;
+ background:var(--op-header-bg,var(--fe17-header-color,var(--titlebg,#fff)))!important;
+ color:var(--op-header-text,var(--fe17-header-text,#172b4d))!important;
+}
+body.fe-operational.feSharedLayout.feSharedCollapsed header.top.fe-unified-header,
+body.fe-operational.feSharedDashboard.feSharedCollapsed .navbar.fe-unified-header{left:0!important}
+body.fe-operational.feSharedLayout #feSharedToggle,
+body.fe-operational.feSharedDashboard #feSharedToggle{
+ position:fixed!important;top:calc(var(--fe17-header-h) / 2)!important;left:16px!important;
+ transform:translateY(-50%)!important;margin:0!important;z-index:1100!important;
+ width:40px!important;height:40px!important;display:flex!important;align-items:center!important;
+ justify-content:center!important;box-sizing:border-box!important;
+}
+body.fe-operational.feSharedLayout #feSharedSidebar{top:var(--fe17-header-h)!important;
+ background:var(--op-sidebar-bg,var(--fe17-sidebar-color,#405d94))!important;
+ color:var(--op-sidebar-text,var(--fe17-sidebar-text,#fff))!important}
+body.fe-operational.feSharedLayout header.top.fe-unified-header .brand,
+body.fe-operational.feSharedDashboard .navbar.fe-unified-header .logo{justify-self:center!important;min-width:0!important;text-align:center!important}
+body.fe-operational.feSharedLayout header.top.fe-unified-header .right{justify-self:end!important;min-width:0!important}
+body.fe-operational.feSharedLayout{overflow-x:clip}
+@media(max-width:800px){
+ :root{--fe17-header-h:62px}
+ body.fe-operational.feSharedLayout{padding-left:0!important}
+ body.fe-operational.feSharedLayout header.top.fe-unified-header,
+ body.fe-operational.feSharedDashboard .navbar.fe-unified-header,
+ body.fe-operational.feSharedLayout.feSharedCollapsed header.top.fe-unified-header,
+ body.fe-operational.feSharedDashboard.feSharedCollapsed .navbar.fe-unified-header{
+ left:0!important;width:100%!important;max-width:100%!important;padding:0 58px!important;
+ grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important}
+ body.fe-operational.feSharedLayout #feSharedToggle,
+ body.fe-operational.feSharedDashboard #feSharedToggle{left:8px!important;width:38px!important;height:38px!important}
+ body.fe-operational.feSharedLayout #feSharedSidebar{width:min(280px,85vw)!important;transform:translateX(-105%)!important}
+ body.fe-operational.feSharedLayout #feSharedSidebar.feSharedOpen{transform:translateX(0)!important}
+ body.fe-operational.feSharedLayout header.top .user-name{max-width:18vw!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+}
+@media(max-width:380px){
+ body.fe-operational.feSharedLayout header.top.fe-unified-header,
+ body.fe-operational.feSharedDashboard .navbar.fe-unified-header{padding:0 48px!important}
+ body.fe-operational.feSharedLayout header.top .brand{font-size:17px!important}
+}

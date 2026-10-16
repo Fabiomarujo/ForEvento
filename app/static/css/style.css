@@ -1,0 +1,463 @@
+/* ==========================================
+     RESET UNIVERSAL E FUNDO PÚRPURA DO PORTAL
+     ========================================== */
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+  }
+ 
+  body { 
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif; 
+    /* Força o fundo degradê púrpura solicitado nas especificações */
+    background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #9333ea 100%);
+    color: #1f2937; 
+    min-height: 100vh; 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+  }
+ 
+  body.painel-aberto { 
+    display: block; 
+    padding: 0; 
+    background: #f8fafc !important; 
+  }
+
+   /* BARRA DE NAVEGAÇÃO SUPERIOR */
+  .navbar { 
+    width: 100%; 
+    background: #ffffff; 
+    padding: 16px 32px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #e2e8f0; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+  }
+  
+  .logo { 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: #111827; 
+  }
+ 
+  .nav-link { 
+    font-size: 14px; 
+    text-decoration: none; 
+    transition: color 0.2s; 
+  }
+ 
+  .nav-link:hover { 
+    color: #b91c1c !important; 
+  }
+
+  /* CONTAINER DA VITRINE DE EVENTOS (PARTICIPANTE) */
+  .vitrine-container { 
+    width: 100%; 
+    background: white; 
+    padding: 35px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
+    border: 1px solid #e2e8f0; 
+  }
+ 
+  .grid-events { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 24px; 
+    margin-top: 20px; 
+    text-align: left; 
+  }
+
+  /* CAIXAS CENTRALIZADAS DO PORTAL DE LOGIN */
+  .portal-box { 
+    background: white; 
+    width: 100%; 
+    max-width: 480px; 
+    padding: 35px; 
+    border-radius: 12px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+    text-align: center; 
+    transition: all 0.3s ease; 
+  }
+ 
+  .portal-box.admin-theme { 
+    border-top: 6px solid #374151; 
+  }
+ 
+  /* Ajustado para a paleta de cor púrpura solicitada nas anotações */
+  .portal-box.aluno-theme { 
+    border-top: 6px solid #7c3aed; 
+    background: #fdfbff;
+  }
+ 
+  h2 { 
+    font-size: 24px; 
+    color: #0f172a; 
+    margin-bottom: 10px; 
+    font-weight: 700; 
+  }
+ 
+  h3 { 
+    font-size: 18px; 
+    color: #1f2937; 
+    font-weight: 600; 
+  }
+ 
+  .welcome-msg { 
+    color: #4b5563; 
+    font-size: 15px; 
+    margin-bottom: 25px; 
+    line-height: 1.5; 
+  }
+
+  /* COMPONENTES DE FORMULÁRIOS */
+  .form-group { 
+    margin-bottom: 18px; 
+    text-align: left; 
+  }
+ 
+  label { 
+    display: block; 
+    font-size: 13px; 
+    font-weight: 600; 
+    margin-bottom: 6px; 
+    color: #4b5563; 
+  }
+
+  input, textarea, select { 
+    width: 100%; 
+    padding: 11px 14px; 
+    border: 1px solid #d1d5db; 
+    border-radius: 6px; 
+    font-size: 14px; 
+    color: #111827; 
+    background-color: #fff; 
+    transition: all 0.2s; 
+  }
+
+  input:focus, textarea:focus, select:focus { 
+    border-color: #7c3aed; 
+    outline: none; 
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.1); 
+  }
+
+  /* BOTÕES TIPO LINKS DE SELEÇÃO INICIAL */
+  .btn-nav-option { 
+    width: 100%; 
+    background: #ffffff; 
+    border: 2px solid #e5e7eb; 
+    padding: 14px 20px; 
+    border-radius: 8px; 
+    font-size: 15px; 
+    font-weight: 600; 
+    color: #374151; 
+    margin-bottom: 12px; 
+    cursor: pointer; 
+    text-align: left; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    transition: all 0.2s; 
+  }
+ 
+  .btn-nav-option:hover { 
+    border-color: #7c3aed; 
+    background-color: #f5f3ff; 
+    color: #7c3aed; 
+    transform: translateY(-1px); 
+  }
+ 
+  /* BOTÕES PADRÕES */
+  .btn-primary { 
+    background: #7c3aed; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    border-radius: 6px; 
+    font-size: 14px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    width: 100%; 
+    transition: background 0.2s; 
+    display: inline-block; 
+    text-align: center; 
+  }
+ 
+  .btn-primary:hover { 
+    background: #6d28d9; 
+  }
+
+  button:disabled { 
+    background: #9ca3af !important; 
+    cursor: not-allowed !important; 
+  }
+
+  .link-back { 
+    display: inline-block; 
+    margin-top: 15px; 
+    font-size: 13px; 
+    color: #6b7280; 
+    cursor: pointer; 
+  }
+  
+  .forgot-password { 
+    text-align: right; 
+    margin-top: -12px; 
+    margin-bottom: 15px; 
+  }
+
+  .forgot-password a { 
+    font-size: 12px; 
+    color: #7c3aed; 
+    text-decoration: none; 
+    cursor: pointer; 
+  }
+
+  .event-card { 
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  }
+ 
+  .event-card:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1) !important; 
+  }
+
+  /* CONFIGURAÇÃO DO NOVO CONTAINER DE BOTÕES EMPILHADOS */
+  .nav-menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 340px;
+    margin: 40px auto;
+    padding: 0 15px;
+    align-items: center;
+  }
+
+  /* ESTILIZAÇÃO DO MODELO DE BOTÃO PLANO DA IMAGEM */
+  .btn-nav-flat {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .btn-nav-flat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* CORES FIÉIS AO MODELO ENVIADO */
+  .btn-evt { background-color: #4682b4 !important; }      /* Azul */
+  .btn-ing { background-color: #e09296 !important; }      /* Rosê / Salmão */
+  .btn-cert { background-color: #6e8b3d !important; }     /* Verde Oliva */
+  .btn-perf { background-color: #2f849a !important; }     /* Ciano / Azul Petróleo */
+  .btn-cont { background-color: #d97724 !important; }     /* Laranja */
+  .btn-logout { background-color: #a04040 !important; }   /* Vinho / Vermelho Escuro */
+
+  /* BOTÃO VOLTAR TOP CONTEXTUAL */
+  .btn-back-top {
+    background: #4b5563;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  /* MODAIS FIXOS E FILTROS DE EMBASSAMENTO (GLASSMORPHISM) */
+  .modal-cronograma-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(15, 23, 42, 0.6); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 10000; 
+    padding: 20px; 
+    backdrop-filter: blur(4px); 
+  }
+ 
+  .modal-cronograma-box { 
+    background: #ffffff; 
+    width: 100%; 
+    max-width: 650px; 
+    max-height: 85vh; 
+    border-radius: 16px; 
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+  }
+
+  /* =================================================================
+     NOVA ARQUITETURA: ARRANJO DO LAYOUT ADMIN COM MENU LATERAL FIXO 
+     ================================================================= */
+  .admin-layout-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    align-items: stretch;
+  }
+
+  /* MENU NAV LATERAL ESQUERDO ESTILO SOLICITADO */
+  .admin-sidebar-fixa {
+    width: 240px;
+    background-color: #0f172a;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    gap: 6px;
+    flex-shrink: 0;
+    border-right: 1px solid #1e293b;
+  }
+
+  .aba-item-lateral {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .aba-item-lateral:hover {
+    background-color: #1e293b;
+     color: #ffffff;
+  }
+
+  .aba-item-lateral.active {
+    background-color: #3b82f6;
+    color: #ffffff;
+  }
+
+  /* CONTEÚDO REATIVO DO PAINEL ADMIN */
+  .admin-conteudo-dinamico {
+    flex: 1;
+    padding: 30px 40px;
+    background-color: #f8fafc;
+     overflow-y: auto;
+  }
+
+  .aba-painel-principal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    animation: fadeInSuave 0.25s ease-out;
+  }
+
+  /* SELETOR INTERATIVO DE IDIOMAS (I18N) DO ALUNO */
+  .container-idiomas-i18n {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .opcao-idioma-flag {
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .opcao-idioma-flag:hover {
+    border-color: #7c3aed;
+    background: #f5f3ff;
+    transform: scale(1.05);
+  }
+
+  /* ANIMAÇÃO DE ENTRADA SUAVE DAS ABAS ASYNC */
+  @keyframes fadeInSuave {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+    /* DESIGN DO CARTÃO UNIFICADO DE PASSAPORTE */
+  .ticket-card-passaporte {
+    background: #ffffff;
+    border: 1px solid #111827;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 380px;
+    margin: 20px auto;
+    overflow: hidden;
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+
+  /* CONTAINER DA MALHA INTERNA COM BORDA PONTILHADA FIEL AO PRINT */
+  .ticket-corpo-pontilhado {
+    margin: 15px;
+    padding: 15px;
+    border: 2px dashed #9ca3af;
+    border-radius: 6px;
+    text-align: left;
+  }
+
+  /* BADGE AMARELA DE DATA EM DESTAQUE */
+  .badge-data-amarela {
+    background-color: #fde047;
+    color: #000000;
+    font-weight: bold;
+    padding: 4px 8px;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  /* DETALHES TÉCNICOS ESPECÍFICOS DA SUB-ATIVIDADE */
+  .ticket-atv-item {
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: #1f2937;
+    line-height: 1.5;
+  }
+
+  .ticket-atv-item strong {
+    color: #000000;
+  }
+
+  .ticket-atv-meta {
+    font-size: 11px;
+    color: #4b5563;
+    padding-left: 10px;
+    margin-top: 2px;
+  }

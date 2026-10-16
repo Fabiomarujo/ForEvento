@@ -1,0 +1,11 @@
+/* ForEvento v0.1.17 — contrato visual compartilhado; nao altera rotas/permissoes. */
+:root{--fe-nav-font:13px;--fe-nav-row:42px;--fe-nav-divider:rgba(203,213,225,.65);--fe-nav-radius:9px}
+#feSidebar,#feSharedSidebar{box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;scrollbar-gutter:stable;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important}
+#feSidebar .aba-item-lateral,#feSharedSidebar .feSharedLink{box-sizing:border-box!important;min-height:var(--fe-nav-row)!important;display:flex!important;align-items:center!important;line-height:1.35!important;font-size:var(--fe-nav-font)!important;font-weight:600!important;border-radius:var(--fe-nav-radius)!important;padding:10px 12px!important;text-decoration:none!important;transition:background-color .12s ease,color .12s ease!important}
+#feSidebar .aba-item-lateral:hover,#feSharedSidebar .feSharedLink:hover{background-color:rgba(148,163,184,.18)!important}
+#feSidebar .aba-item-lateral.active,#feSharedSidebar .feSharedLink[aria-current="page"]{background:var(--op-active-bg,#2563eb)!important;color:var(--op-active-text,#fff)!important}
+#feSidebar .fe-menu-group,#feSharedSidebar .feSharedGroup:not(:first-child){border-top:1px solid var(--fe-nav-divider)!important;border-radius:9px 9px 0 0!important;margin-top:9px!important;padding-top:10px!important}
+#feSidebar::-webkit-scrollbar,#feSharedSidebar::-webkit-scrollbar{width:8px}
+#feSidebar::-webkit-scrollbar-thumb,#feSharedSidebar::-webkit-scrollbar-thumb{background:rgba(148,163,184,.65);border-radius:10px}
+#feSidebar::-webkit-scrollbar-track,#feSharedSidebar::-webkit-scrollbar-track{background:transparent}
+@media(max-width:800px){#feSidebar,#feSharedSidebar{scrollbar-gutter:auto}}

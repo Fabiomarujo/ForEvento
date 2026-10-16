@@ -1,0 +1,42 @@
+/* Escopo exclusivo do terceiro modelo: não altera Master ou Participante. */
+body.fe-operational {background:var(--op-content-bg)!important;color:var(--op-content-text)}
+body.fe-operational header.top.fe-unified-header,body.fe-operational header.top,body.fe-operational .navbar{background:var(--op-header-bg)!important;color:var(--op-header-text)!important}
+body.fe-operational header.top .brand,body.fe-operational header.top .user-name,body.fe-operational .navbar .logo,body.fe-operational .navbar #feNomeTopo{color:var(--op-header-text)!important}
+body.fe-operational #feSharedSidebar,body.fe-operational #feSidebar{background:var(--op-sidebar-bg)!important;color:var(--op-sidebar-text)!important}
+body.fe-operational #feSharedSidebar .feSharedLink,body.fe-operational #feSidebar .aba-item-lateral{color:var(--op-sidebar-text)!important}
+body.fe-operational #feSharedSidebar .feSharedLink[aria-current=page],body.fe-operational #feSidebar .aba-item-lateral.ativo{background:var(--op-active-bg)!important;color:var(--op-active-text)!important}
+body.fe-operational #feSharedSidebar .feSharedLink:hover{background:var(--op-active-bg)!important;color:var(--op-active-text)!important}
+body.fe-operational #feSharedSidebar .feSharedLink[href*="cronograma"],body.fe-operational #feSidebar .fe-submenu{background:var(--op-submenu-bg);color:var(--op-submenu-text)!important}
+body.fe-operational main.wrap,body.fe-operational .admin-conteudo-dinamico{color:var(--op-content-text)}
+body.fe-operational .card,body.fe-operational .activity-card{background:var(--op-card-bg)!important;color:var(--op-card-text)!important;border-color:var(--op-card-border)!important}
+body.fe-operational .btn.blue,body.fe-operational button.primary{background:var(--op-button-bg)!important;color:var(--op-button-text)!important}
+body.fe-operational table thead th{background:var(--op-table-head-bg)!important;color:var(--op-table-head-text)!important}
+body.fe-operational table tbody tr{background:var(--op-table-row-bg)}
+body.fe-operational input.field,body.fe-operational select.field,body.fe-operational textarea.field{background:var(--op-field-bg)!important;border-color:var(--op-field-border)!important}
+/* Não sobrescrever cores de sucesso, erro, pendência ou outros estados funcionais. */
+
+/* Correção 09/10: somente terceiro modelo, sem alterar os modelos fixos. */
+body.fe-operational.feSharedLayout{--fe-op-sidebar-width:240px;padding-left:var(--fe-op-sidebar-width)!important;background:var(--op-content-bg)!important}
+/* O cabeçalho independente ocupa a largura inteira da janela, como no dashboard. */
+body.fe-operational.feSharedLayout header.top.fe-unified-header{margin-left:calc(-1 * var(--fe-op-sidebar-width))!important;width:calc(100% + var(--fe-op-sidebar-width))!important;max-width:none!important;padding:0 24px 0 80px!important;background:var(--op-header-bg)!important;color:var(--op-header-text)!important}
+body.fe-operational.feSharedLayout header.top .brand,body.fe-operational.feSharedLayout header.top .user-name{color:var(--op-header-text)!important}
+body.fe-operational.feSharedLayout #feSharedSidebar{top:70px!important;background:var(--op-sidebar-bg)!important}
+body.fe-operational.feSharedLayout #feSharedToggle,body.fe-operational.painel-aberto #feMenuMobile{left:16px!important;top:50%!important;transform:translateY(-50%)!important;position:absolute!important}
+body.fe-operational.feSharedLayout.feSharedCollapsed{padding-left:0!important}
+body.fe-operational.feSharedLayout.feSharedCollapsed header.top.fe-unified-header{margin-left:0!important;width:100%!important}
+/* Mesmo esquema de alinhamento e cores no dashboard operacional. */
+body.fe-operational.painel-aberto .navbar{background:var(--op-header-bg)!important;color:var(--op-header-text)!important}
+body.fe-operational.painel-aberto .navbar .logo,body.fe-operational.painel-aberto .navbar #feNomeTopo{color:var(--op-header-text)!important}
+body.fe-operational.painel-aberto #feSidebar{background:var(--op-sidebar-bg)!important;color:var(--op-sidebar-text)!important}
+body.fe-operational.painel-aberto #feSidebar .aba-item-lateral{color:var(--op-sidebar-text)!important}
+body.fe-operational.painel-aberto #feSidebar .aba-item-lateral.ativo{background:var(--op-active-bg)!important;color:var(--op-active-text)!important}
+body.fe-operational.painel-aberto .admin-conteudo-dinamico{background:var(--op-content-bg)!important;color:var(--op-content-text)!important}
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink[aria-current=page]{background:var(--op-active-bg)!important;color:var(--op-active-text)!important}
+/* Identificação do submenu por classe, não pelo endereço de uma página. */
+body.fe-operational.feSharedLayout #feSharedSidebar .feSharedLink.feSharedSubmenu:not([aria-current=page]){background:var(--op-submenu-bg)!important;color:var(--op-submenu-text)!important}
+@media(max-width:800px){
+ body.fe-operational.feSharedLayout{padding-left:0!important}
+ body.fe-operational.feSharedLayout header.top.fe-unified-header{margin-left:0!important;width:100%!important;padding:0 12px 0 65px!important}
+ body.fe-operational.feSharedLayout #feSharedSidebar{top:62px!important}
+ body.fe-operational.feSharedLayout #feSharedToggle,body.fe-operational.painel-aberto #feMenuMobile{left:8px!important}
+}
